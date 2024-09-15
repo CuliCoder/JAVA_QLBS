@@ -931,7 +931,7 @@ public final class NhapHangGUI extends javax.swing.JPanel {
 
     private void btnLammoi2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLammoi2ActionPerformed
         // TODO add your handling code here:
-        ArrayList<SanPhamDTO> listSanPham = sanPhamBUS.getAllSanPham();
+        ArrayList<SanPhamDTO> listSanPham = sanPhamBUS.getALLSPBan();
         sanPhamGUI.loadTableSanPham(listSanPham, modelSanPham);
     }//GEN-LAST:event_btnLammoi2ActionPerformed
 

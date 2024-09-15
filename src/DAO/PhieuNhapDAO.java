@@ -201,6 +201,31 @@ public class PhieuNhapDAO {
         }
         return ketQua;
     }
+    public double queryPriceByProductId(int maSP) {
+        double price = 0.0;
+
+        try {
+            Connection c = ConnectDB.getConnection();
+            // Câu lệnh SQL để lấy giá bán hiện tại của sản phẩm từ bảng sản phẩm
+            String sql = "SELECT DonGia FROM SanPham WHERE maSP = ?";
+
+            // Tạo PreparedStatement để tránh SQL Injection
+            PreparedStatement pstmt = c.prepareStatement(sql);
+            pstmt.setInt(1, maSP);
+            ResultSet rs = pstmt.executeQuery();
+            // Thực hiện truy vấn
+            rs = pstmt.executeQuery();
+
+            // Nếu có kết quả, lấy giá bán từ cột "giaBan"
+            if (rs.next()) {
+                price = rs.getDouble("DonGia");
+            }
+            ConnectDB.closeConnection(c);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return price; // Trả về giá bán hiện tại của sản phẩm
+    }
 
     public boolean Them(PhieuNhapDTO pn) {
         int ketQua = 0;

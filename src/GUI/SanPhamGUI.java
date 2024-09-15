@@ -273,7 +273,7 @@ public final class SanPhamGUI extends javax.swing.JPanel {
         btnXoa.setBorder(null);
         btnXoa.setForeground(new java.awt.Color(134, 172, 218));
         btnXoa.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Assets/icon_24px/cancel.png"))); // NOI18N
-        btnXoa.setText("Xóa");
+        btnXoa.setText("Ngưng bán");
         btnXoa.setFocusPainted(false);
         btnXoa.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         btnXoa.setPreferredSize(new java.awt.Dimension(50, 25));
@@ -353,7 +353,7 @@ public final class SanPhamGUI extends javax.swing.JPanel {
         jPanelBodyLayout.setHorizontalGroup(
             jPanelBodyLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanelBodyLayout.createSequentialGroup()
-                .addGroup(jPanelBodyLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(jPanelBodyLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addGroup(jPanelBodyLayout.createSequentialGroup()
                         .addComponent(lblSanPham, javax.swing.GroupLayout.PREFERRED_SIZE, 145, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(0, 0, 0)
@@ -362,13 +362,13 @@ public final class SanPhamGUI extends javax.swing.JPanel {
                         .addComponent(btnThem, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(25, 25, 25)
                         .addComponent(btnSua, javax.swing.GroupLayout.PREFERRED_SIZE, 99, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(25, 25, 25)
-                        .addComponent(btnXoa, javax.swing.GroupLayout.PREFERRED_SIZE, 99, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(25, 25, 25)
+                        .addGap(18, 18, 18)
+                        .addComponent(btnXoa, javax.swing.GroupLayout.PREFERRED_SIZE, 118, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(13, 13, 13)
                         .addComponent(btnLamMoi, javax.swing.GroupLayout.PREFERRED_SIZE, 118, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanelBodyLayout.createSequentialGroup()
+                    .addGroup(jPanelBodyLayout.createSequentialGroup()
                         .addGap(0, 0, Short.MAX_VALUE)
                         .addComponent(PanelTable, javax.swing.GroupLayout.PREFERRED_SIZE, 1003, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap())
@@ -550,9 +550,16 @@ public final class SanPhamGUI extends javax.swing.JPanel {
                 String theLoai = (String) tableSanPham.getValueAt(selectedRow, 4);
                 int soLuong = (int) tableSanPham.getValueAt(selectedRow, 5);
                 String donGia = (String) tableSanPham.getValueAt(selectedRow, 6);
+                String tinhTrang = (String) tableSanPham.getValueAt(selectedRow, 7);
+                int trangThaiValue;
+                if (tinhTrang.equals("Đang kinh doanh")) {
+                    trangThaiValue = 1;
+                } else {
+                    trangThaiValue = 0;
+                }
                 double dongia = sharedFunction.parseMoneyString(donGia);
                 // Tạo frame để chỉnh sửa thông tin
-                ChiTietSanPham ctsp = new ChiTietSanPham(selectedRow, maSP, tenSP, tacGia, theLoai, soLuong, dongia);
+                ChiTietSanPham ctsp = new ChiTietSanPham(selectedRow, maSP, tenSP, tacGia, theLoai, soLuong, dongia, trangThaiValue);
                 ctsp.setVisible(true);
             } else {
                 JOptionPane.showMessageDialog(this, "Vui lòng chọn sản phẩm cần sửa.", "Thông báo", JOptionPane.INFORMATION_MESSAGE);
@@ -721,7 +728,7 @@ public final class SanPhamGUI extends javax.swing.JPanel {
         // Tiêu đề của các cột
         int arrowUpUnicode = 8593; // Mã Unicode cho mũi tên lên
         char arrowUpChar = (char) arrowUpUnicode;
-        String[] columnNames = {"STT", "ID Sản phẩm", "Tên sản phẩm", "Tên tác giả", "Thể loại", "Số lượng " + arrowUpChar, "Đơn giá"};
+        String[] columnNames = {"STT", "ID Sản phẩm", "Tên sản phẩm", "Tên tác giả", "Thể loại", "Số lượng " + arrowUpChar, "Đơn giá", "Trạng thái"};
         modelSanPham = new DefaultTableModel() {
             @Override
             public Class<?> getColumnClass(int columnIndex) {
@@ -739,12 +746,13 @@ public final class SanPhamGUI extends javax.swing.JPanel {
         JTable table = new JTable(modelSanPham);
         TableColumnModel columnModel = table.getColumnModel();
         columnModel.getColumn(0).setPreferredWidth(60); // Độ rộng cột 0
-        columnModel.getColumn(1).setPreferredWidth(120); // Độ rộng cột 1
+        columnModel.getColumn(1).setPreferredWidth(100); // Độ rộng cột 1
         columnModel.getColumn(2).setPreferredWidth(250); // Độ rộng cột 2
-        columnModel.getColumn(3).setPreferredWidth(209); // Độ rộng cột 3
+        columnModel.getColumn(3).setPreferredWidth(180); // Độ rộng cột 3
         columnModel.getColumn(4).setPreferredWidth(120); // Độ rộng cột 4
-        columnModel.getColumn(5).setPreferredWidth(120); // Độ rộng cột 5
+        columnModel.getColumn(5).setPreferredWidth(100); // Độ rộng cột 5
         columnModel.getColumn(6).setPreferredWidth(120); // Độ rộng cột 6
+        columnModel.getColumn(7).setPreferredWidth(180); // Độ rộng cột 7
 
         sharedFunction.EditHeaderTable(table);
         sharedFunction.EditTableContent(table);
@@ -762,8 +770,9 @@ public final class SanPhamGUI extends javax.swing.JPanel {
             String tenTacGia = sanPham.getTacGia();
             int soLuong = sanPham.getSoLuong();
             double donGia = sanPham.getDonGia();
+            String tinhTrang = sanPham.getTinhTrang() ? "Đang kinh doanh" : "Ngừng kinh doanh";
             String formatDonGia = sharedFunction.formatVND(donGia);
-            Object[] row = {STT++, maSPtext, tenSanPham, tenTacGia, tenTL, soLuong, formatDonGia};
+            Object[] row = {STT++, maSPtext, tenSanPham, tenTacGia, tenTL, soLuong, formatDonGia, tinhTrang};
             modelSanPham.addRow(row);
         }
     }
@@ -824,7 +833,7 @@ public final class SanPhamGUI extends javax.swing.JPanel {
     }
 
     public static void addSanPhamTable(SanPhamDTO sp, int STT, String tenTL, String maSP) {
-        modelSanPham.addRow(new Object[]{STT, maSP, sp.getTenSP(), sp.getTacGia(), tenTL, sp.getSoLuong(),sharedFunction.formatVND(sp.getDonGia())});
+        modelSanPham.addRow(new Object[]{STT, maSP, sp.getTenSP(), sp.getTacGia(), tenTL, sp.getSoLuong(), sharedFunction.formatVND(sp.getDonGia())});
     }
 
     public static void updateSanPhamTable(SanPhamDTO sp, int STT, String tenTL) {
@@ -868,26 +877,33 @@ public final class SanPhamGUI extends javax.swing.JPanel {
     private void XoaSanPham() {
         int selectedRowIndex = tableSanPham.getSelectedRow();
         if (selectedRowIndex != -1) {
-            int option = JOptionPane.showConfirmDialog(this, "Bạn có chắc muốn xóa ?", "Xác nhận xóa", JOptionPane.YES_NO_OPTION);
+            int sl = (int) modelSanPham.getValueAt(selectedRowIndex, 5);
+
+//            // Kiểm tra nếu số lượng sản phẩm > 0 thì không cho phép xóa
+//            if (sl > 0) {
+//                JOptionPane.showMessageDialog(this, "Không thể xóa sản phẩm vì vẫn còn hàng trong kho.", "Thông báo", JOptionPane.WARNING_MESSAGE);
+//                return; // Dừng việc xóa
+//            }
+            int option = JOptionPane.showConfirmDialog(this, "Bạn có chắc muốn ngừng kinh doanh sản phẩm này ?", "Xác nhận ngừng kinh doanh", JOptionPane.YES_NO_OPTION);
             if (option == JOptionPane.YES_OPTION) {
                 // Lấy mã thể loại từ dòng được chọn trong bảng
                 String maSP = (String) modelSanPham.getValueAt(selectedRowIndex, 1);
                 int maSpNumber = Integer.parseInt(maSP.substring(2));
                 // Gọi lớp BUS để xóa thể loại dựa trên mã thể loại
                 if (sanPhamBUS.deleteSanPhamByMaSP(maSpNumber)) {
-                    // Xóa dòng khỏi bảng
-                    modelSanPham.removeRow(selectedRowIndex);
-                    // Cập nhật lại giá trị STT
-                    for (int i = 0; i < modelSanPham.getRowCount(); i++) {
-                        modelSanPham.setValueAt(i + 1, i, 0);
-                    }
-                    JOptionPane.showMessageDialog(this, "Đã xóa thành công.", "Thông báo", JOptionPane.INFORMATION_MESSAGE);
+//                    // Xóa dòng khỏi bảng
+//                    modelSanPham.removeRow(selectedRowIndex);
+//                    // Cập nhật lại giá trị STT
+//                    for (int i = 0; i < modelSanPham.getRowCount(); i++) {
+//                        modelSanPham.setValueAt(i + 1, i, 0);
+//                    }
+                    JOptionPane.showMessageDialog(this, "Đã thay đổi thành công.", "Thông báo", JOptionPane.INFORMATION_MESSAGE);
                 } else {
-                    JOptionPane.showMessageDialog(this, "Lỗi khi xóa sản phẩm.", "Lỗi", JOptionPane.ERROR_MESSAGE);
+                    JOptionPane.showMessageDialog(this, "Lỗi khi thay đổi sản phẩm.", "Lỗi", JOptionPane.ERROR_MESSAGE);
                 }
             }
         } else {
-            JOptionPane.showMessageDialog(this, "Vui lòng chọn sản phẩm cần xóa.", "Thông báo", JOptionPane.INFORMATION_MESSAGE);
+            JOptionPane.showMessageDialog(this, "Vui lòng chọn sản phẩm cần ngừng bán.", "Thông báo", JOptionPane.INFORMATION_MESSAGE);
         }
     }
 

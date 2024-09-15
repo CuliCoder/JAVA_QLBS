@@ -64,9 +64,8 @@ public class CongTyGUI extends javax.swing.JPanel {
         model.setRowCount(0);
         count = 1;
         CongTyBUS.selectAll().forEach((cty) -> {
-            if (cty.getTinhTrang()) {
-                model.addRow(new Object[]{count++, "CT00" + cty.getMaNCC(), cty.getTenNCC(), cty.getSDT(), cty.getDiaChi()});
-            }
+            String tinhTrang = cty.getTinhTrang() ? "Đang hợp tác" : "Ngưng hợp tác";
+                model.addRow(new Object[]{count++, "CT00" + cty.getMaNCC(), cty.getTenNCC(), cty.getSDT(), cty.getDiaChi(), tinhTrang});
 
         });
     }
@@ -262,7 +261,7 @@ public class CongTyGUI extends javax.swing.JPanel {
         btnXoa.setBorder(null);
         btnXoa.setForeground(new java.awt.Color(135, 172, 217));
         btnXoa.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Assets/icon_24px/cancel.png"))); // NOI18N
-        btnXoa.setText("Xóa");
+        btnXoa.setText("Ngừng hợp tác");
         btnXoa.setFocusPainted(false);
         btnXoa.setFont(new java.awt.Font("Josefin Sans SemiBold", 0, 17)); // NOI18N
         btnXoa.setMaximumSize(new java.awt.Dimension(100, 40));
@@ -290,11 +289,11 @@ public class CongTyGUI extends javax.swing.JPanel {
                         .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jLabel6)
-                        .addGap(256, 256, 256)
+                        .addGap(224, 224, 224)
                         .addComponent(btnThem, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(30, 30, 30)
-                        .addComponent(btnXoa, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(30, 30, 30)
+                        .addGap(18, 18, 18)
+                        .addComponent(btnXoa, javax.swing.GroupLayout.PREFERRED_SIZE, 156, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)
                         .addComponent(btnSua, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(30, 30, 30)
                         .addComponent(btnLammoi, javax.swing.GroupLayout.PREFERRED_SIZE, 118, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -354,14 +353,14 @@ public class CongTyGUI extends javax.swing.JPanel {
 
         int selectedRow = tableNhanvien.getSelectedRow();
         if (selectedRow >= 0) {
-            int option = JOptionPane.showConfirmDialog(this, "Bạn có chắc muốn xóa?", "Xác nhận xóa", JOptionPane.YES_NO_OPTION);
+            int option = JOptionPane.showConfirmDialog(this, "Bạn có chắc muốn ngưng hợp tác?", "Xác nhận ngưng hợp tác", JOptionPane.YES_NO_OPTION);
             if (option == JOptionPane.YES_OPTION) {
                 String ma = (String) tableNhanvien.getValueAt(selectedRow, 1);
                 int id = Integer.parseInt(ma.substring(4));
                 ctyBus.deleteCongTy(id);
             }
         } else {
-            JOptionPane.showMessageDialog(this, "Chưa chọn Công ty để sửa");
+            JOptionPane.showMessageDialog(this, "Chưa chọn Công ty");
         }
 
 
@@ -463,7 +462,7 @@ public class CongTyGUI extends javax.swing.JPanel {
 
     public static JTable createTableCongty() {
         // Tiêu đề của các cột
-        String[] columnNames = {"STT", "ID Công ty", "Tên công ty", "Số điện thoại", "Địa chỉ"};
+        String[] columnNames = {"STT", "ID Công ty", "Tên công ty", "Số điện thoại", "Địa chỉ", "Trạng thái"};
         DefaultTableModel model = new DefaultTableModel() {
             @Override
             public Class<?> getColumnClass(int columnIndex) {
@@ -486,8 +485,9 @@ public class CongTyGUI extends javax.swing.JPanel {
         columnModel.getColumn(0).setPreferredWidth(60); // Độ rộng cột 0
         columnModel.getColumn(1).setPreferredWidth(150); // Độ rộng cột 1
         columnModel.getColumn(2).setPreferredWidth(300); // Độ rộng cột 2
-        columnModel.getColumn(3).setPreferredWidth(200); // Độ rộng cột 3
-        columnModel.getColumn(4).setPreferredWidth(600); // Độ rộng cột 4
+        columnModel.getColumn(3).setPreferredWidth(150); // Độ rộng cột 3
+        columnModel.getColumn(4).setPreferredWidth(350); // Độ rộng cột 4
+        columnModel.getColumn(5).setPreferredWidth(150); // Độ rộng cột 5
 
         sharedFunction.EditHeaderTable(table);
         sharedFunction.EditTableContent(table);

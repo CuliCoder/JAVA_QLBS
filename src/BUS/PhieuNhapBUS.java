@@ -48,6 +48,18 @@ public class PhieuNhapBUS {
     public ArrayList<SanPhamDTO> loadSanPham() {
         return spDAO.selectAll();
     }
+
+    public double getCurrentPrice(int maSP) {
+        // Query database to get the current price of the product with maSP
+        double price = 0.0;
+        try {
+            price = pnDAO.queryPriceByProductId(maSP);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return price;
+    }
+
   public ArrayList<PhieuNhapDTO> findPhieuNhapByMaPN(int maPN) {
         return pnDAO.getLikeByID(maPN);
     }
@@ -80,9 +92,18 @@ public class PhieuNhapBUS {
                 if (!resCT) {
                     cartImport.displayErrorMessage("lỗi nhập hàng " + ctpn.getMaSP());
                 } else {
-                    int newQuantity = ctpnBUS.getCurrentQuantity(ctpn.getMaSP()) + ctpn.getSoLuong();
-                    double giaBan = Double.parseDouble(cartImport.getTableChitiet().getModel().getValueAt(i++,3).toString());
-                    resSP = ctpnBUS.CapNhatSoLuong(ctpn.getMaSP(), newQuantity, giaBan);
+                    int currentQuantity = ctpnBUS.getCurrentQuantity(ctpn.getMaSP());
+                    double currentPrice = getCurrentPrice(ctpn.getMaSP()); // Lấy giá bán hiện tại
+
+                    // Lấy giá bán mới nhập từ bảng chi tiết
+                    double newPrice = Double.parseDouble(cartImport.getTableChitiet().getModel().getValueAt(i++, 3).toString());
+
+                    // So sánh giá hiện tại và giá mới, chọn giá cao hơn
+                    double updatedPrice = Math.max(currentPrice, newPrice);
+
+                    // Cập nhật số lượng và giá bán
+                    int newQuantity = currentQuantity + ctpn.getSoLuong();
+                    resSP = ctpnBUS.CapNhatSoLuong(ctpn.getMaSP(), newQuantity, updatedPrice);
                     if (resSP) {
                         success = true;
                     }

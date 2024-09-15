@@ -23,6 +23,9 @@ public class SanPhamBUS {
     public ArrayList<SanPhamDTO> getAllSanPham() {
         return sanPhamDAO.selectAll();
     }
+    public ArrayList<SanPhamDTO> getALLSPBan(){
+        return sanPhamDAO.selectSPBan();
+    }
     
     public int getMaSPMax() {
         return sanPhamDAO.getMaSPMax();

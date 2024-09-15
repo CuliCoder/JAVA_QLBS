@@ -1230,7 +1230,7 @@
                                       </Group>
                                       <Group type="102" attributes="0">
                                           <Component id="jScrollPane3" min="-2" pref="979" max="-2" attributes="0"/>
-                                          <EmptySpace pref="16" max="32767" attributes="0"/>
+                                          <EmptySpace pref="27" max="32767" attributes="0"/>
                                       </Group>
                                   </Group>
                               </Group>
@@ -1358,15 +1358,15 @@
                         <Component class="javax.swing.JComboBox" name="CbTieuChi">
                           <Properties>
                             <Property name="model" type="javax.swing.ComboBoxModel" editor="org.netbeans.modules.form.editors2.ComboBoxModelEditor">
-                              <StringArray count="3">
+                              <StringArray count="2">
                                 <StringItem index="0" value="s&#x1ea3;n ph&#x1ea9;m b&#xe1;n ch&#x1ea1;y"/>
-                                <StringItem index="1" value="doanh thu cao nh&#x1ea5;t"/>
-                                <StringItem index="2" value=" "/>
+                                <StringItem index="1" value=" "/>
                               </StringArray>
                             </Property>
                           </Properties>
                           <Events>
                             <EventHandler event="itemStateChanged" listener="java.awt.event.ItemListener" parameters="java.awt.event.ItemEvent" handler="CbTieuChiItemStateChanged"/>
+                            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="CbTieuChiActionPerformed"/>
                           </Events>
                           <AuxValues>
                             <AuxValue name="JavaCodeGenerator_TypeParameters" type="java.lang.String" value="&lt;String&gt;"/>
@@ -1496,7 +1496,7 @@
                                           <EmptySpace min="0" pref="0" max="-2" attributes="0"/>
                                           <Component id="tlngayketthuc" min="-2" pref="129" max="-2" attributes="0"/>
                                           <EmptySpace max="-2" attributes="0"/>
-                                          <Component id="CbTieuChiTheLoai" pref="148" max="32767" attributes="0"/>
+                                          <Component id="CbTieuChiTheLoai" pref="159" max="32767" attributes="0"/>
                                           <EmptySpace max="-2" attributes="0"/>
                                           <Component id="cbTopTheLoai" min="-2" pref="105" max="-2" attributes="0"/>
                                           <EmptySpace min="-2" pref="4" max="-2" attributes="0"/>
@@ -1789,7 +1789,7 @@
                                   <Component id="tgngaybatdau" min="-2" pref="131" max="-2" attributes="0"/>
                                   <EmptySpace max="-2" attributes="0"/>
                                   <Component id="tgngayketthuc" min="-2" pref="129" max="-2" attributes="0"/>
-                                  <EmptySpace pref="241" max="32767" attributes="0"/>
+                                  <EmptySpace pref="252" max="32767" attributes="0"/>
                                   <Component id="excelThoiGian" min="-2" pref="128" max="-2" attributes="0"/>
                                   <EmptySpace min="-2" pref="27" max="-2" attributes="0"/>
                                   <Component id="pdfThoiGian" min="-2" pref="115" max="-2" attributes="0"/>
@@ -1817,7 +1817,7 @@
                           </Group>
                           <EmptySpace max="-2" attributes="0"/>
                           <Component id="jScrollPane4" min="-2" pref="619" max="-2" attributes="0"/>
-                          <EmptySpace pref="76" max="32767" attributes="0"/>
+                          <EmptySpace pref="80" max="32767" attributes="0"/>
                       </Group>
                   </Group>
                 </DimensionLayout>

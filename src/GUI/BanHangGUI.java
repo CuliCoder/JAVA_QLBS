@@ -86,7 +86,7 @@ public final class BanHangGUI extends javax.swing.JPanel {
 
     public void createTable() {
         tableSanPham = createTableSanPham();
-        ArrayList<SanPhamDTO> listSanPham = sanPhamBUS.getAllSanPham();
+        ArrayList<SanPhamDTO> listSanPham = sanPhamBUS.getALLSPBan();
         sanPhamGUI.loadTableSanPham(listSanPham, modelSanPham);
 
         tableSanPham.setPreferredScrollableViewportSize(PanelTable1.getPreferredSize());
@@ -265,6 +265,11 @@ public final class BanHangGUI extends javax.swing.JPanel {
         txtNgayTao.setFocusable(false);
         txtNgayTao.setMaximumSize(new java.awt.Dimension(300, 50));
         txtNgayTao.setPreferredSize(new java.awt.Dimension(300, 50));
+        txtNgayTao.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txtNgayTaoActionPerformed(evt);
+            }
+        });
 
         tfTongtien.setEditable(false);
         tfTongtien.setBackground(new java.awt.Color(255, 255, 255));
@@ -832,16 +837,16 @@ public final class BanHangGUI extends javax.swing.JPanel {
         txtDonGia.setText("");
         lblImage.setIcon(null);
         txtSoluong.setFocusable(false);
-        if(!tfTongtien.getText().isEmpty()){
+        if (!tfTongtien.getText().isEmpty()) {
             tfTienkhach.setFocusable(true);
         }
-        
+
     }
 
     // Reset toàn bộ trạng thái
     public void resetAll() {
         setTextAndDate();
-        ArrayList<SanPhamDTO> listSanPham = sanPhamBUS.getAllSanPham();
+        ArrayList<SanPhamDTO> listSanPham = sanPhamBUS.getALLSPBan();
         sanPhamGUI.loadTableSanPham(listSanPham, modelSanPham);
         resetProductDetails();
         modelHoaDon.setRowCount(0);
@@ -898,13 +903,12 @@ public final class BanHangGUI extends javax.swing.JPanel {
 
         // Lấy ID nhân viên 
         String tenTK = TaiKhoanBUS.getCurrentAcc().getTenTK();
-        txtIDNhanvien.setText( tenTK);
-        // Lấy ngày hiện tại
-//        Date currentDate = new Date();
-//        SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
-//        String formattedDate = dateFormat.format(currentDate);
-//        txtNgayTao.setText(formattedDate);
-    txtNgayTao.setText("22/12/2024");
+        txtIDNhanvien.setText(tenTK);
+         //Lấy ngày hiện tại
+        Date currentDate = new Date();
+        SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
+        String formattedDate = dateFormat.format(currentDate);
+        txtNgayTao.setText(formattedDate);
 
     }
 
@@ -918,7 +922,7 @@ public final class BanHangGUI extends javax.swing.JPanel {
             sanPhamBUS.updateProductQuantity(maSPnumber, soLuong);
         }
         // Load lại dữ liệu lên bảng sản phẩm
-        ArrayList<SanPhamDTO> listSanPham = sanPhamBUS.getAllSanPham();
+        ArrayList<SanPhamDTO> listSanPham = sanPhamBUS.getALLSPBan();
         sanPhamGUI.loadTableSanPham(listSanPham, modelSanPham);
     }
     private void txtIDSanphamjTextField1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtIDSanphamjTextField1ActionPerformed
@@ -939,7 +943,7 @@ public final class BanHangGUI extends javax.swing.JPanel {
 
     private void btnLamMoiActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLamMoiActionPerformed
         // TODO add your handling code here:
-        ArrayList<SanPhamDTO> listSanPham = sanPhamBUS.getAllSanPham();
+        ArrayList<SanPhamDTO> listSanPham = sanPhamBUS.getALLSPBan();
         sanPhamGUI.loadTableSanPham(listSanPham, modelSanPham);
         resetProductDetails();
     }//GEN-LAST:event_btnLamMoiActionPerformed
@@ -1064,7 +1068,7 @@ public final class BanHangGUI extends javax.swing.JPanel {
                 }
                 // Cập nhật giá trị vào JTextField Tiền thối lại
                 tfTienthoi.setText(sharedFunction.formatVND(tienThoiLai));
-            }else{
+            } else {
                 sharedFunction.displayErrorMessage("Tiền khách đưa không hợp lệ");
             }
         }
@@ -1155,6 +1159,10 @@ public final class BanHangGUI extends javax.swing.JPanel {
     private void txtTimKiemFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_txtTimKiemFocusGained
         // TODO add your handling code here:
     }//GEN-LAST:event_txtTimKiemFocusGained
+
+    private void txtNgayTaoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtNgayTaoActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txtNgayTaoActionPerformed
 //    public static String FormatMaHD(int MaHD) {
 //        return String.format("HD%02d", MaHD);
 //    }

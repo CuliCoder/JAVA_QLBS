@@ -29,6 +29,16 @@ public final class SanPhamDTO {
         this.SoLuong = SoLuong;
         this.NamXB = NamXB;
     }
+    public SanPhamDTO(int MaSP, String TenTL, String TenSP, String HinhAnh, String TacGia, double DonGia, int SoLuong, int NamXB) {     
+        this.MaSP = MaSP;
+        this.TenTL = TenTL;
+        this.TenSP = TenSP;
+        this.HinhAnh = HinhAnh;
+        this.TacGia = TacGia;
+        this.DonGia = DonGia;
+        this.SoLuong = SoLuong;
+        this.NamXB = NamXB;
+    }
 
 
     // sử dụng khi cần thêm sản phẩm 
@@ -143,6 +153,4 @@ public final class SanPhamDTO {
     public void setMaTL(int MaTL) {
         this.MaTL = MaTL;
     }
-
-
 }

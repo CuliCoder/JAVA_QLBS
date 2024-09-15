@@ -934,13 +934,13 @@ public class MainFrameGUI extends javax.swing.JFrame {
     private void lblBanHangMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblBanHangMouseClicked
         // TODO add your handling code here:
 
-        ArrayList<SanPhamDTO> listSanPham = sanPhamBUS.getAllSanPham();
+        ArrayList<SanPhamDTO> listSanPham = sanPhamBUS.getALLSPBan();
         SanPhamGUI.loadTableSanPham(listSanPham, BanHangGUI.getModelSanPham());
     }//GEN-LAST:event_lblBanHangMouseClicked
 
     private void lblNhapHangMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblNhapHangMouseClicked
         // TODO add your handling code here:
-        ArrayList<SanPhamDTO> listSanPham = sanPhamBUS.getAllSanPham();
+        ArrayList<SanPhamDTO> listSanPham = sanPhamBUS.getALLSPBan();
         SanPhamGUI.loadTableSanPham(listSanPham, NhapHangGUI.getModelSanPham());
     }//GEN-LAST:event_lblNhapHangMouseClicked
 

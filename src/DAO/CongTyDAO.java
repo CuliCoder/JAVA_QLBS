@@ -24,7 +24,7 @@ public class CongTyDAO {
         try {
             Connection conn = ConnectDB.getConnection();
             Statement st = conn.createStatement();
-            String sql = "SELECT * FROM NhaCungCap where TinhTrang <> 0";
+            String sql = "SELECT * FROM NhaCungCap";
             ResultSet rs = st.executeQuery(sql);
 
             while (rs.next()) {

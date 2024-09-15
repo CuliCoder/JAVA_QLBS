@@ -23,7 +23,7 @@ public class SanPhamDAO {
         ArrayList<SanPhamDTO> ketQua = new ArrayList<>();
         try {
             Connection c = ConnectDB.getConnection();
-            String sql = "SELECT * FROM SanPham sp JOIN TheLoai tl on sp.MaTL = tl.MaTL where sp.TinhTrang = 1 and tl.TinhTrang = 1";
+            String sql = "SELECT * FROM SanPham sp JOIN TheLoai tl on sp.MaTL = tl.MaTL";
             PreparedStatement pst = c.prepareStatement(sql);
             ResultSet rs = pst.executeQuery();
 
@@ -39,6 +39,32 @@ public class SanPhamDAO {
                 boolean TinhTrang = rs.getBoolean("TinhTrang");
 
                 SanPhamDTO sp = new SanPhamDTO(MaSP, TenTL, TenSP, HinhAnh, TacGia, TinhTrang, DonGia, SoLuong, NamXB);
+                ketQua.add(sp);
+            }
+            ConnectDB.closeConnection(c);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return ketQua;
+    }
+    public ArrayList<SanPhamDTO> selectSPBan() {
+        ArrayList<SanPhamDTO> ketQua = new ArrayList<>();
+        try {
+            Connection c = ConnectDB.getConnection();
+            String sql = "SELECT * FROM SanPham sp JOIN TheLoai tl on sp.MaTL = tl.MaTL where sp.TinhTrang = 1 and tl.TinhTrang =1";
+            PreparedStatement pst = c.prepareStatement(sql);
+            ResultSet rs = pst.executeQuery();
+
+            while (rs.next()) {
+                int MaSP = rs.getInt("MaSP");
+                String TenTL = rs.getString("TenTL");
+                String TenSP = rs.getNString("TenSP");
+                String TacGia = rs.getNString("TacGia");
+                String HinhAnh = rs.getString("HinhAnh");
+                double DonGia = rs.getFloat("DonGia");
+                int SoLuong = rs.getInt("SoLuong");
+                int NamXB = rs.getInt("NamXB");
+                SanPhamDTO sp = new SanPhamDTO(MaSP, TenTL, TenSP, HinhAnh, TacGia, DonGia, SoLuong, NamXB);
                 ketQua.add(sp);
             }
             ConnectDB.closeConnection(c);
