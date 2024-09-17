@@ -508,6 +508,11 @@ public final class NhapHangGUI extends javax.swing.JPanel {
         tfTenTacgia.setFont(new java.awt.Font("Josefin Sans Medium", 0, 14)); // NOI18N
         tfTenTacgia.setBorder(javax.swing.BorderFactory.createTitledBorder(new javax.swing.border.LineBorder(new java.awt.Color(135, 172, 217), 2, true), "Tên tác giả", javax.swing.border.TitledBorder.LEFT, javax.swing.border.TitledBorder.ABOVE_TOP, new java.awt.Font("Josefin Sans SemiBold", 0, 16), new java.awt.Color(135, 172, 217))); // NOI18N
         tfTenTacgia.setFocusable(false);
+        tfTenTacgia.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                tfTenTacgiaActionPerformed(evt);
+            }
+        });
 
         tfTheloai.setFont(new java.awt.Font("Josefin Sans Medium", 0, 14)); // NOI18N
         tfTheloai.setBorder(javax.swing.BorderFactory.createTitledBorder(new javax.swing.border.LineBorder(new java.awt.Color(135, 172, 217), 2, true), "Thể loại", javax.swing.border.TitledBorder.LEFT, javax.swing.border.TitledBorder.ABOVE_TOP, new java.awt.Font("Josefin Sans SemiBold", 0, 16), new java.awt.Color(135, 172, 217))); // NOI18N
@@ -963,6 +968,10 @@ public final class NhapHangGUI extends javax.swing.JPanel {
     private void tfTimkiemFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_tfTimkiemFocusGained
         // TODO add your handling code here:
     }//GEN-LAST:event_tfTimkiemFocusGained
+
+    private void tfTenTacgiaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_tfTenTacgiaActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_tfTenTacgiaActionPerformed
 
     public void displayErrorMessage(String message) {
         JOptionPane.showMessageDialog(this, message, "Lỗi", JOptionPane.ERROR_MESSAGE);

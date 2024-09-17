@@ -31,6 +31,8 @@ import javax.swing.Icon;
 import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
 import java.awt.Image;
+import java.awt.event.FocusAdapter;
+import java.awt.event.FocusEvent;
 import java.math.BigDecimal;
 
 /**
@@ -60,9 +62,10 @@ public class PhieuNhapBUS {
         return price;
     }
 
-  public ArrayList<PhieuNhapDTO> findPhieuNhapByMaPN(int maPN) {
+    public ArrayList<PhieuNhapDTO> findPhieuNhapByMaPN(int maPN) {
         return pnDAO.getLikeByID(maPN);
     }
+
     public void NhapHang(NhapHangGUI cartImport) {
         String nameNCC = cartImport.getCbCongTy().getSelectedItem().toString();
         int IDNCC = pnDAO.queryByNameSupplier(nameNCC);
@@ -154,8 +157,8 @@ public class PhieuNhapBUS {
         cartImport.getTfIDHoadon().setText(IDPN);
         String nameNV = tkBUS.selectNameStaff(tkBUS.getCurrentAcc().getTenTK());
 
-       cartImport.getTfIDNhanvien().setText(nameNV); // sửa sau
-        cartImport.getTfNgaytao().setText( formattedDate);
+        cartImport.getTfIDNhanvien().setText(nameNV); // sửa sau
+        cartImport.getTfNgaytao().setText(formattedDate);
 
         cartImport.getTfIDHoadon().setFocusable(false);
         cartImport.getTfIDNhanvien().setFocusable(false);
@@ -163,6 +166,7 @@ public class PhieuNhapBUS {
 
         queryListSupplier(cartImport);
     }
+    
 
     public void loadData(NhapHangGUI cartImport, int row_index) {
         int idSP = Integer.parseInt(cartImport.getTableSanPham().getValueAt(row_index, 1).toString().substring(2));
@@ -176,9 +180,42 @@ public class PhieuNhapBUS {
         cartImport.getTfTenSanpham().setText(cartImport.getTableSanPham().getValueAt(row_index, 2).toString());
         cartImport.getTfTenTacgia().setText(cartImport.getTableSanPham().getValueAt(row_index, 3).toString());
         cartImport.getTfTheloai().setText(cartImport.getTableSanPham().getValueAt(row_index, 4).toString());
-//        double DonGia = Double.parseDouble(cartImport.getTableSanPham().getValueAt(row_index, 6).toString()) * 100 / 120;
-        cartImport.getTfDongia().setText("");
+        String donGiaStr = cartImport.getTableSanPham().getValueAt(row_index, 6).toString();
+
+        // Kiểm tra và loại bỏ các ký tự không hợp lệ
+        donGiaStr = donGiaStr.replaceAll("[^\\d.,-]", ""); // Loại bỏ ký tự không phải số, dấu phẩy, dấu chấm hoặc dấu âm
+
+        // Nếu chuỗi sử dụng dấu phẩy cho thập phân (ví dụ 22,100), hãy thay thế dấu phẩy bằng dấu chấm
+        if (donGiaStr.contains(",")) {
+            donGiaStr = donGiaStr.replace(",", ".");
+        }
+
+        // Chuyển đổi chuỗi đã được làm sạch thành kiểu double
+        double donGia = Double.parseDouble(donGiaStr);
+        double donGiaNhap = pnDAO.queryImportPriceByProductId(idSP);
+        cartImport.getTfDongia().setText(String.format("%.0f", donGiaNhap));
         cartImport.getTfSoluong().setText("");
+        if (donGiaNhap > 0) {
+            double phanTram = (donGia / donGiaNhap) * 100000;
+            cartImport.getTfPhanTram().setText(String.format("%.0f", phanTram%100)); // Giới hạn 2 chữ số thập phân
+        } else {
+            cartImport.getTfPhanTram().setText("N/A"); // Đặt "N/A" nếu giá nhập bằng 0
+        }
+        cartImport.getTfPhanTram().addFocusListener(new FocusAdapter() {
+            @Override
+            public void focusGained(FocusEvent e) {
+                if (cartImport.getTfPhanTram().getText().equals("N/A")) {
+                    cartImport.getTfPhanTram().setText(""); // Xóa chữ "N/A"
+                }
+            }
+
+            @Override
+            public void focusLost(FocusEvent e) {
+                if (cartImport.getTfPhanTram().getText().trim().isEmpty()) {
+                    cartImport.getTfPhanTram().setText("N/A"); // Đặt lại "N/A" nếu người dùng không nhập gì
+                }
+            }
+        });
         cartImport.getTfSoluong().requestFocus();
     }
 
@@ -186,7 +223,7 @@ public class PhieuNhapBUS {
         String idProduct = cartImport.getTableChitiet().getValueAt(row_index, 0).toString();
 //        String nameProduct = cartImport.getTableChitiet().getValueAt(row_index, 1).toString();
         int newQuantity = Integer.parseInt(cartImport.getTableChitiet().getValueAt(row_index, 1).toString());
-        double newPrice = (double) Double.parseDouble(cartImport.getTableChitiet().getValueAt(row_index, 2).toString()) / newQuantity *1.0;
+        double newPrice = (double) Double.parseDouble(cartImport.getTableChitiet().getValueAt(row_index, 2).toString()) / newQuantity * 1.0;
         double giaBan = Double.parseDouble(cartImport.getTableChitiet().getValueAt(row_index, 3).toString());
         double chechLechGia = (BigDecimal.valueOf(giaBan).subtract(BigDecimal.valueOf(newPrice))).doubleValue();
         double percent = (BigDecimal.valueOf(chechLechGia).divide(BigDecimal.valueOf(newPrice))).doubleValue();
@@ -202,7 +239,7 @@ public class PhieuNhapBUS {
                 cartImport.getTfTheloai().setText(cartImport.getTableSanPham().getValueAt(i, 4).toString());
                 cartImport.getTfDongia().setText(newPrice + "");
                 cartImport.getTfSoluong().setText(newQuantity + "");
-                cartImport.getTfPhanTram().setText(resPercent+"");
+                cartImport.getTfPhanTram().setText(resPercent + "");
                 cartImport.getTfSoluong().requestFocus();
                 return;
             }

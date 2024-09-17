@@ -201,6 +201,7 @@ public class PhieuNhapDAO {
         }
         return ketQua;
     }
+
     public double queryPriceByProductId(int maSP) {
         double price = 0.0;
 
@@ -225,6 +226,31 @@ public class PhieuNhapDAO {
             e.printStackTrace();
         }
         return price; // Trả về giá bán hiện tại của sản phẩm
+    }
+
+    public double queryImportPriceByProductId(int maSP) {
+        double price = 0.0;
+        try {
+            Connection c = ConnectDB.getConnection();
+            String sql = "SELECT TOP 1 DonGiaNhap \n"
+                    + "FROM ChiTietPhieuNhap \n"
+                    + "WHERE maSP = ?\n"
+                    + "ORDER BY MaPN DESC;";
+            PreparedStatement pstmt = c.prepareStatement(sql);
+            pstmt.setInt(1, maSP);
+            ResultSet rs = pstmt.executeQuery();
+            // Thực hiện truy vấn
+            rs = pstmt.executeQuery();
+
+            // Nếu có kết quả, lấy giá bán từ cột "giaBan"
+            if (rs.next()) {
+                price = rs.getDouble("DonGiaNhap");
+            }
+            ConnectDB.closeConnection(c);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return price;
     }
 
     public boolean Them(PhieuNhapDTO pn) {
