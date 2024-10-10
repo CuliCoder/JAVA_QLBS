@@ -321,6 +321,21 @@ public class PhieuNhapDAO {
         }
         return false;
     }
+    public boolean ChangePriceProductById(int MaPn, double thanhTien) {
+        boolean rowUpdate = false;
+        try {
+            Connection c = ConnectDB.getConnection();
+            String sql = "UPDATE PhieuNhap SET TongTien =? WHERE MaPN=?";
+            PreparedStatement pst = c.prepareStatement(sql);
+            pst.setDouble(1, thanhTien);
+            pst.setInt(2, MaPn);
+            rowUpdate = pst.executeUpdate() > 0;
+            ConnectDB.closeConnection(c);
+        } catch (SQLException e){
+            e.printStackTrace();
+        }
+        return rowUpdate;
+    }
 
     public static void main(String[] args) {
 //        PhieuNhapDAO a = new PhieuNhapDAO();

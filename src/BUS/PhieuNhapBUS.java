@@ -166,7 +166,6 @@ public class PhieuNhapBUS {
 
         queryListSupplier(cartImport);
     }
-    
 
     public void loadData(NhapHangGUI cartImport, int row_index) {
         int idSP = Integer.parseInt(cartImport.getTableSanPham().getValueAt(row_index, 1).toString().substring(2));
@@ -197,7 +196,7 @@ public class PhieuNhapBUS {
         cartImport.getTfSoluong().setText("");
         if (donGiaNhap > 0) {
             double phanTram = (donGia / donGiaNhap) * 100000;
-            cartImport.getTfPhanTram().setText(String.format("%.0f", phanTram%100)); // Giới hạn 2 chữ số thập phân
+            cartImport.getTfPhanTram().setText(String.format("%.0f", phanTram % 100)); // Giới hạn 2 chữ số thập phân
         } else {
             cartImport.getTfPhanTram().setText("N/A"); // Đặt "N/A" nếu giá nhập bằng 0
         }
@@ -314,6 +313,10 @@ public class PhieuNhapBUS {
             ctpnDAO.XoaSLCu(MaPN, ctpn.getMaSP());
         }
         return pnDAO.XoaPhieuNhap(MaPN);
+    }
+
+    public boolean DoiThanhTienPhieuNhap(int MaPN, double ThanhTien) {
+        return pnDAO.ChangePriceProductById(MaPN, ThanhTien);
     }
 
 }

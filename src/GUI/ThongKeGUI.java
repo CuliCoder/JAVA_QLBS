@@ -17,6 +17,7 @@ import Util.sharedFunction;
 import com.toedter.calendar.JDateChooser;
 import java.awt.Color;
 import java.awt.Cursor;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -1518,7 +1519,7 @@ public final class ThongKeGUI extends javax.swing.JPanel {
 
     private void spngaybatdauPropertyChange(java.beans.PropertyChangeEvent evt) {//GEN-FIRST:event_spngaybatdauPropertyChange
         // TODO add your handling code here:
-      thongKeSanPhamBanTrongKhoangThoiGian();
+        thongKeSanPhamBanTrongKhoangThoiGian();
     }//GEN-LAST:event_spngaybatdauPropertyChange
 
     private void spngayketthucPropertyChange(java.beans.PropertyChangeEvent evt) {//GEN-FIRST:event_spngayketthucPropertyChange
@@ -1629,13 +1630,13 @@ public final class ThongKeGUI extends javax.swing.JPanel {
 
     private void tgngaybatdauPropertyChange(java.beans.PropertyChangeEvent evt) {//GEN-FIRST:event_tgngaybatdauPropertyChange
         // TODO add your handling code here:
-            thongKeHoaDonTrongKhoangThoiGian();
+        thongKeHoaDonTrongKhoangThoiGian();
     }//GEN-LAST:event_tgngaybatdauPropertyChange
 
     private void tgngayketthucPropertyChange(java.beans.PropertyChangeEvent evt) {//GEN-FIRST:event_tgngayketthucPropertyChange
         // TODO add your handling code here:
         thongKeHoaDonTrongKhoangThoiGian();
-  
+
 
     }//GEN-LAST:event_tgngayketthucPropertyChange
 
@@ -1960,15 +1961,41 @@ public final class ThongKeGUI extends javax.swing.JPanel {
         // Lấy ngày bắt đầu và kết thúc từ JDateChooser
         java.util.Date startDate = DoanhThutgngaybatdau.getDate();
         java.util.Date endDate = DoanhThutgngayketthuc.getDate();
-        // Kiểm tra ngày bắt đầu và kết thúc
+        java.util.Date currentDate = new java.util.Date(); // Ngày hiện tại
+        SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
+        dateFormat.setLenient(false);
+        if (!isValidDateFormat(dateFormat, startDate)) {
+            JOptionPane.showMessageDialog(this, "Ngày bắt đầu không đúng định dạng (dd/MM/yyyy)", "Lỗi", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+
+        // Kiểm tra định dạng ngày kết thúc
+        if (!isValidDateFormat(dateFormat, endDate)) {
+            JOptionPane.showMessageDialog(this, "Ngày kết thúc không đúng định dạng (dd/MM/yyyy)", "Lỗi", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+        // Kiểm tra ngày bắt đầu có lớn hơn năm 2000 không
+        if (!isValidStartYear(startDate)) {
+            JOptionPane.showMessageDialog(this, "Ngày bắt đầu không hợp lệ", "Lỗi", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+//        
+//
+        // Kiểm tra ngày bắt đầu có lớn hơn ngày kết thúc không
         if (!isValidDateRange(startDate, endDate)) {
             JOptionPane.showMessageDialog(this, "Ngày bắt đầu không được lớn hơn ngày kết thúc", "Lỗi", JOptionPane.ERROR_MESSAGE);
             DoanhThutgngayketthuc.setDate(startDate);
             return;
         }
+        // Kiểm tra ngày kết thúc có nhỏ hơn hoặc bằng ngày hiện tại không
+        if (!isValidEndDate(endDate, currentDate)) {
+            JOptionPane.showMessageDialog(this, "Ngày kết thúc không hợp lệ.", "Lỗi", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+
+        // Nếu tất cả các điều kiện đều hợp lệ, tiếp tục xử lý
         ArrayList<ThongKeDoanhThuDTO> result = tkBUS.thongKeDoanhThuTuNgayDenNgay(startDate, endDate);
         loadDataTableDoanhThu((DefaultTableModel) TableTuNgayDenNgay.getModel(), result);
-
     }
 
     private void loadDataChartTungNgayTrongThang(ArrayList<ThongKeDoanhThuDTO> list) {
@@ -2108,14 +2135,30 @@ public final class ThongKeGUI extends javax.swing.JPanel {
         // Lấy ngày bắt đầu và kết thúc từ JDateChooser
         java.util.Date startDate = spngaybatdau.getDate();
         java.util.Date endDate = spngayketthuc.getDate();
+        java.util.Date currentDate = new java.util.Date();
 
         // Kiểm tra ngày bắt đầu và kết thúc
         if (!isValidDateRange(startDate, endDate)) {
             JOptionPane.showMessageDialog(this, "Ngày bắt đầu không được lớn hơn ngày kết thúc", "Lỗi", JOptionPane.ERROR_MESSAGE);
-            spngayketthuc.setDate(startDate);
+            tgngayketthuc.setDate(startDate);
             return;
         }
 
+        if (!isValidStartYear(startDate)) {
+            JOptionPane.showMessageDialog(this, "Ngày bắt đầu không hợp lệ", "Lỗi", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+        // Kiểm tra ngày bắt đầu có lớn hơn ngày kết thúc không
+        if (!isValidDateRange(startDate, endDate)) {
+            JOptionPane.showMessageDialog(this, "Ngày bắt đầu không được lớn hơn ngày kết thúc", "Lỗi", JOptionPane.ERROR_MESSAGE);
+            DoanhThutgngayketthuc.setDate(startDate);
+            return;
+        }
+        // Kiểm tra ngày kết thúc có nhỏ hơn hoặc bằng ngày hiện tại không
+        if (!isValidEndDate(endDate, currentDate)) {
+            JOptionPane.showMessageDialog(this, "Ngày kết thúc không hợp lệ.", "Lỗi", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
         ArrayList<ThongKeSanPhamBanDTO> result = tkBUS.thongKeSanPhamBanTrongKhoangThoiGian(startDate, endDate);
 
         // Chọn số lượng dòng để hiển thị
@@ -2130,10 +2173,28 @@ public final class ThongKeGUI extends javax.swing.JPanel {
         // Lấy ngày bắt đầu và kết thúc từ JDateChooser
         java.util.Date startDate = tlngaybatdau.getDate();
         java.util.Date endDate = tlngayketthuc.getDate();
+        java.util.Date currentDate = new java.util.Date();
 
         // Kiểm tra ngày bắt đầu và kết thúc
         if (!isValidDateRange(startDate, endDate)) {
             JOptionPane.showMessageDialog(this, "Ngày bắt đầu không được lớn hơn ngày kết thúc", "Lỗi", JOptionPane.ERROR_MESSAGE);
+            tgngayketthuc.setDate(startDate);
+            return;
+        }
+
+        if (!isValidStartYear(startDate)) {
+            JOptionPane.showMessageDialog(this, "Ngày bắt đầu không hợp lệ", "Lỗi", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+        // Kiểm tra ngày bắt đầu có lớn hơn ngày kết thúc không
+        if (!isValidDateRange(startDate, endDate)) {
+            JOptionPane.showMessageDialog(this, "Ngày bắt đầu không được lớn hơn ngày kết thúc", "Lỗi", JOptionPane.ERROR_MESSAGE);
+            DoanhThutgngayketthuc.setDate(startDate);
+            return;
+        }
+        // Kiểm tra ngày kết thúc có nhỏ hơn hoặc bằng ngày hiện tại không
+        if (!isValidEndDate(endDate, currentDate)) {
+            JOptionPane.showMessageDialog(this, "Ngày kết thúc không hợp lệ.", "Lỗi", JOptionPane.ERROR_MESSAGE);
             return;
         }
 
@@ -2151,11 +2212,28 @@ public final class ThongKeGUI extends javax.swing.JPanel {
         // Lấy ngày bắt đầu và kết thúc từ JDateChooser
         java.util.Date startDate = tgngaybatdau.getDate();
         java.util.Date endDate = tgngayketthuc.getDate();
+        java.util.Date currentDate = new java.util.Date();
 
         // Kiểm tra ngày bắt đầu và kết thúc
         if (!isValidDateRange(startDate, endDate)) {
             JOptionPane.showMessageDialog(this, "Ngày bắt đầu không được lớn hơn ngày kết thúc", "Lỗi", JOptionPane.ERROR_MESSAGE);
             tgngayketthuc.setDate(startDate);
+            return;
+        }
+
+        if (!isValidStartYear(startDate)) {
+            JOptionPane.showMessageDialog(this, "Ngày bắt đầu không hợp lệ", "Lỗi", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+        // Kiểm tra ngày bắt đầu có lớn hơn ngày kết thúc không
+        if (!isValidDateRange(startDate, endDate)) {
+            JOptionPane.showMessageDialog(this, "Ngày bắt đầu không được lớn hơn ngày kết thúc", "Lỗi", JOptionPane.ERROR_MESSAGE);
+            DoanhThutgngayketthuc.setDate(startDate);
+            return;
+        }
+        // Kiểm tra ngày kết thúc có nhỏ hơn hoặc bằng ngày hiện tại không
+        if (!isValidEndDate(endDate, currentDate)) {
+            JOptionPane.showMessageDialog(this, "Ngày kết thúc phải nhỏ hơn hoặc bằng ngày hiện tại.", "Lỗi", JOptionPane.ERROR_MESSAGE);
             return;
         }
         ArrayList<ThongKeHoaDonBanDTO> result = tkBUS.thongKeHoaDonTrongKhoangThoiGian(startDate, endDate);
@@ -2167,6 +2245,51 @@ public final class ThongKeGUI extends javax.swing.JPanel {
     // Phương thức kiểm tra ngày bắt đầu và kết thúc
     private boolean isValidDateRange(java.util.Date startDate, java.util.Date endDate) {
         return startDate == null || endDate == null || !startDate.after(endDate);
+    }
+
+    private boolean isValidEndDate(java.util.Date endDate, java.util.Date currentDate) {
+        if (endDate == null) {
+            return true;
+        }
+
+        // Lấy năm hiện tại
+        Calendar currentCalendar = Calendar.getInstance();
+        currentCalendar.setTime(currentDate);
+        int currentYear = currentCalendar.get(Calendar.YEAR);
+
+        // Lấy năm của endDate
+        Calendar endCalendar = Calendar.getInstance();
+        endCalendar.setTime(endDate);
+        int endYear = endCalendar.get(Calendar.YEAR);
+
+        // Kiểm tra nếu endDate không vượt quá năm hiện tại và năm kế tiếp
+        return endYear <= currentYear + 1;
+    }
+
+    private boolean isValidDateFormat(SimpleDateFormat dateFormat, java.util.Date date) {
+        if (date == null) {
+            return true;
+        } else {
+            try {
+                // Chuyển đổi java.util.Date thành chuỗi để kiểm tra định dạng
+                String formattedDate = dateFormat.format(date);
+                dateFormat.parse(formattedDate); // Nếu không ném ra ngoại lệ, định dạng hợp lệ
+                return true;
+            } catch (ParseException e) {
+                return false;
+            }
+        }
+    }
+
+    private boolean isValidStartYear(java.util.Date date) {
+        if (date == null) {
+            return true;
+        } else {
+            Calendar cal = Calendar.getInstance();
+            cal.setTime(date);
+            int startYear = cal.get(Calendar.YEAR);
+            return !(startYear <= 1999);
+        }
     }
 
     private boolean isValidYearRange(int namBatDau, int namKetThuc) {

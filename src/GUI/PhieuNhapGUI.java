@@ -598,7 +598,8 @@ public class PhieuNhapGUI extends javax.swing.JPanel {
             }
             modelImportDetail.setRowCount(0);
             pnBUS.createTableImport(modelPhieuNhap);
-
+            ArrayList<PhieuNhapDTO> dspn = pnBUS.loadPhieuNhap();
+            loadDataTablePhieuNhap(dspn, modelPhieuNhap);
             tfCongTy.setText("");
             tfIDHoadon.setText("");
             tfIDNhanVien.setText("");
@@ -655,6 +656,7 @@ public class PhieuNhapGUI extends javax.swing.JPanel {
         if (res == JOptionPane.YES_OPTION) {
             boolean update = false;
             String MaPNStr = modelPhieuNhap.getValueAt(tablePhieunhap.getSelectedRow(), 1).toString();
+            double tongtien = 0;
             int MaPN = Integer.parseInt(MaPNStr.substring(2));
             ctpnBUS.DoiTrangThai(MaPN);
             ctpnBUS.XoaSLCu(MaPN);
@@ -662,12 +664,16 @@ public class PhieuNhapGUI extends javax.swing.JPanel {
 
                 String MaSPStr = modelImportDetail.getValueAt(i, 0).toString();
                 int soLuong = Integer.parseInt(modelImportDetail.getValueAt(i, 2).toString());
-                double thanhTien = Double.parseDouble(modelImportDetail.getValueAt(i, 3).toString());
+                String thanhTienStr = modelImportDetail.getValueAt(i, 3).toString();
+                thanhTienStr = thanhTienStr.replaceAll("[^0-9]", "");
+                double thanhTien = Double.parseDouble(thanhTienStr);
                 double donGia = thanhTien / soLuong;
+                tongtien += thanhTien;
                 int MaSP = Integer.parseInt(MaSPStr.substring(2));
                 update = ctpnBUS.SuaPhieuNhap(MaPN, MaSP, soLuong, donGia);
             }
             ctpnBUS.XoaCTPhieuNhap(MaPN);
+            pnBUS.DoiThanhTienPhieuNhap(MaPN, tongtien);
             if (update) {
                 JOptionPane.showMessageDialog(null, "Sửa phiếu nhập thành công", "thông báo", JOptionPane.INFORMATION_MESSAGE);
             }

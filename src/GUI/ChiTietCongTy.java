@@ -207,31 +207,62 @@ public class ChiTietCongTy extends javax.swing.JFrame {
 
     private void btnLuuActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLuuActionPerformed
         CongTyDTO cty = new CongTyDTO();
-        if (txtName.getText().equals("")) {
+        CongTyBUS ctyBus = new CongTyBUS();
+
+        // Lấy các giá trị từ các trường input
+        String tenNCC = txtName.getText().trim();
+        String sdt = txtSDT.getText().trim();
+        String diaChi = txtDiaChi.getText().trim();
+        String maNCC = txtID.getText().substring(4);  // Lấy phần ID từ txtID
+
+        // Kiểm tra các trường trống
+        if (tenNCC.equals("")) {
             JOptionPane.showMessageDialog(this, "Tên không được để trống");
-        } else if (txtSDT.getText().equals("")) {
+        } else if (sdt.equals("")) {
             JOptionPane.showMessageDialog(this, "SĐT không được để trống");
-        } else if (!txtSDT.getText().matches("\\d{10}")) {
+        } else if (!sdt.matches("\\d{10}")) {
             JOptionPane.showMessageDialog(this, "SĐT phải có 10 số");
-        } else if (txtDiaChi.getText().equals("")) {
+        } else if (diaChi.equals("")) {
             JOptionPane.showMessageDialog(this, "Địa chỉ không được để trống");
         } else {
-            int id= Integer.parseInt(txtID.getText().substring(4));
-            cty.setMaNCC(id);
-            cty.setTenNCC(txtName.getText());
-            cty.setSDT(txtSDT.getText());
-            cty.setDiaChi(txtDiaChi.getText());
-            cty.setTinhTrang(true);
-            CongTyBUS ctyBus = new CongTyBUS();
-            if (Model == 1) {
-                if (ctyBus.insertCongTy(cty)) {
-                    CongTyGUI.update();
-                    setVisible(false);
+            // Kiểm tra tên và SDT có trùng lặp hay không khi thêm hoặc sửa
+            if (Model == 1) {  // Thêm mới
+                if (!checkExistSdtAdd(sdt)) {
+                    JOptionPane.showMessageDialog(this, "SĐT đã tồn tại");
+                } else if (!checkExistEmailAdd(tenNCC)) {
+                    JOptionPane.showMessageDialog(this, "Tên công ty đã tồn tại");
+                } else {
+                    // Nếu không trùng lặp, tiến hành thêm mới công ty
+                    int id = Integer.parseInt(maNCC);
+                    cty.setMaNCC(id);
+                    cty.setTenNCC(tenNCC);
+                    cty.setSDT(sdt);
+                    cty.setDiaChi(diaChi);
+                    cty.setTinhTrang(true);
+
+                    if (ctyBus.insertCongTy(cty)) {
+                        CongTyGUI.update();
+                        setVisible(false);
+                    }
                 }
-            } else {
-                if (ctyBus.updateCongTy(cty)) {
-                    CongTyGUI.update();
-                    setVisible(false);
+            } else {  // Sửa thông tin công ty
+                if (!checkExistSdt_Edit(sdt, maNCC)) {
+                    JOptionPane.showMessageDialog(this, "SĐT đã tồn tại cho công ty khác");
+                } else if (!checkExistNameNCC_Edit(tenNCC, maNCC)) {
+                    JOptionPane.showMessageDialog(this, "Tên công ty đã tồn tại cho công ty khác");
+                } else {
+                    // Nếu không trùng lặp, tiến hành cập nhật công ty
+                    int id = Integer.parseInt(maNCC);
+                    cty.setMaNCC(id);
+                    cty.setTenNCC(tenNCC);
+                    cty.setSDT(sdt);
+                    cty.setDiaChi(diaChi);
+                    cty.setTinhTrang(true);
+
+                    if (ctyBus.updateCongTy(cty)) {
+                        CongTyGUI.update();
+                        setVisible(false);
+                    }
                 }
             }
         }
@@ -241,6 +272,52 @@ public class ChiTietCongTy extends javax.swing.JFrame {
         setVisible(false);
     }//GEN-LAST:event_buttonRadius1ActionPerformed
 
+    public boolean checkExistNameNCC_Edit(String tenNCC, String maNCC) {
+        ArrayList<CongTyDTO> listCT = CongTyBUS.selectAll();
+        for (int i = 0; i < listCT.size(); i++) {
+            // Kiểm tra nếu SDT trùng và không phải của chính nhân viên đang sửa
+            if (tenNCC.equalsIgnoreCase(listCT.get(i).getTenNCC()) && !maNCC.equalsIgnoreCase(Integer.toString(listCT.get(i).getMaNCC()))) {
+                System.out.println("false");
+                return false;
+            }
+        }
+        return true;
+    }
+
+    public boolean checkExistSdt_Edit(String sdt, String maNCC) {
+        ArrayList<CongTyDTO> listCT = CongTyBUS.selectAll();
+        for (int i = 0; i < listCT.size(); i++) {
+            // Kiểm tra nếu SDT trùng và không phải của chính nhân viên đang sửa
+            if (sdt.equalsIgnoreCase(listCT.get(i).getSDT()) && !maNCC.equalsIgnoreCase(Integer.toString(listCT.get(i).getMaNCC()))) {
+                System.out.println("false");
+                return false;
+            }
+        }
+        return true;
+    }
+
+    public boolean checkExistSdtAdd(String sdt) {
+        ArrayList<CongTyDTO> listCT = CongTyBUS.selectAll();
+        for (int i = 0; i < listCT.size(); i++) {
+            if (sdt.toLowerCase().equals(listCT.get(i).getSDT().toLowerCase())) {
+                System.out.println("false");
+                return false;
+            }
+        }
+        return true;
+    }
+
+    public boolean checkExistEmailAdd(String ten) {
+        ArrayList<CongTyDTO> listCT = CongTyBUS.selectAll();
+        for (int i = 0; i < listCT.size(); i++) {
+            if (ten.toLowerCase().equals(listCT.get(i).getTenNCC().toLowerCase())) {
+                System.out.println("false");
+                return false;
+            }
+        }
+        return true;
+    }
+
     public void setData(int id) {
         CongTyBUS ctyBus = new CongTyBUS();
         CongTyDTO ctyDto = ctyBus.getCongTyById(id);
@@ -249,9 +326,11 @@ public class ChiTietCongTy extends javax.swing.JFrame {
         txtSDT.setText(ctyDto.getSDT());
         txtDiaChi.setText(ctyDto.getDiaChi());
     }
-    public void setId(int id){
+
+    public void setId(int id) {
         txtID.setText("CT00" + id);
     }
+
     /**
      * @param args the command line arguments
      */

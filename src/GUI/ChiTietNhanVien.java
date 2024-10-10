@@ -264,8 +264,8 @@ public class ChiTietNhanVien extends javax.swing.JFrame {
             //String cv = cboChucVu.getSelectedItem().toString();
             //int chucvu = nvDao.getIdChucVu(cv);
             if (Model == 1) {
-                if (checkExistSdt(txtSdt.getText())) {
-                    if (checkExistEmail(txtEmail.getText())) {
+                if (checkExistSdtAdd(txtSdt.getText())) {
+                    if (checkExistEmailAdd(txtEmail.getText())) {
                         nv.setMaNV(txtId.getText());
                         nv.setTenNV(txtName.getText());
                         nv.setGioiTinh(cboGioiTinh.getSelectedItem().toString());
@@ -287,8 +287,8 @@ public class ChiTietNhanVien extends javax.swing.JFrame {
 
             } else {
 
-                if (checkExistSdt(txtSdt.getText())) {
-                    if (checkExistEmail(txtEmail.getText())) {
+                if (checkExistSdtEdit(txtSdt.getText(), txtId.getText())) {
+                    if (checkExistEmailEdit(txtEmail.getText(), txtId.getText())) {
                         nv.setMaNV(txtId.getText());
                         nv.setTenNV(txtName.getText());
                         nv.setGioiTinh(cboGioiTinh.getSelectedItem().toString());
@@ -318,7 +318,7 @@ public class ChiTietNhanVien extends javax.swing.JFrame {
         setVisible(false);
     }//GEN-LAST:event_btnHuyActionPerformed
 
-    public boolean checkExistId(String id) {
+    public boolean checkExistIdEdit(String id) {
         ArrayList<NhanVienDTO> listnv = nvBus.selectAll();
         for (int i = 0; i < listnv.size(); i++) {
             if (id.toLowerCase().equals(listnv.get(i).getMaNV().toLowerCase())) {
@@ -329,7 +329,41 @@ public class ChiTietNhanVien extends javax.swing.JFrame {
         return true;
     }
 
-    public boolean checkExistSdt(String sdt) {
+    public boolean checkExistSdtEdit(String sdt, String maNV) {
+        ArrayList<NhanVienDTO> listnv = nvBus.selectAll();
+        for (int i = 0; i < listnv.size(); i++) {
+            // Kiểm tra nếu SDT trùng và không phải của chính nhân viên đang sửa
+            if (sdt.equalsIgnoreCase(listnv.get(i).getSDT()) && !maNV.equalsIgnoreCase(listnv.get(i).getMaNV())) {
+                System.out.println("false");
+                return false;
+            }
+        }
+        return true;
+    }
+
+    public boolean checkExistEmailEdit(String email, String maNV) {
+        ArrayList<NhanVienDTO> listnv = nvBus.selectAll();
+        for (int i = 0; i < listnv.size(); i++) {
+            // Kiểm tra nếu email trùng và không phải của chính nhân viên đang sửa
+            if (email.equalsIgnoreCase(listnv.get(i).getEmail()) && !maNV.equalsIgnoreCase(listnv.get(i).getMaNV())) {
+                System.out.println("false");
+                return false;
+            }
+        }
+        return true;
+    }
+    public boolean checkExistIdAdd(String id) {
+        ArrayList<NhanVienDTO> listnv = nvBus.selectAll();
+        for (int i = 0; i < listnv.size(); i++) {
+            if (id.toLowerCase().equals(listnv.get(i).getMaNV().toLowerCase())) {
+                System.out.println("false");
+                return false;
+            }
+        }
+        return true;
+    }
+
+    public boolean checkExistSdtAdd(String sdt) {
         ArrayList<NhanVienDTO> listnv = nvBus.selectAll();
         for (int i = 0; i < listnv.size(); i++) {
             if (sdt.toLowerCase().equals(listnv.get(i).getSDT().toLowerCase())) {
@@ -340,7 +374,7 @@ public class ChiTietNhanVien extends javax.swing.JFrame {
         return true;
     }
 
-    public boolean checkExistEmail(String email) {
+    public boolean checkExistEmailAdd(String email) {
         ArrayList<NhanVienDTO> listnv = nvBus.selectAll();
         for (int i = 0; i < listnv.size(); i++) {
             if (email.toLowerCase().equals(listnv.get(i).getEmail().toLowerCase())) {

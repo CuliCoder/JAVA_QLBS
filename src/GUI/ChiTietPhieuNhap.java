@@ -7,6 +7,8 @@ package GUI;
 import BUS.CTPhieuNhapBUS;
 import BUS.PhieuNhapBUS;
 import javax.swing.JOptionPane;
+import Util.sharedFunction;
+
 import javax.swing.JTextField;
 
 /**
@@ -22,6 +24,7 @@ public class ChiTietPhieuNhap extends javax.swing.JFrame {
     PhieuNhapBUS pnBUS = new PhieuNhapBUS();
     private static boolean update = false;
     private PhieuNhapGUI pnGUI;
+
     public ChiTietPhieuNhap(PhieuNhapGUI pnGUI) {
         this.pnGUI = pnGUI;
         this.setUndecorated(true);
@@ -48,7 +51,6 @@ public class ChiTietPhieuNhap extends javax.swing.JFrame {
     public static boolean isUpdate() {
         return update;
     }
-    
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -305,14 +307,24 @@ public class ChiTietPhieuNhap extends javax.swing.JFrame {
             double donGia = Double.parseDouble(donGiaStr);
 
             pnGUI.getModelImportDetai().setValueAt(soLuong, pnGUI.getTableChitiet().getSelectedRow(), 2);
-            pnGUI.getModelImportDetai().setValueAt(soLuong*donGia, pnGUI.getTableChitiet().getSelectedRow(), 3);
-            double TongTien = 0; 
-            for(int i = 0; i < pnGUI.getTableChitiet().getRowCount(); i++) {
-                TongTien += Double.parseDouble(pnGUI.getModelImportDetai().getValueAt(i, 3).toString());
+            pnGUI.getModelImportDetai().setValueAt(sharedFunction.formatVND(soLuong * donGia), pnGUI.getTableChitiet().getSelectedRow(), 3);
+            double TongTien = 0;
+            for (int i = 0; i < pnGUI.getTableChitiet().getRowCount(); i++) {
+                // Lấy giá trị từ cột 3
+                String giaTriStr = pnGUI.getModelImportDetai().getValueAt(i, 3).toString();
+
+                // Loại bỏ tất cả các ký tự không phải là số hoặc dấu phân cách thập phân
+                giaTriStr = giaTriStr.replaceAll("[^0-9]", "");  // Chỉ giữ lại số và dấu chấm (phân cách thập phân)
+
+                // Kiểm tra nếu chuỗi không rỗng thì chuyển đổi sang double và cộng vào tổng
+                if (!giaTriStr.isEmpty()) {
+                    TongTien += Double.parseDouble(giaTriStr);
+                }
             }
-            pnGUI.getTfTongTien().setText(TongTien+"");
+
+            pnGUI.getTfTongTien().setText(TongTien + "");
             this.dispose();
-            
+
         }
     }//GEN-LAST:event_btnLuuActionPerformed
 

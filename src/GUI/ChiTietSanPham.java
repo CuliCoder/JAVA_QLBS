@@ -20,6 +20,7 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Date;
 import javax.swing.BorderFactory;
@@ -106,9 +107,10 @@ public class ChiTietSanPham extends javax.swing.JFrame {
         this.STT = STT;
         listTrangThai.addItem("Đang kinh doanh");
         listTrangThai.addItem("Ngừng kinh doanh");
+        listTrangThai.addItem("Vui lòng chọn trạng thái");
 
         // Set trạng thái mặc định là "Đang kinh doanh" khi thêm sản phẩm
-        listTrangThai.setSelectedItem("Đang kinh doanh");
+        listTrangThai.setSelectedItem("Chọn trạng thái");
         txtID.setText(maSP); // gán mã sản phẩm tự động
         txtSoLuong.setText("0");
         txtDonGia.setText("0");
@@ -733,6 +735,12 @@ public class ChiTietSanPham extends javax.swing.JFrame {
         } else {
             txtTacGia.setBorder(originalBorder);
         }
+        //Kiểm tra trạng thái
+        String selectedItemTT = listTrangThai.getSelectedItem().toString();
+        if(selectedItemTT.equals("Chọn trạng thái")) {
+            errors.add("Vui lòng chọn trạng thái");
+            errorComponents.add(listTrangThai);
+        }
 
         // Kiểm tra năm xuất bản
         if (txtNamXB.getText().isEmpty()) {
@@ -743,12 +751,21 @@ public class ChiTietSanPham extends javax.swing.JFrame {
             errors.add("Năm xuất bản không hợp lệ");
             errorComponents.add(txtNamXB);
             txtNamXB.setBorder(redBorder);
-        } else if (Integer.parseInt(txtNamXB.getText()) < 0) {
-            errors.add("Năm xuất bản phải lớn hơ hoặc 0.");
-            errorComponents.add(txtNamXB);
-            txtNamXB.setBorder(redBorder);
         } else {
-            txtNamXB.setBorder(originalBorder);
+            int namXuatBan = Integer.parseInt(txtNamXB.getText());
+            int namHienTai = LocalDate.now().getYear();
+
+            if (namXuatBan < 0) {
+                errors.add("Năm xuất bản phải lớn hơn hoặc bằng 0.");
+                errorComponents.add(txtNamXB);
+                txtNamXB.setBorder(redBorder);
+            } else if (namXuatBan > namHienTai) {
+                errors.add("Năm xuất bản không được lớn hơn năm hiện tại (" + namHienTai + ").");
+                errorComponents.add(txtNamXB);
+                txtNamXB.setBorder(redBorder);
+            } else {
+                txtNamXB.setBorder(originalBorder);
+            }
         }
 
         // Kiểm tra số lượng

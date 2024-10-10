@@ -55,17 +55,18 @@ public class CongTyGUI extends javax.swing.JPanel {
     private static int count = 1;
     CongTyBUS ctyBus = new CongTyBUS();
 
-    public static void update(){
+    public static void update() {
         count = 1;
         loadData(tableNhanvien);
     }
+
     public static void loadData(JTable tbl) {
         DefaultTableModel model = (DefaultTableModel) tbl.getModel();
         model.setRowCount(0);
         count = 1;
         CongTyBUS.selectAll().forEach((cty) -> {
             String tinhTrang = cty.getTinhTrang() ? "Đang hợp tác" : "Ngưng hợp tác";
-                model.addRow(new Object[]{count++, "CT00" + cty.getMaNCC(), cty.getTenNCC(), cty.getSDT(), cty.getDiaChi(), tinhTrang});
+            model.addRow(new Object[]{count++, "CT00" + cty.getMaNCC(), cty.getTenNCC(), cty.getSDT(), cty.getDiaChi(), tinhTrang});
 
         });
     }
@@ -81,8 +82,6 @@ public class CongTyGUI extends javax.swing.JPanel {
     public ButtonRadius getBtnXoa() {
         return btnXoa;
     }
-    
-    
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -352,12 +351,18 @@ public class CongTyGUI extends javax.swing.JPanel {
         //Lấy id để xoá
 
         int selectedRow = tableNhanvien.getSelectedRow();
+        String tinhTrang = (String) tableNhanvien.getValueAt(selectedRow, 5);
         if (selectedRow >= 0) {
-            int option = JOptionPane.showConfirmDialog(this, "Bạn có chắc muốn ngưng hợp tác?", "Xác nhận ngưng hợp tác", JOptionPane.YES_NO_OPTION);
-            if (option == JOptionPane.YES_OPTION) {
-                String ma = (String) tableNhanvien.getValueAt(selectedRow, 1);
-                int id = Integer.parseInt(ma.substring(4));
-                ctyBus.deleteCongTy(id);
+            if (tinhTrang == "Ngưng hợp tác") {
+                JOptionPane.showMessageDialog(this, "Công ty đã ngưng hợp tác");
+            } else {
+                int option = JOptionPane.showConfirmDialog(this, "Bạn có chắc muốn ngưng hợp tác?", "Xác nhận ngưng hợp tác", JOptionPane.YES_NO_OPTION);
+                if (option == JOptionPane.YES_OPTION) {
+                    String ma = (String) tableNhanvien.getValueAt(selectedRow, 1);
+                    int id = Integer.parseInt(ma.substring(4));
+                    ctyBus.deleteCongTy(id);
+                }
+                loadData(tableNhanvien);
             }
         } else {
             JOptionPane.showMessageDialog(this, "Chưa chọn Công ty");
@@ -493,10 +498,6 @@ public class CongTyGUI extends javax.swing.JPanel {
         sharedFunction.EditTableContent(table);
         return table;
     }
-
-    
-
- 
 
     public void removePlaceholderStyle(JTextField textFiled) {
         textFiled.setForeground(Color.black);

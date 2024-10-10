@@ -19,7 +19,7 @@ import java.util.ArrayList;
  * @author NGOC THUC
  */
 public class CTPhieuNhapDAO {
-    
+
     public boolean DoiTrangThai(int MaPN) {
         boolean rowUpdate = false;
         try {
@@ -124,7 +124,7 @@ public class CTPhieuNhapDAO {
             Connection conn = ConnectDB.getConnection();
             String sql = "UPDATE SanPham SET SoLuong=?, DonGia=? WHERE MaSP=?";
             PreparedStatement pst = conn.prepareStatement(sql);
-            
+
             pst.setInt(1, SoLuong);
             pst.setDouble(2, DonGia);
             pst.setInt(3, MaSP);
@@ -154,8 +154,8 @@ public class CTPhieuNhapDAO {
         }
         return SoLuong;
     }
-    
-    public boolean XoaCTPhieuNhap(int MaPN){
+
+    public boolean XoaCTPhieuNhap(int MaPN) {
         boolean rowUpdate = false;
         try {
             Connection conn = ConnectDB.getConnection();
