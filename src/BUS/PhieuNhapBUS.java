@@ -218,6 +218,16 @@ public class PhieuNhapBUS {
         cartImport.getTfSoluong().requestFocus();
     }
 
+    public int GetQuantity(NhapHangGUI cartImport, int row_index) {
+        String quantity = cartImport.getTableSanPham().getValueAt(row_index, 5).toString();
+
+        // Convert the quantity to an integer
+        int quantityNum = Integer.parseInt(quantity);
+
+        // Return the integer quantity
+        return quantityNum;
+    }
+
     public void loadDataFromCart(NhapHangGUI cartImport, int row_index) {
         String idProduct = cartImport.getTableChitiet().getValueAt(row_index, 0).toString();
 //        String nameProduct = cartImport.getTableChitiet().getValueAt(row_index, 1).toString();

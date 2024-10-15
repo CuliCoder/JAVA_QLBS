@@ -48,6 +48,7 @@ public final class NhapHangGUI extends javax.swing.JPanel {
     SanPhamGUI sanPhamGUI = new SanPhamGUI();
     private static DefaultTableModel modelSanPham, modelCartImport;
     private static JTable tableSanPham, tableChitiet;
+    private int selectedQuantity = 0;
 
     public NhapHangGUI() {
         initComponents();
@@ -65,6 +66,7 @@ public final class NhapHangGUI extends javax.swing.JPanel {
             public void mouseClicked(MouseEvent e) {
                 int row = tableSanPham.rowAtPoint(e.getPoint());
                 pnBUS.loadData(NhapHangGUI.this, row);
+                selectedQuantity = pnBUS.GetQuantity(NhapHangGUI.this, row);
             }
         });
 
@@ -828,7 +830,7 @@ public final class NhapHangGUI extends javax.swing.JPanel {
             String IDSanPham = tfIDSanPham.getText();
             try {
                 quantity = Integer.parseInt(quantityStr);
-                if (quantity <= 0) {
+                if (quantity <= 0 || (quantity+selectedQuantity) >1000) {
                     displayErrorMessage("Số lượng không hợp lệ!!");
                     return;
                 }
@@ -839,7 +841,7 @@ public final class NhapHangGUI extends javax.swing.JPanel {
             String priceStr = tfDongia.getText();
             try {
                 price = Double.parseDouble(priceStr);
-                if (price <= 0) {
+                if (price <= 0 && price >10000000) {
                     displayErrorMessage("Đơn giá không hợp lệ!!");
                     return;
                 }
@@ -850,7 +852,7 @@ public final class NhapHangGUI extends javax.swing.JPanel {
             String percentStr = tfPhanTram.getText();
             try {
                 phanTram = Double.parseDouble(percentStr);
-                if(phanTram <= 0) {
+                if(phanTram <= 0 && phanTram >500) {
                     displayErrorMessage("Phần trăm lợi nhuận không hợp lệ!!!");
                     return;
                 }
