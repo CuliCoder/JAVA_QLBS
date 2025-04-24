@@ -47,7 +47,6 @@ public class MainFrameGUI extends javax.swing.JFrame {
     SanPhamGUI sanPhamGUI = new SanPhamGUI();
     CongTyGUI congTyGUI = new CongTyGUI();
     developGUI developGUI = new developGUI();
-
     ChucNangBUS cnBUS = new ChucNangBUS();
     private static ArrayList<ChucNangDTO> dscn = new ArrayList<>();
     SanPhamBUS sanPhamBUS = new SanPhamBUS();
@@ -243,7 +242,6 @@ public class MainFrameGUI extends javax.swing.JFrame {
             setAction(cn.getHanhDong(), cn.getMaCN());
             switch (cn.getMaCN()) {
                 case 1: //Tài khoản
-                    System.out.println(!checkExistLabel(lblTaiKhoan, listItems));
                     if (!checkExistLabel(lblTaiKhoan, listItems)) {
                         lblTaiKhoan.setVisible(true);
                         listItems.add(lblTaiKhoan);
@@ -995,12 +993,8 @@ public class MainFrameGUI extends javax.swing.JFrame {
         }
         //</editor-fold>
         /* Create and display the form */
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                MainFrameGUI mainFrameGUI = new MainFrameGUI();
-                mainFrameGUI.setVisible(true);
-            }
-        });
+        DangNhapGUI dangNhapGUI = new DangNhapGUI();
+        dangNhapGUI.setVisible(true);
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
