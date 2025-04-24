@@ -11,6 +11,7 @@ import BUS.TaiKhoanBUS;
 import DTO.CTHoaDonDTO;
 import DTO.HoaDonDTO;
 import DTO.SanPhamDTO;
+import DTO.TaiKhoanDTO;
 import Util.sharedFunction;
 import java.awt.BorderLayout;
 import java.awt.Color;
@@ -34,6 +35,7 @@ import javax.swing.event.ListSelectionEvent;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableColumnModel;
+import GUI.CTKhachHangGUI;
 
 /**
  *
@@ -53,6 +55,8 @@ public final class BanHangGUI extends javax.swing.JPanel {
     SanPhamGUI sanPhamGUI = new SanPhamGUI();
     HoaDonBUS hoaDonBUS = new HoaDonBUS();
     CTHoaDonBUS ctBUS = new CTHoaDonBUS();
+    CTKhachHangGUI ctkhachhangGUI=new CTKhachHangGUI();
+    
 
     public BanHangGUI() {
         initComponents();
@@ -902,7 +906,10 @@ public final class BanHangGUI extends javax.swing.JPanel {
         txtIDHoadon.setText(maHDtext);
 
         // Lấy ID nhân viên 
-        String tenTK = TaiKhoanBUS.getCurrentAcc().getTenTK();
+        TaiKhoanDTO tk = new TaiKhoanDTO ();
+        tk = TaiKhoanBUS.getCurrentAcc();
+        if(tk == null) return;
+        String tenTK = tk.getTenTK();
         txtIDNhanvien.setText(tenTK);
          //Lấy ngày hiện tại
         Date currentDate = new Date();
@@ -966,6 +973,8 @@ public final class BanHangGUI extends javax.swing.JPanel {
         if (isAvailableQuantity(idSP, desiredQuantity)) {
             updateOrAddProductToCart(idSP, desiredQuantity);
             TongTien();
+            //CẦN THÊM VÀO 1 HÀM ĐỂ GỌI ĐẾN GIAO DIỆN CTKHACHHANG
+            
         }
     }//GEN-LAST:event_btnChonActionPerformed
     // Kiểm tra tính hợp lệ của số lượng và hiển thị thông báo lỗi nếu không hợp lệ

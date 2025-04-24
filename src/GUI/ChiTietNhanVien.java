@@ -72,7 +72,6 @@ public class ChiTietNhanVien extends javax.swing.JFrame {
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setLocation(new java.awt.Point(500, 150));
         setUndecorated(true);
-        setPreferredSize(new java.awt.Dimension(400, 570));
 
         jPanel1.setBackground(new java.awt.Color(255, 255, 255));
         jPanel1.setMaximumSize(new java.awt.Dimension(400, 500));
@@ -109,6 +108,11 @@ public class ChiTietNhanVien extends javax.swing.JFrame {
         txtId.setMaximumSize(new java.awt.Dimension(480, 50));
         txtId.setMinimumSize(new java.awt.Dimension(480, 50));
         txtId.setPreferredSize(new java.awt.Dimension(480, 50));
+        txtId.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txtIdActionPerformed(evt);
+            }
+        });
 
         txtName.setFont(new java.awt.Font("Josefin Sans SemiBold", 0, 14)); // NOI18N
         txtName.setBorder(javax.swing.BorderFactory.createTitledBorder(new javax.swing.border.LineBorder(new java.awt.Color(135, 172, 217), 2, true), "Tên nhân viên", javax.swing.border.TitledBorder.LEFT, javax.swing.border.TitledBorder.ABOVE_TOP, new java.awt.Font("Josefin Sans SemiBold", 0, 16), new java.awt.Color(135, 172, 217))); // NOI18N
@@ -317,6 +321,10 @@ public class ChiTietNhanVien extends javax.swing.JFrame {
     private void btnHuyActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnHuyActionPerformed
         setVisible(false);
     }//GEN-LAST:event_btnHuyActionPerformed
+
+    private void txtIdActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtIdActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txtIdActionPerformed
 
     public boolean checkExistIdEdit(String id) {
         ArrayList<NhanVienDTO> listnv = nvBus.selectAll();

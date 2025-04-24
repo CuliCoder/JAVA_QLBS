@@ -265,57 +265,57 @@ public class ChiTietTaiKhoan extends javax.swing.JFrame {
     }//GEN-LAST:event_btnTimkiem1ActionPerformed
 
     private void btnTimkiemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnTimkiemActionPerformed
-        TaiKhoanDTO tk = new TaiKhoanDTO();
-        if (cboName.getSelectedIndex() == 0) {
-            JOptionPane.showMessageDialog(this, "Tên tài khoản chưa được chọn");
-        } else if (txtMatKhau.getText().equals("")) {
-            JOptionPane.showMessageDialog(this, "Mật khẩu không được để trống");
-        } else if (date.getText() == null) {
-            JOptionPane.showMessageDialog(this, "Ngày không được để trống");
-        } else if (cboQuyen.getSelectedIndex() == 0) {
-            JOptionPane.showMessageDialog(this, "Quyền chưa được chọn");
-        } else {
-            //String cv = cboChucVu.getSelectedItem().toString();
-            //int chucvu = nvDao.getIdChucVu(cv);
-            if (Model == 1) {
-                if (checkExistName(cboName.getSelectedItem().toString())) {
-                    tk.setTenTK(cboName.getSelectedItem().toString());
-                    tk.setMatKhau(txtMatKhau.getText());
-                    Date datetao = null;
-                    try {
-                        datetao = new SimpleDateFormat("yyyy-MM-dd").parse(date.getText());
-                    } catch (ParseException ex) {
-                        Logger.getLogger(ChiTietTaiKhoan.class.getName()).log(Level.SEVERE, null, ex);
-                    }
-                    tk.setNgayTao(datetao);
-                    tk.setMaQuyen(cboQuyen.getSelectedItem().toString());
-                    if (tkbus.insertTaiKhoan(tk)) {
-                        TaiKhoanGUI.update();
-                        setVisible(false);
-                    }
-                } else {
-                    JOptionPane.showMessageDialog(this, "Tài khoản này đã xuất hiện");
-                }
-
-            } else {
-                tk.setMaTK(txtId.getText());
+       TaiKhoanDTO tk = new TaiKhoanDTO();
+    if (cboName.getSelectedIndex() == 0) {
+        JOptionPane.showMessageDialog(this, "Tên tài khoản chưa được chọn");
+    } else if (txtMatKhau.getText().equals("")) {
+        JOptionPane.showMessageDialog(this, "Mật khẩu không được để trống");
+    } else if (!isPasswordValid(txtMatKhau.getText())) {  // Kiểm tra độ dài mật khẩu
+        JOptionPane.showMessageDialog(this, "Mật khẩu phải có tối thiểu 6 ký tự");
+    } else if (date.getText() == null) {
+        JOptionPane.showMessageDialog(this, "Ngày không được để trống");
+    } else if (cboQuyen.getSelectedIndex() == 0) {
+        JOptionPane.showMessageDialog(this, "Quyền chưa được chọn");
+    } else {
+        // Tiếp tục thực hiện các xử lý khác nếu mật khẩu hợp lệ
+        if (Model == 1) {
+            if (checkExistName(cboName.getSelectedItem().toString())) {
                 tk.setTenTK(cboName.getSelectedItem().toString());
                 tk.setMatKhau(txtMatKhau.getText());
-                Date datetao1 = null;
+                Date datetao = null;
                 try {
-                    datetao1 = new SimpleDateFormat("yyyy-MM-dd").parse(date.getText());
+                    datetao = new SimpleDateFormat("yyyy-MM-dd").parse(date.getText());
                 } catch (ParseException ex) {
                     Logger.getLogger(ChiTietTaiKhoan.class.getName()).log(Level.SEVERE, null, ex);
                 }
-                tk.setNgayTao(datetao1);
+                tk.setNgayTao(datetao);
                 tk.setMaQuyen(cboQuyen.getSelectedItem().toString());
-
-                if (tkbus.updateTaiKhoan(tk)) {
+                if (tkbus.insertTaiKhoan(tk)) {
                     TaiKhoanGUI.update();
                     setVisible(false);
                 }
+            } else {
+                JOptionPane.showMessageDialog(this, "Tài khoản này đã xuất hiện");
+            }
+        } else {
+            tk.setMaTK(txtId.getText());
+            tk.setTenTK(cboName.getSelectedItem().toString());
+            tk.setMatKhau(txtMatKhau.getText());
+            Date datetao1 = null;
+            try {
+                datetao1 = new SimpleDateFormat("yyyy-MM-dd").parse(date.getText());
+            } catch (ParseException ex) {
+                Logger.getLogger(ChiTietTaiKhoan.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            tk.setNgayTao(datetao1);
+            tk.setMaQuyen(cboQuyen.getSelectedItem().toString());
+
+            if (tkbus.updateTaiKhoan(tk)) {
+                TaiKhoanGUI.update();
+                setVisible(false);
             }
         }
+    }
     }//GEN-LAST:event_btnTimkiemActionPerformed
 
     public boolean checkExistName(String name) {
@@ -327,6 +327,10 @@ public class ChiTietTaiKhoan extends javax.swing.JFrame {
         }
         return true;
     }
+    // Hàm kiểm tra mật khẩu có độ dài tối thiểu 6 ký tự
+private boolean isPasswordValid(String password) {
+    return password.length() >= 6;
+}
 
     /**
      * @param args the command line arguments

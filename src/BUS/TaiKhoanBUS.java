@@ -17,10 +17,8 @@ import java.util.ArrayList;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 
-/**
- *
- * @author NGOC THUC
- */
+
+
 public class TaiKhoanBUS {
 
     TaiKhoanDAO tkDAO = new TaiKhoanDAO();

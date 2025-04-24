@@ -8,10 +8,8 @@ import GUI.DangNhapGUI;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
 
-/**
- *
- * @author NGOC THUC
- */
+
+
 public class main {
 
     public static void main(String[] args) {

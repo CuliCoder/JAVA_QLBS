@@ -59,7 +59,7 @@ public class MainFrameGUI extends javax.swing.JFrame {
         instance = this;
         //this.setUndecorated(true);
         initComponents();
-//        designComp();
+        designComp();
         this.setLocationRelativeTo(null);
         sharedFunction.moveLayout(this, pnContainer);
         spnMenu.getVerticalScrollBar().setUnitIncrement(16);
@@ -238,10 +238,12 @@ public class MainFrameGUI extends javax.swing.JFrame {
 
     public void getChucNang(ArrayList<CTQuyenDTO> listPer) {
         String nameNewLabel = "";
+        listItems.clear();
         for (CTQuyenDTO cn : listPer) {
             setAction(cn.getHanhDong(), cn.getMaCN());
             switch (cn.getMaCN()) {
                 case 1: //Tài khoản
+                    System.out.println(!checkExistLabel(lblTaiKhoan, listItems));
                     if (!checkExistLabel(lblTaiKhoan, listItems)) {
                         lblTaiKhoan.setVisible(true);
                         listItems.add(lblTaiKhoan);
@@ -933,7 +935,6 @@ public class MainFrameGUI extends javax.swing.JFrame {
 
     private void lblBanHangMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblBanHangMouseClicked
         // TODO add your handling code here:
-
         ArrayList<SanPhamDTO> listSanPham = sanPhamBUS.getALLSPBan();
         SanPhamGUI.loadTableSanPham(listSanPham, BanHangGUI.getModelSanPham());
     }//GEN-LAST:event_lblBanHangMouseClicked
@@ -996,7 +997,8 @@ public class MainFrameGUI extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new MainFrameGUI().setVisible(true);
+                MainFrameGUI mainFrameGUI = new MainFrameGUI();
+                mainFrameGUI.setVisible(true);
             }
         });
     }

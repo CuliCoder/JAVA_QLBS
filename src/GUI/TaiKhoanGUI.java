@@ -27,10 +27,7 @@ import javax.swing.table.DefaultTableModel;
 import javax.swing.table.JTableHeader;
 import javax.swing.table.TableColumnModel;
 
-/**
- *
- * @author NGOC THUC
- */
+
 public class TaiKhoanGUI extends javax.swing.JPanel {
 
     /**
