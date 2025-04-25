@@ -43,8 +43,9 @@ public class TaiKhoanBUS {
             String TenTK = acc.getTenTK();
             String MatKhau = acc.getMatKhau();
             String TenNQ = NhomQuyenDAO.selectNameByID(acc.getMaQuyen());
+            int MaChiNhanh = acc.getMaChiNhanh();
             String NgayTao = acc.getNgayTao().toString();
-            Object[] row = {STT++, MaTK, TenTK, MatKhau, TenNQ, NgayTao};
+            Object[] row = {STT++, MaTK, TenTK, MatKhau, TenNQ, MaChiNhanh, NgayTao};
             modelTaiKhoan.addRow(row);
         }
     }

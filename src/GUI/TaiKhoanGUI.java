@@ -27,7 +27,6 @@ import javax.swing.table.DefaultTableModel;
 import javax.swing.table.JTableHeader;
 import javax.swing.table.TableColumnModel;
 
-
 public class TaiKhoanGUI extends javax.swing.JPanel {
 
     /**
@@ -41,7 +40,7 @@ public class TaiKhoanGUI extends javax.swing.JPanel {
         initComponents();
         createTable();
     }
-    
+
     public static void update() {
         TaiKhoanBUS.createTableAccount(modelTaiKhoan);
     }
@@ -57,8 +56,6 @@ public class TaiKhoanGUI extends javax.swing.JPanel {
     public ButtonRadius getBtnXoa() {
         return btnXoa;
     }
-    
-    
 
     public void createTable() {
         tableTaikhoan = createTableTaikhoan();
@@ -318,7 +315,7 @@ public class TaiKhoanGUI extends javax.swing.JPanel {
         } else {
             TimKiem();
         }
-        
+
     }//GEN-LAST:event_btnTimkiemActionPerformed
 
     public void TimKiem() {
@@ -376,8 +373,8 @@ public class TaiKhoanGUI extends javax.swing.JPanel {
 
 
     private void btnSuaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSuaActionPerformed
-        int selectedRow= tableTaikhoan.getSelectedRow();
-        if(selectedRow!= -1){
+        int selectedRow = tableTaikhoan.getSelectedRow();
+        if (selectedRow != -1) {
 
             String maTK = (String) modelTaiKhoan.getValueAt(selectedRow, 1);
             int maTKNumber = Integer.parseInt(maTK.substring(2));
@@ -408,11 +405,11 @@ public class TaiKhoanGUI extends javax.swing.JPanel {
 
     public JTable createTableTaikhoan() {
         // Tiêu đề của các cột
-        String[] columnNames = {"STT", "ID Tài khoản", "Tên tài khoản", "Mật khẩu", "Nhóm quyền", "Ngày lập"};
+        String[] columnNames = {"STT", "ID Tài khoản", "Tên tài khoản", "Mật khẩu", "Nhóm quyền", "Chi nhánh", "Ngày lập"};
         modelTaiKhoan = new DefaultTableModel() {
             @Override
             public Class<?> getColumnClass(int columnIndex) {
-                if (columnIndex == 0) { // Cột STT và Số lượng
+                if (columnIndex == 0 || columnIndex == 5) { // Cột STT và Số lượng
                     return Integer.class; // Kiểu dữ liệu Integer
                 }
                 return String.class; // Các cột khác có kiểu dữ liệu String
@@ -427,7 +424,8 @@ public class TaiKhoanGUI extends javax.swing.JPanel {
         columnModel.getColumn(2).setPreferredWidth(250); // Độ rộng cột 2
         columnModel.getColumn(3).setPreferredWidth(250); // Độ rộng cột 3
         columnModel.getColumn(4).setPreferredWidth(200); // Độ rộng cột 4
-        columnModel.getColumn(5).setPreferredWidth(200); // Độ rộng cột 5
+        columnModel.getColumn(5).setPreferredWidth(100); // Độ rộng cột 5
+        columnModel.getColumn(6).setPreferredWidth(200); // Độ rộng cột 6
 
         sharedFunction.EditHeaderTable(table);
         sharedFunction.EditTableContent(table);
