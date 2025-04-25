@@ -4,6 +4,7 @@
  */
 package BUS;
 
+import Connection.ConnectDB;
 import DAO.NhomQuyenDAO;
 import DAO.TaiKhoanDAO;
 import DTO.CTQuyenDTO;
@@ -13,11 +14,10 @@ import GUI.DangNhapGUI;
 import GUI.MainFrameGUI;
 import GUI.MatKhauCu;
 import GUI.MatKhauMoiGUI;
+import Util.PortServer;
 import java.util.ArrayList;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
-
-
 
 public class TaiKhoanBUS {
 
@@ -107,6 +107,7 @@ public class TaiKhoanBUS {
                     JOptionPane.showMessageDialog(null, "Sai mật khẩu");
                     return;
                 } else {
+                    ConnectDB.currentPortServer = PortServer.listPort.get(currentAcc.getMaChiNhanh());
                     String maQuyen = currentAcc.getMaQuyen();
                     int MaNQ = Integer.parseInt(maQuyen);
                     ArrayList<CTQuyenDTO> listPer = new CTPhanQuyenBUS().getPerByRole(MaNQ);
@@ -115,7 +116,7 @@ public class TaiKhoanBUS {
                     displayName(currentAcc, layout);
                     PhanQuyen(listPer, layout);
                     acc.setVisible(false);
-                 
+
                 }
             }
         }
@@ -123,19 +124,19 @@ public class TaiKhoanBUS {
 
     public void checkOldPass(MatKhauCu oldPass) {
         String txtOldPass = new String(oldPass.getTxtPassword().getPassword());
-        if(!txtOldPass.isEmpty()){
-               boolean checkPass = currentAcc.getMatKhau().equals(txtOldPass);
-        if (checkPass) {
-            MatKhauMoiGUI newPass = new MatKhauMoiGUI();
-            newPass.setVisible(true);
-            oldPass.dispose();
+        if (!txtOldPass.isEmpty()) {
+            boolean checkPass = currentAcc.getMatKhau().equals(txtOldPass);
+            if (checkPass) {
+                MatKhauMoiGUI newPass = new MatKhauMoiGUI();
+                newPass.setVisible(true);
+                oldPass.dispose();
+            } else {
+                JOptionPane.showMessageDialog(null, "Mật khẩu không chính xác!");
+            }
         } else {
-            JOptionPane.showMessageDialog(null, "Mật khẩu không chính xác!");
-        }
-        }else{
             JOptionPane.showMessageDialog(null, "Vui lòng nhập mật khẩu");
         }
-     
+
     }
 
     public void DoiMatKhau(MatKhauMoiGUI newPass) {
@@ -179,7 +180,8 @@ public class TaiKhoanBUS {
             return false;
         }
     }
-    public int selectLastId(){
+
+    public int selectLastId() {
         return tkDAO.selectLastID();
     }
 }

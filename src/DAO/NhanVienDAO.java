@@ -25,7 +25,8 @@ public class NhanVienDAO {
         try {
             Connection conn = ConnectDB.getConnection();
             Statement st = conn.createStatement();
-            String sql = "SELECT * FROM NhanVien where TinhTrang=N'Đang làm việc'";
+//            String sql = "SELECT * FROM NhanVien where TinhTrang=N'Đang làm việc'";
+            String sql ="select * from NHANVIEN";
             ResultSet rs = st.executeQuery(sql);
 
             while (rs.next()) {
@@ -36,8 +37,8 @@ public class NhanVienDAO {
                 String DiaChi = rs.getNString("DiaChi");
                 String Email = rs.getNString("Email");
                 String TinhTrang = rs.getNString("TinhTrang");
-
                 NhanVienDTO nv = new NhanVienDTO(MaNV, TenNV, SDT, GioiTinh, DiaChi, Email, TinhTrang);
+                System.out.println(nv.getTenNV());
                 ketQua.add(nv);
             }
 

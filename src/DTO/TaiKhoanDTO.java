@@ -11,27 +11,30 @@ import java.util.Date;
  * @author NGOC THUC
  */
 public class TaiKhoanDTO {
+
     private String MaTK, TenTK, MatKhau, MaQuyen, TinhTrang;
-    private Date NgayTao;    
+    private Date NgayTao;
+    private int MaChiNhanh;
 
     public TaiKhoanDTO() {
     }
 
-    
-    public TaiKhoanDTO(String MaTK, String TenTK, String MatKhau, String MaQuyen, String TinhTrang, Date NgayTao) {
+    public TaiKhoanDTO(String MaTK, String TenTK, String MatKhau, String MaQuyen, String TinhTrang, int MaChiNhanh, Date NgayTao) {
         this.MaTK = MaTK;
         this.TenTK = TenTK;
         this.MatKhau = MatKhau;
         this.MaQuyen = MaQuyen;
         this.TinhTrang = TinhTrang;
+        this.MaChiNhanh = MaChiNhanh;
         this.NgayTao = NgayTao;
     }
 
-    public TaiKhoanDTO(String TenTK, String MatKhau, String MaQuyen, String TinhTrang, Date NgayTao) {
+    public TaiKhoanDTO(String TenTK, String MatKhau, String MaQuyen, String TinhTrang, int MaChiNhanh, Date NgayTao) {
         this.TenTK = TenTK;
         this.MatKhau = MatKhau;
         this.MaQuyen = MaQuyen;
         this.TinhTrang = TinhTrang;
+        this.MaChiNhanh = MaChiNhanh;
         this.NgayTao = NgayTao;
     }
 
@@ -75,6 +78,14 @@ public class TaiKhoanDTO {
         this.TinhTrang = TinhTrang;
     }
 
+    public int getMaChiNhanh() {
+        return MaChiNhanh;
+    }
+
+    public void setMaChiNhanh(int MaChiNhanh) {
+        this.MaChiNhanh = MaChiNhanh;
+    }
+
     public Date getNgayTao() {
         return NgayTao;
     }
@@ -82,6 +93,5 @@ public class TaiKhoanDTO {
     public void setNgayTao(Date NgayTao) {
         this.NgayTao = NgayTao;
     }
-    
-    
+
 }
