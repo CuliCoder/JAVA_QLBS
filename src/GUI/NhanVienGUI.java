@@ -51,8 +51,7 @@ public class NhanVienGUI extends javax.swing.JPanel {
         loadData(tableNhanvien);
     }
 
-    
-    public static void update(){
+    public static void update() {
         DefaultTableModel model = (DefaultTableModel) tableNhanvien.getModel();
         model.setRowCount(0);
         count = 1;
@@ -69,7 +68,8 @@ public class NhanVienGUI extends javax.swing.JPanel {
             String sdt = listnv.get(i).getSDT();
             String email = listnv.get(i).getEmail();
             String diachi = listnv.get(i).getDiaChi();
-            model.addRow(new Object[]{count++, manv, tennv, gioitinh, chucvu, sdt, email, diachi});
+            int MaChiNhanh = listnv.get(i).getMaChiNhanh();
+            model.addRow(new Object[]{count++, manv, tennv, gioitinh, chucvu, sdt, email, diachi, MaChiNhanh});
         }
     }
 
@@ -86,6 +86,7 @@ public class NhanVienGUI extends javax.swing.JPanel {
     public ButtonRadius getBtnXoa() {
         return btnXoa;
     }
+
     public void loadData(JTable tbl) {
         DefaultTableModel model = (DefaultTableModel) tbl.getModel();
         model.setRowCount(0);
@@ -103,7 +104,8 @@ public class NhanVienGUI extends javax.swing.JPanel {
             String sdt = listnv.get(i).getSDT();
             String email = listnv.get(i).getEmail();
             String diachi = listnv.get(i).getDiaChi();
-            model.addRow(new Object[]{count++, manv, tennv, gioitinh, chucvu, sdt, email, diachi});
+            int MaChiNhanh = listnv.get(i).getMaChiNhanh();
+            model.addRow(new Object[]{count++, manv, tennv, gioitinh, chucvu, sdt, email, diachi, MaChiNhanh});
         }
 
     }
@@ -435,7 +437,7 @@ public class NhanVienGUI extends javax.swing.JPanel {
             if (chucvu == null) {
                 chucvu = "Chưa phân công";
             }
-            model.addRow(new Object[]{count++, u.getMaNV(), u.getTenNV(), u.getGioiTinh(), chucvu, u.getSDT(), u.getEmail(), u.getDiaChi()});
+            model.addRow(new Object[]{count++, u.getMaNV(), u.getTenNV(), u.getGioiTinh(), chucvu, u.getSDT(), u.getEmail(), u.getDiaChi(), u.getMaChiNhanh()});
         }
         tableNhanvien.setModel(model);
     }
@@ -484,11 +486,11 @@ public class NhanVienGUI extends javax.swing.JPanel {
 
     public JTable createTableNhanvien() {
         // Tiêu đề của các cột
-        String[] columnNames = {"STT", "ID Nhân viên", "Tên nhân viên", "Giới tính", "Chức vụ", "Số điện thoại", "Email", "Địa chỉ"};
+        String[] columnNames = {"STT", "ID Nhân viên", "Tên nhân viên", "Giới tính", "Chức vụ", "Số điện thoại", "Email", "Địa chỉ", "Chi nhánh"};
         DefaultTableModel model = new DefaultTableModel() {
             @Override
             public Class<?> getColumnClass(int columnIndex) {
-                if (columnIndex == 0 || columnIndex == 5) { // Cột STT và Số lượng
+                if (columnIndex == 0 || columnIndex == 5 || columnIndex == 8) { // Cột STT và Số lượng
                     return Integer.class; // Kiểu dữ liệu Integer
                 } else if (columnIndex == 6) { // Cột Đơn giá
                     return Float.class; // Kiểu dữ liệu Float
@@ -507,7 +509,8 @@ public class NhanVienGUI extends javax.swing.JPanel {
         columnModel.getColumn(4).setPreferredWidth(200); // Độ rộng cột 4
         columnModel.getColumn(5).setPreferredWidth(200); // Độ rộng cột 5
         columnModel.getColumn(6).setPreferredWidth(200); // Độ rộng cột 6
-        columnModel.getColumn(7).setPreferredWidth(400); // Độ rộng cột 6
+        columnModel.getColumn(7).setPreferredWidth(400); // Độ rộng cột 7
+        columnModel.getColumn(8).setPreferredWidth(100); // Độ rộng cột 8
         sharedFunction.EditHeaderTable(table);
         EditHeaderTable(table);
         sharedFunction.EditTableContent(table);

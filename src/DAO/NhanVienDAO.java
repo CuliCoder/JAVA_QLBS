@@ -12,6 +12,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import Connection.ConnectDB;
+import Util.PortServer;
 import java.sql.Statement;
 
 /**
@@ -25,8 +26,7 @@ public class NhanVienDAO {
         try {
             Connection conn = ConnectDB.getConnection();
             Statement st = conn.createStatement();
-//            String sql = "SELECT * FROM NhanVien where TinhTrang=N'Đang làm việc'";
-            String sql ="select * from NHANVIEN";
+            String sql = "SELECT * FROM NhanVien where TinhTrang=N'Đang làm việc'";
             ResultSet rs = st.executeQuery(sql);
 
             while (rs.next()) {
@@ -37,8 +37,8 @@ public class NhanVienDAO {
                 String DiaChi = rs.getNString("DiaChi");
                 String Email = rs.getNString("Email");
                 String TinhTrang = rs.getNString("TinhTrang");
-                NhanVienDTO nv = new NhanVienDTO(MaNV, TenNV, SDT, GioiTinh, DiaChi, Email, TinhTrang);
-                System.out.println(nv.getTenNV());
+                int MaChiNhanh = rs.getInt("MaChiNhanh");
+                NhanVienDTO nv = new NhanVienDTO(MaNV, TenNV, SDT, GioiTinh, DiaChi, Email, TinhTrang, MaChiNhanh);
                 ketQua.add(nv);
             }
 
@@ -65,8 +65,8 @@ public class NhanVienDAO {
                 String DiaChi = rs.getNString("DiaChi");
                 String Email = rs.getNString("Email");
                 String TinhTrang = rs.getNString("TinhTrang");
-
-                NhanVienDTO nv = new NhanVienDTO(MaNV, TenNV, SDT, GioiTinh, DiaChi, Email, TinhTrang);
+                int MaChiNhanh = rs.getInt("MaChiNhanh");
+                NhanVienDTO nv = new NhanVienDTO(MaNV, TenNV, SDT, GioiTinh, DiaChi, Email, TinhTrang, MaChiNhanh);
                 ketQua.add(nv);
             }
 
@@ -93,9 +93,8 @@ public class NhanVienDAO {
                 String DiaChi = rs.getNString("DiaChi");
                 String Email = rs.getNString("Email");
                 String TinhTrang = rs.getNString("TinhTrang");
-
-                ketqua = new NhanVienDTO(MaNV, TenNV, SDT, GioiTinh, DiaChi, Email, TinhTrang);
-
+                int MaChiNhanh = rs.getInt("MaChiNhanh");
+                ketqua = new NhanVienDTO(MaNV, TenNV, SDT, GioiTinh, DiaChi, Email, TinhTrang, MaChiNhanh);
             }
 
             ConnectDB.closeConnection(conn);
@@ -140,8 +139,8 @@ public class NhanVienDAO {
                 String DiaChi = rs.getNString("DiaChi");
                 String Email = rs.getNString("Email");
                 String TinhTrang = rs.getNString("TinhTrang");
-
-                NhanVienDTO nv = new NhanVienDTO(MaNV, TenNV, SDT, GioiTinh, DiaChi, Email, TinhTrang);
+                int MaChiNhanh = rs.getInt("MaChiNhanh");
+                NhanVienDTO nv = new NhanVienDTO(MaNV, TenNV, SDT, GioiTinh, DiaChi, Email, TinhTrang, MaChiNhanh);
                 ketQua.add(nv);
             }
 
@@ -196,7 +195,7 @@ public class NhanVienDAO {
         Connection conn = null;
         try {
             conn = ConnectDB.getConnection();
-            String sql = "Insert into NhanVien(MaNV,TenNV,SDT,GioiTinh,DiaChi,Email,TinhTrang) values(?,?,?,?,?,?,?)";
+            String sql = "Insert into " + getLinkServer(nv) + "NhanVien(MaNV,TenNV,SDT,GioiTinh,DiaChi,Email,TinhTrang,MaChiNhanh) values(?,?,?,?,?,?,?,?)";
             PreparedStatement st = conn.prepareStatement(sql);
             st.setNString(1, nv.getMaNV());
             st.setNString(2, nv.getTenNV());
@@ -205,6 +204,7 @@ public class NhanVienDAO {
             st.setNString(5, nv.getDiaChi());
             st.setNString(6, nv.getEmail());
             st.setNString(7, nv.getTinhTrang());
+            st.setInt(8, nv.getMaChiNhanh());
             ketqua = st.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
@@ -218,8 +218,10 @@ public class NhanVienDAO {
         int ketqua = -1;
         Connection conn = null;
         try {
+            int currentChiNhanh = selectNhanVienById(nv.getMaNV()).getMaChiNhanh();
+            String linkServer = getLinkServer(nv);
             conn = ConnectDB.getConnection();
-            String sql = "update NhanVien set TenNV=?,SDT=?,GioiTinh=?,DiaChi=?,Email=?,TinhTrang=? where MaNV=?";
+            String sql = "update " + linkServer + " NhanVien set TenNV=?,SDT=?,GioiTinh=?,DiaChi=?,Email=?,TinhTrang=?,MaChiNhanh=? where MaNV=?";
             PreparedStatement st = conn.prepareStatement(sql);
             st.setNString(1, nv.getTenNV());
             st.setNString(2, nv.getSDT());
@@ -227,7 +229,8 @@ public class NhanVienDAO {
             st.setNString(4, nv.getDiaChi());
             st.setNString(5, nv.getEmail());
             st.setNString(6, nv.getTinhTrang());
-            st.setNString(7, nv.getMaNV());
+            st.setInt(7, nv.getMaChiNhanh());
+            st.setNString(8, nv.getMaNV());
             ketqua = st.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
@@ -256,5 +259,13 @@ public class NhanVienDAO {
             e.printStackTrace();
         }
         return null;
+    }
+    private String getLinkServer(NhanVienDTO nv) {
+        String linkServer = PortServer.listPort.get(nv.getMaChiNhanh()) != null
+                && ConnectDB.currentPortServer != null
+                && PortServer.listPort.get(nv.getMaChiNhanh()).equals(ConnectDB.currentPortServer)
+                ? ""
+                : "LINK" + nv.getMaChiNhanh() + ".QLBS.DBO.";
+        return linkServer;
     }
 }

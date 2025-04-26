@@ -9,13 +9,14 @@ package DTO;
  * @author NGOC THUC
  */
 public class NhanVienDTO {
+
     private String MaNV, TenNV, SDT, GioiTinh, DiaChi, Email, TinhTrang;
+    private int MaChiNhanh;
 
     public NhanVienDTO() {
     }
-    
-    
-    public NhanVienDTO(String MaNV, String TenNV, String SDT, String GioiTinh, String DiaChi, String Email, String TinhTrang) {
+
+    public NhanVienDTO(String MaNV, String TenNV, String SDT, String GioiTinh, String DiaChi, String Email, String TinhTrang, int MaChiNhanh) {
         this.MaNV = MaNV;
         this.TenNV = TenNV;
         this.SDT = SDT;
@@ -23,6 +24,15 @@ public class NhanVienDTO {
         this.DiaChi = DiaChi;
         this.Email = Email;
         this.TinhTrang = TinhTrang;
+        this.MaChiNhanh = MaChiNhanh;
+    }
+
+    public int getMaChiNhanh() {
+        return MaChiNhanh;
+    }
+
+    public void setMaChiNhanh(int MaChiNhanh) {
+        this.MaChiNhanh = MaChiNhanh;
     }
 
     public String getMaNV() {
@@ -80,6 +90,5 @@ public class NhanVienDTO {
     public void setTinhTrang(String TinhTrang) {
         this.TinhTrang = TinhTrang;
     }
-    
-    
+
 }

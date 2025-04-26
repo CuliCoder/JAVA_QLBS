@@ -12,6 +12,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import Connection.ConnectDB;
 import DTO.NhanVienDTO;
+import Util.PortServer;
 import java.sql.Statement;
 import java.text.DateFormat;
 import java.text.ParseException;
@@ -91,9 +92,45 @@ public class TaiKhoanDAO {
     public TaiKhoanDTO selectByUsername(String username) {
         Connection conn = ConnectDB.getConnection();
         try {
-            String sql = "SELECT * FROM TaiKhoan where TenTK = ?";
+            String sql = "select * from TaiKhoan where TenTK = ?";
             PreparedStatement pst = conn.prepareStatement(sql);
             pst.setString(1, username);
+            ResultSet rs = pst.executeQuery();
+
+            while (rs.next()) {
+                String MaTK = rs.getString("MaTK");
+                String TenTK = rs.getNString("TenTK");
+                String MatKhau = rs.getNString("MatKhau");
+                String MaQuyen = rs.getString("MaQuyen");
+                Date NgayTao = rs.getDate("NgayTao");
+                String TrangThai = rs.getString("TinhTrang");
+                int MaChiNhanh = rs.getInt("MaChiNhanh");
+                TaiKhoanDTO tk = new TaiKhoanDTO(MaTK, TenTK, MatKhau, MaQuyen, TrangThai, MaChiNhanh, NgayTao);
+                return tk;
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            ConnectDB.closeConnection(conn);
+        }
+        return null;
+    }
+    public TaiKhoanDTO login(String username) {
+        Connection conn = ConnectDB.getConnection();
+        try {
+            ArrayList<String> listLinkServer
+                    = PortServer.getListLinkServer(ConnectDB.currentPortServer);
+            String sql = "Select * from ("
+                    + "select * from TaiKhoan where TenTK = ?"
+                    + " union all "
+                    + "select * from " + listLinkServer.get(0) + ".QLBS.DBO.TaiKhoan where TenTk = ?"
+                    + " union all "
+                    + "select * from " + listLinkServer.get(1) + ".QLBS.DBO.TaiKhoan where TenTk = ?"
+                    + ") as combined_results";
+            PreparedStatement pst = conn.prepareStatement(sql);
+            pst.setString(1, username);
+            pst.setString(2, username);
+            pst.setString(3, username);
             ResultSet rs = pst.executeQuery();
 
             while (rs.next()) {

@@ -93,7 +93,7 @@ public class TaiKhoanBUS {
         tenTK = acc.getTxtUsername().getText();
         matKhau = acc.getTxtPassword().getText();
 
-        currentAcc = tkDAO.selectByUsername(tenTK);
+        currentAcc = tkDAO.login(tenTK);
         if (currentAcc == null) {
             JOptionPane.showMessageDialog(null, "Sai tên đăng nhập");
             return;

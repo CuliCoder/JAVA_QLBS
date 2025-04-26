@@ -16,7 +16,7 @@ import java.sql.SQLException;
  */
 public class ConnectDB {
 
-    public static String currentPortServer = PortServer.listPort.get(0);
+    public static String currentPortServer = PortServer.listPort.get(1);
 
     public static Connection getConnection() {
         Connection connection = null;
