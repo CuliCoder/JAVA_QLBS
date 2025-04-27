@@ -6,6 +6,7 @@ package DAO;
 
 import Connection.ConnectDB;
 import DTO.HoaDonDTO;
+import Util.PortServer;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -77,10 +78,20 @@ public class HoaDonDAO {
         try {
             Connection conn = ConnectDB.getConnection();
             Statement st = conn.createStatement();
-            String sql = "SELECT Max(MaHD) as MaxMaHD FROM HoaDon";
+//            ArrayList<String> listLinkServer
+//                    = PortServer.getListLinkServer(ConnectDB.currentPortServer);
+//            String sql = "SELECT Max(max_id) AS max_id_across_servers\n"
+//                    + "FROM (\n"
+//                    + "	SELECT MAX(MaHD) AS max_id FROM HoaDon\n"
+//                    + "	union all\n"
+//                    + "    SELECT MAX(MaHD) AS max_id FROM " + listLinkServer.get(0) + ".QLBS.DBO.HoaDon\n"
+//                    + "    UNION ALL\n"
+//                    + "    SELECT MAX(MaHD) AS max_id FROM " + listLinkServer.get(1) + ".QLBS.DBO.HoaDon\n"
+//                    + ") AS combined_max_ids;";
+            String sql = "select max(MaHD) as MaHD from HoaDon ";
             ResultSet rs = st.executeQuery(sql);
             if (rs.next()) {
-                maHD = rs.getInt("MaxMaHD");
+                maHD = rs.getInt("MaHD");
             }
             ConnectDB.closeConnection(conn);
         } catch (SQLException e) {
@@ -89,20 +100,53 @@ public class HoaDonDAO {
         return maHD;
     }
 
-    public boolean luuHoaDon(HoaDonDTO hoaDon) {
-        String sql = "INSERT INTO HoaDon (TenTK, NgayTao, TongTien) VALUES (?, ?, ?)";
-        boolean rowInserted = false;
+    public int luuHoaDon(HoaDonDTO hoaDon) {
+        String sql = "INSERT INTO HoaDon (TenTK, NgayTao, TongTien, MaChiNhanh, idKH) VALUES (?, ?, ?, ?, ?)";
         try {
             Connection conn = ConnectDB.getConnection();
-            PreparedStatement pst = conn.prepareStatement(sql);
+            PreparedStatement pst = conn.prepareStatement(sql,Statement.RETURN_GENERATED_KEYS);
             pst.setString(1, hoaDon.getTenTK());
             pst.setString(2, new SimpleDateFormat("yyyy-MM-dd").format(hoaDon.getNgayTao()));
             pst.setDouble(3, hoaDon.getTongTien());
-            rowInserted = pst.executeUpdate() > 0;
+            pst.setInt(4, hoaDon.getMaChiNhanh());
+            pst.setInt(5, hoaDon.getIdKH());
+            boolean rowInserted = pst.executeUpdate() > 0;
+            if (rowInserted) {
+                ResultSet generatedKeys = pst.getGeneratedKeys();
+                if (generatedKeys.next()) {
+                    int maHoaDonVuaThem = generatedKeys.getInt(1); // Cột 1 là MaHD
+                    return maHoaDonVuaThem;
+                }
+            }
             ConnectDB.closeConnection(conn);
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        return rowInserted;
+        return -1;
+    }
+
+    public int luuHoaDonMainServer(HoaDonDTO hoaDon) {
+        String sql = "INSERT INTO LINK0.QLBS.DBO.HoaDon (TenTK, NgayTao, TongTien, MaChiNhanh, idKH) VALUES (?, ?, ?, ?, ?)";
+        try {
+            Connection conn = ConnectDB.getConnection();
+            PreparedStatement pst = conn.prepareStatement(sql,Statement.RETURN_GENERATED_KEYS);
+            pst.setString(1, hoaDon.getTenTK());
+            pst.setString(2, new SimpleDateFormat("yyyy-MM-dd").format(hoaDon.getNgayTao()));
+            pst.setDouble(3, hoaDon.getTongTien());
+            pst.setInt(4, hoaDon.getMaChiNhanh());
+            pst.setInt(5, hoaDon.getIdKH());
+            boolean rowInserted = pst.executeUpdate() > 0;
+            if (rowInserted) {
+                ResultSet generatedKeys = pst.getGeneratedKeys();
+                if (generatedKeys.next()) {
+                    int maHoaDonVuaThem = generatedKeys.getInt(1); // Cột 1 là MaHD
+                    return maHoaDonVuaThem;
+                }
+            }
+            ConnectDB.closeConnection(conn);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return -1;
     }
 }

@@ -24,12 +24,16 @@ public class HoaDonDTO {
         this.TenTK = TenTK;
         this.TongTien = TongTien;
         this.NgayTao = NgayTao;
+        this.MaChiNhanh = MaChiNhanh;
+        this.idKH = idKH;
     }
 
     public HoaDonDTO(String TenTK, double TongTien, int MaChiNhanh, int idKH, Date NgayTao) {
         this.TenTK = TenTK;
         this.TongTien = TongTien;
         this.NgayTao = NgayTao;
+        this.MaChiNhanh = MaChiNhanh;
+        this.idKH = idKH;
     }
 
     public int getIdKH() {

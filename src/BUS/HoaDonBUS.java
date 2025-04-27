@@ -32,7 +32,11 @@ public class HoaDonBUS {
         return hoaDonDAO.findHoaDonByMaHD(maHD);
     }
 
-    public boolean luuHoaDon(HoaDonDTO hoaDon) {
-        return hoaDonDAO.luuHoaDon(hoaDon);
+    public int luuHoaDon(HoaDonDTO hoaDon) {
+        int maHD = hoaDonDAO.luuHoaDon(hoaDon);
+        if (maHD != -1) {
+            hoaDonDAO.luuHoaDonMainServer(hoaDon);
+        }
+        return maHD;
     }
 }

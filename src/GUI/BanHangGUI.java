@@ -892,7 +892,7 @@ public final class BanHangGUI extends javax.swing.JPanel {
             sharedFunction.displayErrorMessage("Vui lòng chọn sản phẩm ");
         } else {
             String HDtext = txtIDHoadon.getText();
-            int HDnumber = Integer.parseInt(HDtext.substring(2));
+//            int HDnumber = Integer.parseInt(HDtext.substring(2));
             String IDNhanVien = txtIDNhanvien.getText();
             String NgayTaotext = txtNgayTao.getText();
             Date NgayTao = sharedFunction.stringToDate(NgayTaotext);
@@ -901,8 +901,9 @@ public final class BanHangGUI extends javax.swing.JPanel {
             String TienKhach = tfTienkhach.getText();
             String tienKhachVND = sharedFunction.formatVND(sharedFunction.stringToDouble(TienKhach));
             String TienThoi = tfTienthoi.getText();
+            System.out.println(TaiKhoanBUS.getCurrentAcc().getMaChiNhanh());
             HoaDonDTO hoaDon = new HoaDonDTO(IDNhanVien, TongTien, TaiKhoanBUS.getCurrentAcc().getMaChiNhanh(), idKH, NgayTao);
-            boolean hoaDonLuuThanhCong = hoaDonBUS.luuHoaDon(hoaDon);
+            int hoaDonLuuThanhCong = hoaDonBUS.luuHoaDon(hoaDon);
             boolean luuChiTiet = true;
             for (int i = 0; i < tableHoaDon.getRowCount(); i++) {
                 String maSP = (String) modelHoaDon.getValueAt(i, 0);
@@ -911,13 +912,13 @@ public final class BanHangGUI extends javax.swing.JPanel {
                 int soLuong = Integer.parseInt(soLuongText);
                 String DonGiatext = (String) modelHoaDon.getValueAt(i, 3);
                 Double donGia = sharedFunction.parseMoneyString(DonGiatext) / soLuong;
-                CTHoaDonDTO chiTietHoaDon = new CTHoaDonDTO(HDnumber, maSPnumber, donGia, soLuong);
+                CTHoaDonDTO chiTietHoaDon = new CTHoaDonDTO(hoaDonLuuThanhCong, maSPnumber, donGia, soLuong);
                 boolean luuChiTietHoaDon = ctBUS.luuChiTietHoaDon(chiTietHoaDon);
                 if (!luuChiTietHoaDon) {
                     luuChiTiet = false;
                 }
             }
-            if (hoaDonLuuThanhCong && luuChiTiet) {
+            if (hoaDonLuuThanhCong != -1 && luuChiTiet) {
                 // Thực hiện các thao tác sau khi thanh toán thành công
                 updateProductQuantity();
                 BillFormGUI bill = new BillFormGUI(HDtext, IDNhanVien, tienKhachVND, TienThoi, TongTientext, NgayTaotext, modelHoaDon);
@@ -928,9 +929,9 @@ public final class BanHangGUI extends javax.swing.JPanel {
 
     private void setTextAndDate() {
         // Lấy mã hóa đơn
-        int maHD = hoaDonBUS.getMaHoaDonMax() + 1;
-        String maHDtext = sharedFunction.FormatID("HD", maHD);
-        txtIDHoadon.setText(maHDtext);
+//        int maHD = hoaDonBUS.getMaHoaDonMax() + 1;
+//        String maHDtext = sharedFunction.FormatID("HD", maHD);
+//        txtIDHoadon.setText(maHDtext);
 
         // Lấy ID nhân viên 
         TaiKhoanDTO tk = new TaiKhoanDTO();
@@ -1207,12 +1208,16 @@ public final class BanHangGUI extends javax.swing.JPanel {
     }//GEN-LAST:event_tfTongtienActionPerformed
 
     private void tfKhachHangMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tfKhachHangMouseClicked
-        KhachHangGUI khachHangGUI = new KhachHangGUI();
+        KhachHangGUI khachHangGUI = new KhachHangGUI(this);
         khachHangGUI.setVisible(true);
     }//GEN-LAST:event_tfKhachHangMouseClicked
 //    public static String FormatMaHD(int MaHD) {
 //        return String.format("HD%02d", MaHD);
 //    }
+
+    public void loadIdKH() {
+        tfKhachHang.setText("" + idKH);
+    }
 
     public JTable createTableHoaDon() {
         // Tiêu đề của các cột

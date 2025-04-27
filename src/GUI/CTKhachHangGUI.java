@@ -19,7 +19,6 @@ import java.util.Date;
 public class CTKhachHangGUI extends javax.swing.JFrame {
 
     private int Model;
-
     public void setId(int id) {
         idKH.setText("CT00" + id);
     }
