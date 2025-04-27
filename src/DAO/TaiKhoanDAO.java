@@ -115,7 +115,7 @@ public class TaiKhoanDAO {
         }
         return null;
     }
-    public TaiKhoanDTO login(String username) {
+    public TaiKhoanDTO selectByUsernameALL(String username) {
         Connection conn = ConnectDB.getConnection();
         try {
             ArrayList<String> listLinkServer
@@ -317,31 +317,6 @@ public class TaiKhoanDAO {
             e.printStackTrace();
         }
         return ketQua;
-    }
-
-    public static void main(String[] args) throws ParseException {
-        TaiKhoanDAO a = new TaiKhoanDAO();
-        // ArrayList<TaiKhoanDTO> dstk = a.selectAll();
-//        for(TaiKhoanDTO tk : dstk)
-//        {
-//            System.out.println(tk.getTinhTrang());
-//        }
-
-        // SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd"); // Định dạng ngày tháng
-        // String userInput = "2023-10-13";
-        // Date ngayTao = dateFormat.parse(userInput)
-        // TaiKhoanDTO tk = new TaiKhoanDTO("nhanvien11", "123456", "1", "1", ngayTao);
-//        int ketqua = a.Xoa("15");
-//        if (ketqua > 0) {
-//            System.out.println("Xoa thanh cong");
-//        } else {
-//            System.out.println("That bai");
-//        }
-// SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd"); // Định dạng ngày tháng
-//        String userInput = "2023-10-13";
-//        Date ngayTao = dateFormat.parse(userInput);
-//  TaiKhoanDTO tk = new TaiKhoanDTO("9","nhanvien11", "123456", "1", "1", ngayTao);
-//    a.Sua(tk);
     }
 
     public int selectLastID() {

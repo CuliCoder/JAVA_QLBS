@@ -104,6 +104,32 @@ public class NhanVienDAO {
         return ketqua;
     }
 
+//    public NhanVienDTO checkExistID(String tukhoa, String linkserver) {
+//        NhanVienDTO ketqua = null;
+//        try {
+//            Connection conn = ConnectDB.getConnection();
+//            Statement st = conn.createStatement();
+//            String sql = "SELECT * FROM " + linkserver + "NhanVien where MaNV='" + tukhoa + "'";
+//            ResultSet rs = st.executeQuery(sql);
+//            while (rs.next()) {
+//                String MaNV = rs.getNString("MaNV");
+//                String TenNV = rs.getNString("TenNV");
+//                String SDT = rs.getNString("SDT");
+//                String GioiTinh = rs.getNString("GioiTinh");
+//                String DiaChi = rs.getNString("DiaChi");
+//                String Email = rs.getNString("Email");
+//                String TinhTrang = rs.getNString("TinhTrang");
+//                int MaChiNhanh = rs.getInt("MaChiNhanh");
+//                ketqua = new NhanVienDTO(MaNV, TenNV, SDT, GioiTinh, DiaChi, Email, TinhTrang, MaChiNhanh);
+//            }
+//
+//            ConnectDB.closeConnection(conn);
+//        } catch (SQLException e) {
+//            e.printStackTrace();
+//        }
+//        return ketqua;
+//    }
+
     public int deleteNhanVien(String idnv) {
         int ketqua = -1;
         Connection conn = null;
@@ -195,7 +221,8 @@ public class NhanVienDAO {
         Connection conn = null;
         try {
             conn = ConnectDB.getConnection();
-            String sql = "Insert into " + getLinkServer(nv) + "NhanVien(MaNV,TenNV,SDT,GioiTinh,DiaChi,Email,TinhTrang,MaChiNhanh) values(?,?,?,?,?,?,?,?)";
+            String linkserver = getLinkServer(nv);
+            String sql = "Insert into " + linkserver + "NhanVien(MaNV,TenNV,SDT,GioiTinh,DiaChi,Email,TinhTrang,MaChiNhanh) values(?,?,?,?,?,?,?,?)";
             PreparedStatement st = conn.prepareStatement(sql);
             st.setNString(1, nv.getMaNV());
             st.setNString(2, nv.getTenNV());
@@ -218,10 +245,9 @@ public class NhanVienDAO {
         int ketqua = -1;
         Connection conn = null;
         try {
-            int currentChiNhanh = selectNhanVienById(nv.getMaNV()).getMaChiNhanh();
             String linkServer = getLinkServer(nv);
             conn = ConnectDB.getConnection();
-            String sql = "update " + linkServer + " NhanVien set TenNV=?,SDT=?,GioiTinh=?,DiaChi=?,Email=?,TinhTrang=?,MaChiNhanh=? where MaNV=?";
+            String sql = "update NhanVien set TenNV=?,SDT=?,GioiTinh=?,DiaChi=?,Email=?,TinhTrang=? where MaNV=?";
             PreparedStatement st = conn.prepareStatement(sql);
             st.setNString(1, nv.getTenNV());
             st.setNString(2, nv.getSDT());
@@ -229,8 +255,7 @@ public class NhanVienDAO {
             st.setNString(4, nv.getDiaChi());
             st.setNString(5, nv.getEmail());
             st.setNString(6, nv.getTinhTrang());
-            st.setInt(7, nv.getMaChiNhanh());
-            st.setNString(8, nv.getMaNV());
+            st.setNString(7, nv.getMaNV());
             ketqua = st.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
@@ -243,14 +268,20 @@ public class NhanVienDAO {
     public String selectLastID() {
         try {
             Connection c = ConnectDB.getConnection();
-            String sql = "SELECT TOP 1 MaNV\n"
-                    + "FROM NhanVien\n"
-                    + "ORDER BY MaNV DESC";
+            ArrayList<String> listLinkServer
+                    = PortServer.getListLinkServer(ConnectDB.currentPortServer);
+            String sql = "SELECT Max(max_id) AS max_id_across_servers\n"
+                    + "FROM (\n"
+                    + "	SELECT MAX(MaNV) AS max_id FROM NhanVien\n"
+                    + "	union all\n"
+                    + "    SELECT MAX(MaNV) AS max_id FROM " + listLinkServer.get(0) + ".QLBS.DBO.NhanVien\n"
+                    + "    UNION ALL\n"
+                    + "    SELECT MAX(MaNV) AS max_id FROM " + listLinkServer.get(1) + ".QLBS.DBO.NhanVien\n"
+                    + ") AS combined_max_ids;";
             PreparedStatement pst = c.prepareStatement(sql);
             ResultSet rs = pst.executeQuery();
-
             while (rs.next()) {
-                String MaNV = rs.getString("MaNV");
+                String MaNV = rs.getString("max_id_across_servers");
                 return MaNV;
 
             }
@@ -260,6 +291,7 @@ public class NhanVienDAO {
         }
         return null;
     }
+
     private String getLinkServer(NhanVienDTO nv) {
         String linkServer = PortServer.listPort.get(nv.getMaChiNhanh()) != null
                 && ConnectDB.currentPortServer != null
@@ -268,4 +300,69 @@ public class NhanVienDAO {
                 : "LINK" + nv.getMaChiNhanh() + ".QLBS.DBO.";
         return linkServer;
     }
+    
+    public int addNhanVienMainServer(NhanVienDTO nv) {
+        int ketqua = -1;
+        Connection conn = null;
+        try {
+            conn = ConnectDB.getConnection();
+            String linkserver = getLinkServer(nv);
+            String sql = "Insert into LINK0.QLBS.DBO.NhanVien(MaNV,TenNV,SDT,GioiTinh,DiaChi,Email,TinhTrang,MaChiNhanh) values(?,?,?,?,?,?,?,?)";
+            PreparedStatement st = conn.prepareStatement(sql);
+            st.setNString(1, nv.getMaNV());
+            st.setNString(2, nv.getTenNV());
+            st.setNString(3, nv.getSDT());
+            st.setNString(4, nv.getGioiTinh());
+            st.setNString(5, nv.getDiaChi());
+            st.setNString(6, nv.getEmail());
+            st.setNString(7, nv.getTinhTrang());
+            st.setInt(8, nv.getMaChiNhanh());
+            ketqua = st.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            ConnectDB.closeConnection(conn);
+        }
+        return ketqua;
+    }
+    public int updateNhanVienMainServer(NhanVienDTO nv) {
+        int ketqua = -1;
+        Connection conn = null;
+        try {
+            String linkServer = getLinkServer(nv);
+            conn = ConnectDB.getConnection();
+            String sql = "update LINK0.QLBS.DBO.NhanVien set TenNV=?,SDT=?,GioiTinh=?,DiaChi=?,Email=?,TinhTrang=? where MaNV=?";
+            PreparedStatement st = conn.prepareStatement(sql);
+            st.setNString(1, nv.getTenNV());
+            st.setNString(2, nv.getSDT());
+            st.setNString(3, nv.getGioiTinh());
+            st.setNString(4, nv.getDiaChi());
+            st.setNString(5, nv.getEmail());
+            st.setNString(6, nv.getTinhTrang());
+            st.setNString(7, nv.getMaNV());
+            ketqua = st.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            ConnectDB.closeConnection(conn);
+        }
+        return ketqua;
+    }
+    public int deleteNhanVienMainServer(String idnv) {
+        int ketqua = -1;
+        Connection conn = null;
+        try {
+            conn = ConnectDB.getConnection();
+            String sql = "update LINK0.QLBS.DBO.NhanVien set TinhTrang=N'Không làm việc' where MaNV=?";
+            PreparedStatement st = conn.prepareStatement(sql);
+            st.setNString(1, idnv);
+            ketqua = st.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            ConnectDB.closeConnection(conn);
+        }
+        return ketqua;
+    }
+
 }

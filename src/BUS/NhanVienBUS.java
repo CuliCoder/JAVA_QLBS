@@ -17,24 +17,29 @@ public class NhanVienBUS {
 
     public NhanVienBUS() {
     }
-    
-    NhanVienDAO nvDao=new NhanVienDAO();
-    public ArrayList<NhanVienDTO> selectAll(){
+
+    NhanVienDAO nvDao = new NhanVienDAO();
+
+    public ArrayList<NhanVienDTO> selectAll() {
         return nvDao.selectAll();
     }
-    
-    public ArrayList<NhanVienDTO> selectAllChuaTaoTK(){
+
+    public ArrayList<NhanVienDTO> selectAllChuaTaoTK() {
         return nvDao.selectAllChuaTaoTK();
     }
-    public NhanVienDTO selectNhanVienById(String id){
+
+    public NhanVienDTO selectNhanVienById(String id) {
         return nvDao.selectNhanVienById(id);
     }
-    public String getChucVu(String id){
+
+    public String getChucVu(String id) {
         return nvDao.getChucVu(id);
     }
-    public boolean deleteNhanVien(String idnv){
+
+    public boolean deleteNhanVien(String idnv) {
         int check = nvDao.deleteNhanVien(idnv);
         if (check != -1) {
+            nvDao.deleteNhanVienMainServer(idnv);
             JOptionPane.showMessageDialog(null, "Xoá Nhân Viên thành công");
             return true;
         } else {
@@ -42,9 +47,11 @@ public class NhanVienBUS {
             return false;
         }
     }
-    public boolean updateNhanVien(NhanVienDTO nv){
+
+    public boolean updateNhanVien(NhanVienDTO nv) {
         int check = nvDao.updateNhanVien(nv);
         if (check != -1) {
+            nvDao.updateNhanVienMainServer(nv);
             JOptionPane.showMessageDialog(null, "Sửa nhân viên thành công");
             return true;
         } else {
@@ -52,9 +59,11 @@ public class NhanVienBUS {
             return false;
         }
     }
-    public boolean insertNhanVien(NhanVienDTO nv){
+
+    public boolean insertNhanVien(NhanVienDTO nv) {
         int check = nvDao.addNhanVien(nv);
         if (check != -1) {
+            nvDao.addNhanVienMainServer(nv);
             JOptionPane.showMessageDialog(null, "Thêm nhân viên thành công");
             return true;
         } else {
@@ -62,7 +71,8 @@ public class NhanVienBUS {
             return false;
         }
     }
-    public String lastId(){
+
+    public String lastId() {
         return nvDao.selectLastID();
     }
 }

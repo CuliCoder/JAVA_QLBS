@@ -36,8 +36,8 @@ public class ChiTietNhanVien extends javax.swing.JFrame {
         txtDiaChi.setText(nvDto.getDiaChi());
         txtEmail.setText(nvDto.getEmail());
         txtSdt.setText(nvDto.getSDT());
-        System.out.println(nvDto.getMaChiNhanh());
         cboChiNhanh.setSelectedItem(""+nvDto.getMaChiNhanh());
+        cboChiNhanh.setEnabled(false);
     }
 
     public void setID() {
