@@ -11,14 +11,14 @@ import java.util.List;
 
 public class KhachHangDAO {
 
-    private ConnectDB conn;
+    private Connection conn;
 
     // ✅ Constructor tự động thiết lập kết nối nếu không có
     public KhachHangDAO() {
-        this.conn = (ConnectDB) ConnectDB.getConnection();
+        this.conn = ConnectDB.getConnection();
     }
 
-    public KhachHangDAO(ConnectDB conn) {
+    public KhachHangDAO(Connection conn) {
         this.conn = conn;
     }
 
@@ -133,8 +133,8 @@ public class KhachHangDAO {
         return 0;
     }
 
-    public List<KhachHangDTO> getAllKhachHang() {
-        List<KhachHangDTO> danhSachKH = new ArrayList<>();
+    public ArrayList<KhachHangDTO> getAllKhachHang() {
+        ArrayList<KhachHangDTO> danhSachKH = new ArrayList<>();
         String sql = "SELECT * FROM KhachHang";
         try (PreparedStatement stmt = conn.prepareStatement(sql)) {
             ResultSet rs = stmt.executeQuery();

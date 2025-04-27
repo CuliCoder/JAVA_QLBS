@@ -196,6 +196,7 @@
                                       <Component id="btnHuydon" min="-2" pref="125" max="-2" attributes="0"/>
                                   </Group>
                                   <Component id="tfTienkhach" alignment="0" min="-2" pref="296" max="-2" attributes="0"/>
+                                  <Component id="tfKhachHang" alignment="0" min="-2" pref="296" max="-2" attributes="0"/>
                                   <Component id="tfTongtien" alignment="0" min="-2" pref="296" max="-2" attributes="0"/>
                               </Group>
                               <EmptySpace pref="12" max="32767" attributes="0"/>
@@ -219,6 +220,8 @@
                       <Component id="jLabel7" min="-2" max="-2" attributes="0"/>
                       <EmptySpace max="-2" attributes="0"/>
                       <Component id="PanelTable2" max="32767" attributes="0"/>
+                      <EmptySpace type="separate" max="-2" attributes="0"/>
+                      <Component id="tfKhachHang" min="-2" max="-2" attributes="0"/>
                       <EmptySpace type="separate" max="-2" attributes="0"/>
                       <Component id="tfTongtien" min="-2" max="-2" attributes="0"/>
                       <EmptySpace min="-2" pref="14" max="-2" attributes="0"/>
@@ -373,7 +376,7 @@
                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="txtNgayTaoActionPerformed"/>
               </Events>
             </Component>
-            <Component class="javax.swing.JTextField" name="tfTongtien">
+            <Component class="javax.swing.JTextField" name="tfKhachHang">
               <Properties>
                 <Property name="editable" type="boolean" value="false"/>
                 <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
@@ -384,7 +387,7 @@
                 </Property>
                 <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
                   <Border info="org.netbeans.modules.form.compat2.border.TitledBorderInfo">
-                    <TitledBorder justification="1" position="1" title="T&#x1ed5;ng ti&#x1ec1;n">
+                    <TitledBorder justification="1" position="1" title="ID Kh&#xe1;ch h&#xe0;ng">
                       <Border PropertyName="innerBorder" info="org.netbeans.modules.form.compat2.border.LineBorderInfo">
                         <LineBorder roundedCorners="true" thickness="2">
                           <Color PropertyName="color" blue="d9" green="ac" red="87" type="rgb"/>
@@ -395,6 +398,7 @@
                     </TitledBorder>
                   </Border>
                 </Property>
+                <Property name="enabled" type="boolean" value="false"/>
                 <Property name="focusable" type="boolean" value="false"/>
                 <Property name="maximumSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
                   <Dimension value="[2147483647, 50]"/>
@@ -403,8 +407,12 @@
                   <Dimension value="[64, 40]"/>
                 </Property>
               </Properties>
+              <AccessibilityProperties>
+                <Property name="AccessibleContext.accessibleName" type="java.lang.String" value="Kh&#xe1;ch h&#xe0;ng"/>
+              </AccessibilityProperties>
               <Events>
-                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="tfTongtienActionPerformed"/>
+                <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="tfKhachHangMouseClicked"/>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="tfKhachHangActionPerformed"/>
               </Events>
             </Component>
             <Component class="javax.swing.JTextField" name="tfTienkhach">
@@ -558,6 +566,40 @@
                 </DimensionLayout>
               </Layout>
             </Container>
+            <Component class="javax.swing.JTextField" name="tfTongtien">
+              <Properties>
+                <Property name="editable" type="boolean" value="false"/>
+                <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
+                  <Color blue="ff" green="ff" red="ff" type="rgb"/>
+                </Property>
+                <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
+                  <Font name="Josefin Sans SemiBold" size="14" style="0"/>
+                </Property>
+                <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
+                  <Border info="org.netbeans.modules.form.compat2.border.TitledBorderInfo">
+                    <TitledBorder justification="1" position="1" title="T&#x1ed5;ng ti&#x1ec1;n">
+                      <Border PropertyName="innerBorder" info="org.netbeans.modules.form.compat2.border.LineBorderInfo">
+                        <LineBorder roundedCorners="true" thickness="2">
+                          <Color PropertyName="color" blue="d9" green="ac" red="87" type="rgb"/>
+                        </LineBorder>
+                      </Border>
+                      <Font PropertyName="font" name="Josefin Sans SemiBold" size="16" style="0"/>
+                      <Color PropertyName="color" blue="d9" green="ac" red="87" type="rgb"/>
+                    </TitledBorder>
+                  </Border>
+                </Property>
+                <Property name="focusable" type="boolean" value="false"/>
+                <Property name="maximumSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
+                  <Dimension value="[2147483647, 50]"/>
+                </Property>
+                <Property name="minimumSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
+                  <Dimension value="[64, 40]"/>
+                </Property>
+              </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="tfTongtienActionPerformed"/>
+              </Events>
+            </Component>
           </SubComponents>
         </Container>
         <Container class="javax.swing.JPanel" name="jPanel6">

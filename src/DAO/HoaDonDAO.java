@@ -34,8 +34,9 @@ public class HoaDonDAO {
                 String TenTK = rs.getNString("TenTK");
                 Date NgayTao = rs.getDate("NgayTao");
                 double TongTien = rs.getFloat("TongTien");
-
-                HoaDonDTO pn = new HoaDonDTO(MaHD, TenTK, TongTien, NgayTao);
+                int MaChiNhanh = rs.getInt("MaChiNhanh");
+                int idKH = rs.getInt("idKH");
+                HoaDonDTO pn = new HoaDonDTO(MaHD, TenTK, TongTien, MaChiNhanh, idKH, NgayTao);
                 ketQua.add(pn);
             }
             ConnectDB.closeConnection(c);
@@ -58,8 +59,9 @@ public class HoaDonDAO {
                 String TenTK = rs.getNString("TenTK");
                 Date NgayTao = rs.getDate("NgayTao");
                 double TongTien = rs.getFloat("TongTien");
-
-                HoaDonDTO hd = new HoaDonDTO(MaHD, TenTK, TongTien, NgayTao);
+                int MaChiNhanh = rs.getInt("MaChiNhanh");
+                int idKH = rs.getInt("idKH");
+                HoaDonDTO hd = new HoaDonDTO(MaHD, TenTK, TongTien, MaChiNhanh, idKH, NgayTao);
                 ketQua.add(hd);
             }
             ConnectDB.closeConnection(c);

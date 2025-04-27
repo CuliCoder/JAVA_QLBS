@@ -16,18 +16,38 @@ public class HoaDonDTO {
     private String TenTK;
     private Date NgayTao;
     private double TongTien;
+    private int MaChiNhanh;
+    private int idKH;
 
-    public HoaDonDTO(int MaHD, String TenTK, double TongTien, Date NgayTao) {
+    public HoaDonDTO(int MaHD, String TenTK, double TongTien, int MaChiNhanh, int idKH, Date NgayTao) {
         this.MaHD = MaHD;
         this.TenTK = TenTK;
         this.TongTien = TongTien;
         this.NgayTao = NgayTao;
     }
-    public HoaDonDTO(String TenTK, double TongTien, Date NgayTao) {
+
+    public HoaDonDTO(String TenTK, double TongTien, int MaChiNhanh, int idKH, Date NgayTao) {
         this.TenTK = TenTK;
         this.TongTien = TongTien;
         this.NgayTao = NgayTao;
     }
+
+    public int getIdKH() {
+        return idKH;
+    }
+
+    public void setIdHK(int idKH) {
+        this.idKH = idKH;
+    }
+
+    public int getMaChiNhanh() {
+        return MaChiNhanh;
+    }
+
+    public void setMaChiNhanh(int MaChiNhanh) {
+        this.MaChiNhanh = MaChiNhanh;
+    }
+
     public int getMaHD() {
         return MaHD;
     }

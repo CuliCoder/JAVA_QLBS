@@ -153,7 +153,7 @@ public class sharedFunction {
     public static boolean isPositiveInteger(String str) {
         try {
             int number = Integer.parseInt(str);
-            return number > 0 && number <1000;
+            return number > 0;
         } catch (NumberFormatException e) {
             // Nếu có lỗi NumberFormatException, chuỗi không phải là số nguyên.
             return false;

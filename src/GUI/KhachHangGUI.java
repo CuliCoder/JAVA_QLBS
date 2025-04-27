@@ -3,6 +3,7 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
  */
 package GUI;
+
 import GUI.CTKhachHangGUI;
 import BUS.KhachHangBUS;
 import DTO.KhachHangDTO;
@@ -16,29 +17,26 @@ import javax.swing.JTable;
 import javax.swing.border.MatteBorder;
 import javax.swing.table.DefaultTableModel;
 
-
 /**
  *
  * @author Tran Hoai bao
  */
 public class KhachHangGUI extends javax.swing.JFrame {
-private static JTable tableKhachHang; // Bảng khách hàng
-private static DefaultTableModel modelKhachHang; // Model dữ liệu cho bảng khách hàng
-private KhachHangBUS khachHangBUS;
 
-     private static final long serialVersionUID = 1L;
+    private static JTable tableKhachHang; // Bảng khách hàng
+    private static DefaultTableModel modelKhachHang; // Model dữ liệu cho bảng khách hàng
+    private KhachHangBUS khachHangBUS;
+
+    private static final long serialVersionUID = 1L;
 
     public KhachHangGUI() {
         initComponents();
         createTableKhachHang();
         PanelTable = new javax.swing.JPanel();
-PanelTable.setLayout(new BorderLayout());
-getContentPane().add(PanelTable, BorderLayout.CENTER);
-
-
+        PanelTable.setLayout(new BorderLayout());
+        getContentPane().add(PanelTable, BorderLayout.CENTER);
     }
- KhachHangGUI khbus = new KhachHangGUI();
-   
+
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
@@ -53,6 +51,7 @@ getContentPane().add(PanelTable, BorderLayout.CENTER);
         BtnTimKiem = new javax.swing.JButton();
         jButton2 = new javax.swing.JButton();
         bthThem = new javax.swing.JButton();
+        bthChon = new javax.swing.JButton();
         jPanel3 = new javax.swing.JPanel();
         PanelTable = new javax.swing.JPanel();
 
@@ -121,6 +120,11 @@ getContentPane().add(PanelTable, BorderLayout.CENTER);
         jButton2.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         jButton2.setForeground(new java.awt.Color(134, 172, 218));
         jButton2.setText("Xem Chi tiết khách hàng ");
+        jButton2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton2ActionPerformed(evt);
+            }
+        });
 
         bthThem.setBackground(new java.awt.Color(250, 232, 189));
         bthThem.setForeground(new java.awt.Color(134, 172, 218));
@@ -129,6 +133,15 @@ getContentPane().add(PanelTable, BorderLayout.CENTER);
         bthThem.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 bthThemActionPerformed(evt);
+            }
+        });
+
+        bthChon.setBackground(new java.awt.Color(250, 232, 189));
+        bthChon.setForeground(new java.awt.Color(134, 172, 218));
+        bthChon.setText("Chọn khánh hàng");
+        bthChon.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                bthChonActionPerformed(evt);
             }
         });
 
@@ -149,9 +162,11 @@ getContentPane().add(PanelTable, BorderLayout.CENTER);
                                 .addGap(6, 6, 6)
                                 .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 166, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addGap(12, 12, 12)
-                                .addComponent(jButton2)))
-                        .addGap(52, 52, 52)
-                        .addComponent(bthThem, javax.swing.GroupLayout.PREFERRED_SIZE, 168, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                .addComponent(jButton2)
+                                .addGap(32, 32, 32)
+                                .addComponent(bthThem, javax.swing.GroupLayout.PREFERRED_SIZE, 168, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addGap(18, 18, 18)
+                        .addComponent(bthChon)))
                 .addContainerGap(46, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
@@ -164,17 +179,16 @@ getContentPane().add(PanelTable, BorderLayout.CENTER);
                         .addComponent(jLabel3)
                         .addGap(0, 0, Short.MAX_VALUE))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                        .addGap(0, 0, Short.MAX_VALUE)
                         .addComponent(jLabel2)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 27, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(13, 13, 13))
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGap(1, 1, 1)
-                        .addComponent(jButton2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addContainerGap())
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                        .addComponent(bthThem, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jButton2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(bthThem, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(bthChon, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                         .addContainerGap())))
         );
 
@@ -225,118 +239,130 @@ getContentPane().add(PanelTable, BorderLayout.CENTER);
     }//GEN-LAST:event_txtTimKiemActionPerformed
 
     private void bthThemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bthThemActionPerformed
-  CTKhachHangGUI ctkh = new CTKhachHangGUI();
+        CTKhachHangGUI ctkh = new CTKhachHangGUI();
 
-    // Lấy ID cuối cùng từ KhachHangBUS
-    KhachHangBUS khBus = new KhachHangBUS();
-   int lastId = khBus.selectLastId() + 1;
+        // Lấy ID cuối cùng từ KhachHangBUS
+        KhachHangBUS khBus = new KhachHangBUS();
+        int lastId = khBus.selectLastId() + 1;
 
-
-    if (lastId > 0) {
-        ctkh.setId(lastId);
-        ctkh.setVisible(true);
-    } else {
-        JOptionPane.showMessageDialog(this, "Không thể lấy ID cuối cùng!");
-    }
-    }//GEN-LAST:event_bthThemActionPerformed
-private void createTableKhachHang() {
-    // Tạo bảng khách hàng
-    tableKhachHang = createTableKhachHangModel();
-    // Lấy dữ liệu khách hàng từ BUS
-    KhachHangBUS khachHangBUS = new KhachHangBUS();
-    ArrayList<KhachHangDTO> listKhachHang = (ArrayList<KhachHangDTO>) khachHangBUS.getAllKhachHang();
-
-    // Load dữ liệu vào bảng
-    loadTableKhachHang(listKhachHang, modelKhachHang);
-
-    // Đặt kích thước bảng bằng với Panel chứa nó
-    tableKhachHang.setPreferredScrollableViewportSize(PanelTable.getPreferredSize());
-
-    // Tạo JScrollPane để chứa bảng
-    JScrollPane scrollPaneKhachHang = new JScrollPane(tableKhachHang);
-
-    // Thêm viền cho JScrollPane
-    MatteBorder matteBorder = new MatteBorder(0, 1, 1, 1, new Color(164, 191, 226));
-    scrollPaneKhachHang.setBorder(matteBorder);
-    // Thêm bảng vào PanelTable
-    PanelTable.removeAll(); // Xóa nội dung cũ trước khi thêm mới
-    PanelTable.add(scrollPaneKhachHang, BorderLayout.CENTER);
-    PanelTable.revalidate();
-    PanelTable.repaint();
-}
-
-
-
-private JTable createTableKhachHangModel() {
-    String[] columnNames = {"ID", "Họ tên", "SĐT", "Email", "Địa chỉ", "Ngày tạo"};
-    modelKhachHang = new DefaultTableModel(columnNames, 0);
-    return new JTable(modelKhachHang);
-}
-private void loadTableKhachHang(ArrayList<KhachHangDTO> listKhachHang, DefaultTableModel model) {
-    model.setRowCount(0); // Xóa dữ liệu cũ trước khi tải mới
-    for (KhachHangDTO kh : listKhachHang) {
-        model.addRow(new Object[]{
-            kh.getIdKH(),
-            kh.getHoTen(),
-            kh.getSdt(),
-            kh.getEmail(),
-            kh.getDiaChi(),
-            kh.getNgayTao()
-        });
-    }
-}
-private void timKiemKhachHang() {
-    String keyword = BtnTimKiem.getText().trim(); // Lấy giá trị từ ô tìm kiếm
-
-    if (keyword.isEmpty() || keyword.equals("Tìm kiếm theo mã hoặc tên khách hàng")) {
-        // Nếu ô tìm kiếm rỗng, hiển thị tất cả khách hàng
-        ArrayList<KhachHangDTO> listKhachHang = (ArrayList<KhachHangDTO>) khachHangBUS.getAllKhachHang();
-        loadTableKhachHang(listKhachHang, modelKhachHang);
-    } else {
-        if (keyword.toUpperCase().startsWith("KH")) {
-            // Nếu bắt đầu bằng "KH", tìm kiếm theo mã khách hàng có định dạng KHxxx
-            String maKHDisplay = keyword.toUpperCase();
-            ArrayList<KhachHangDTO> filteredList = new ArrayList<>();
-
-            for (KhachHangDTO khachHang : khachHangBUS.getAllKhachHang()) {
-                String maKHtext = sharedFunction.FormatID("KH", khachHang.getIdKH());
-                if (maKHtext.equals(maKHDisplay)) {
-                    filteredList.add(khachHang);
-                }
-            }
-
-            if (!filteredList.isEmpty()) {
-                loadTableKhachHang(filteredList, modelKhachHang);
-            } else {
-                JOptionPane.showMessageDialog(this, "Không tìm thấy khách hàng.", "Thông báo", JOptionPane.INFORMATION_MESSAGE);
-            }
+        if (lastId > 0) {
+            ctkh.setId(lastId);
+            ctkh.setVisible(true);
         } else {
-            int maKHnumber = sharedFunction.convertToInteger(keyword);
-            if (maKHnumber != -1) {
-                // Nếu nhập số, tìm kiếm theo mã khách hàng
-                ArrayList<KhachHangDTO> listKhachHang = (ArrayList<KhachHangDTO>) khachHangBUS.timKhachHangTheoMa(maKHnumber);
-                if (!listKhachHang.isEmpty()) {
-                    loadTableKhachHang(listKhachHang, modelKhachHang);
+            JOptionPane.showMessageDialog(this, "Không thể lấy ID cuối cùng!");
+        }
+    }//GEN-LAST:event_bthThemActionPerformed
+    private void createTableKhachHang() {
+        // Tạo bảng khách hàng
+        tableKhachHang = createTableKhachHangModel();
+        // Lấy dữ liệu khách hàng từ BUS
+        KhachHangBUS khachHangBUS = new KhachHangBUS();
+        ArrayList<KhachHangDTO> listKhachHang = khachHangBUS.getAllKhachHang();
+
+        // Load dữ liệu vào bảng
+        loadTableKhachHang(listKhachHang, modelKhachHang);
+
+        // Đặt kích thước bảng bằng với Panel chứa nó
+        tableKhachHang.setPreferredScrollableViewportSize(PanelTable.getPreferredSize());
+
+        // Tạo JScrollPane để chứa bảng
+        JScrollPane scrollPaneKhachHang = new JScrollPane(tableKhachHang);
+
+        // Thêm viền cho JScrollPane
+        MatteBorder matteBorder = new MatteBorder(0, 1, 1, 1, new Color(164, 191, 226));
+        scrollPaneKhachHang.setBorder(matteBorder);
+        // Thêm bảng vào PanelTable
+        PanelTable.removeAll(); // Xóa nội dung cũ trước khi thêm mới
+        PanelTable.setLayout(new BorderLayout());
+        PanelTable.add(scrollPaneKhachHang, BorderLayout.CENTER);
+        PanelTable.revalidate();
+        PanelTable.repaint();
+    }
+
+    private JTable createTableKhachHangModel() {
+        String[] columnNames = {"ID", "Họ tên", "SĐT", "Email", "Địa chỉ", "Ngày tạo"};
+        modelKhachHang = new DefaultTableModel(columnNames, 0);
+        return new JTable(modelKhachHang);
+    }
+
+    private void loadTableKhachHang(ArrayList<KhachHangDTO> listKhachHang, DefaultTableModel model) {
+        model.setRowCount(0); // Xóa dữ liệu cũ trước khi tải mới
+        for (KhachHangDTO kh : listKhachHang) {
+            model.addRow(new Object[]{
+                kh.getIdKH(),
+                kh.getHoTen(),
+                kh.getSdt(),
+                kh.getEmail(),
+                kh.getDiaChi(),
+                kh.getNgayTao()
+            });
+        }
+    }
+
+    private void timKiemKhachHang() {
+        String keyword = BtnTimKiem.getText().trim(); // Lấy giá trị từ ô tìm kiếm
+
+        if (keyword.isEmpty() || keyword.equals("Tìm kiếm theo mã hoặc tên khách hàng")) {
+            // Nếu ô tìm kiếm rỗng, hiển thị tất cả khách hàng
+            ArrayList<KhachHangDTO> listKhachHang = (ArrayList<KhachHangDTO>) khachHangBUS.getAllKhachHang();
+            loadTableKhachHang(listKhachHang, modelKhachHang);
+        } else {
+            if (keyword.toUpperCase().startsWith("KH")) {
+                // Nếu bắt đầu bằng "KH", tìm kiếm theo mã khách hàng có định dạng KHxxx
+                String maKHDisplay = keyword.toUpperCase();
+                ArrayList<KhachHangDTO> filteredList = new ArrayList<>();
+
+                for (KhachHangDTO khachHang : khachHangBUS.getAllKhachHang()) {
+                    String maKHtext = sharedFunction.FormatID("KH", khachHang.getIdKH());
+                    if (maKHtext.equals(maKHDisplay)) {
+                        filteredList.add(khachHang);
+                    }
+                }
+
+                if (!filteredList.isEmpty()) {
+                    loadTableKhachHang(filteredList, modelKhachHang);
                 } else {
                     JOptionPane.showMessageDialog(this, "Không tìm thấy khách hàng.", "Thông báo", JOptionPane.INFORMATION_MESSAGE);
                 }
             } else {
-                // Nếu không phải số, tìm kiếm theo tên khách hàng
-                ArrayList<KhachHangDTO> listKhachHang = (ArrayList<KhachHangDTO>) khachHangBUS.timKhachHangTheoTen(keyword);
-                if (!listKhachHang.isEmpty()) {
-                    loadTableKhachHang(listKhachHang, modelKhachHang);
+                int maKHnumber = sharedFunction.convertToInteger(keyword);
+                if (maKHnumber != -1) {
+                    // Nếu nhập số, tìm kiếm theo mã khách hàng
+                    ArrayList<KhachHangDTO> listKhachHang = (ArrayList<KhachHangDTO>) khachHangBUS.timKhachHangTheoMa(maKHnumber);
+                    if (!listKhachHang.isEmpty()) {
+                        loadTableKhachHang(listKhachHang, modelKhachHang);
+                    } else {
+                        JOptionPane.showMessageDialog(this, "Không tìm thấy khách hàng.", "Thông báo", JOptionPane.INFORMATION_MESSAGE);
+                    }
                 } else {
-                    JOptionPane.showMessageDialog(this, "Không tìm thấy khách hàng.", "Thông báo", JOptionPane.INFORMATION_MESSAGE);
+                    // Nếu không phải số, tìm kiếm theo tên khách hàng
+                    ArrayList<KhachHangDTO> listKhachHang = (ArrayList<KhachHangDTO>) khachHangBUS.timKhachHangTheoTen(keyword);
+                    if (!listKhachHang.isEmpty()) {
+                        loadTableKhachHang(listKhachHang, modelKhachHang);
+                    } else {
+                        JOptionPane.showMessageDialog(this, "Không tìm thấy khách hàng.", "Thông báo", JOptionPane.INFORMATION_MESSAGE);
+                    }
                 }
             }
         }
     }
-}
 
 
     private void BtnTimKiemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnTimKiemActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_BtnTimKiemActionPerformed
+
+    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jButton2ActionPerformed
+
+    private void bthChonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bthChonActionPerformed
+        int selectRow = tableKhachHang.getSelectedRow();
+        if (selectRow >= 0) {
+            BanHangGUI.idKH = Integer.parseInt(tableKhachHang.getValueAt(selectRow, 0).toString());
+            this.setVisible(false);
+        }
+    }//GEN-LAST:event_bthChonActionPerformed
 
     /**
      * @param args the command line arguments
@@ -376,6 +402,7 @@ private void timKiemKhachHang() {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton BtnTimKiem;
     private javax.swing.JPanel PanelTable;
+    private javax.swing.JButton bthChon;
     private javax.swing.JButton bthThem;
     private javax.swing.JButton jButton2;
     private javax.swing.JLabel jLabel1;
@@ -388,5 +415,4 @@ private void timKiemKhachHang() {
     private javax.swing.JTextField txtTimKiem;
     // End of variables declaration//GEN-END:variables
 
-   
 }

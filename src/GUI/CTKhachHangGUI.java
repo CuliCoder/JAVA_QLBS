@@ -11,6 +11,7 @@ import javax.swing.JOptionPane;
 //import java.sql.Connection;
 import DAO.KhachHangDAO;
 import java.util.Date;
+
 /**
  *
  * @author Tran Hoai bao
@@ -18,18 +19,21 @@ import java.util.Date;
 public class CTKhachHangGUI extends javax.swing.JFrame {
 
     private int Model;
- public void setId(int id) {
+
+    public void setId(int id) {
         idKH.setText("CT00" + id);
     }
+
     /**
      * Creates new form KhachHangGUI
      */
     public CTKhachHangGUI() {
         initComponents();
     }
-public void setModel(int model) {
-    this.Model = model;
-}
+
+    public void setModel(int model) {
+        this.Model = model;
+    }
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -247,71 +251,73 @@ public void setModel(int model) {
     }//GEN-LAST:event_txtSDTActionPerformed
 
     private void BtnTimKiemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnTimKiemActionPerformed
-                    saveCustomerInfo();        
+        saveCustomerInfo();
     }//GEN-LAST:event_BtnTimKiemActionPerformed
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_jButton2ActionPerformed
-private boolean validateCustomerInput() {
-    if (jTextField3.getText().trim().isEmpty()) { // ID Khách Hàng
-        JOptionPane.showMessageDialog(this, "ID khách hàng không được để trống");
-        return false;
-    }
-    if (jTextField5.getText().trim().isEmpty()) { // Tên khách hàng
-        JOptionPane.showMessageDialog(this, "Tên khách hàng không được để trống");
-        return false;
-    }
-    if (txtTenKh.getText().trim().isEmpty()) { // Số điện thoại
-        JOptionPane.showMessageDialog(this, "Số điện thoại không được để trống");
-        return false;
-    }
-    if (!txtTenKh.getText().matches("\\d{10}")) { // Kiểm tra SĐT có đúng 10 số
-        JOptionPane.showMessageDialog(this, "Số điện thoại phải có đúng 10 chữ số");
-        return false;
-    }
-    if (txtSDT.getText().trim().isEmpty()) { // Email
-        JOptionPane.showMessageDialog(this, "Email không được để trống");
-        return false;
-    }
-    if (!txtSDT.getText().matches("^[\\w.-]+@gmail\\.com$")) { // Kiểm tra email định dạng @gmail.com
-        JOptionPane.showMessageDialog(this, "Email không hợp lệ (chỉ chấp nhận @gmail.com)");
-        return false;
-    }
-    if (jTextField4.getText().trim().isEmpty()) { // Địa chỉ
-        JOptionPane.showMessageDialog(this, "Địa chỉ không được để trống");
-        return false;
-    }
-    return true;
-}
-private void saveCustomerInfo() {
-    if (!validateCustomerInput()) {
-        return;
-    }
-
-    try {
-        int id = Integer.parseInt(jTextField3.getText().trim());
-        String tenKH = jTextField5.getText().trim();
-        String sdt = txtTenKh.getText().trim();
-        String email = txtSDT.getText().trim();
-        String diaChi = jTextField4.getText().trim();
-              Date ngayTao = new Date();
-
-        KhachHangDTO kh = new KhachHangDTO(id, tenKH, sdt, email, diaChi, new Date());
-
-        KhachHangBUS khBus = new KhachHangBUS();
-        boolean success = khBus.themKhachHang(kh);
-
-        if (success) {
-            JOptionPane.showMessageDialog(this, "Xác nhận khách hàng thành công!");
-            this.dispose();
-        } else {
-            JOptionPane.showMessageDialog(this, "Lỗi khi lưu thông tin khách hàng. Vui lòng thử lại!");
+    private boolean validateCustomerInput() {
+        if (jTextField3.getText().trim().isEmpty()) { // ID Khách Hàng
+            JOptionPane.showMessageDialog(this, "ID khách hàng không được để trống");
+            return false;
         }
-    } catch (NumberFormatException e) {
-        JOptionPane.showMessageDialog(this, "ID khách hàng phải là số!");
+        if (jTextField5.getText().trim().isEmpty()) { // Tên khách hàng
+            JOptionPane.showMessageDialog(this, "Tên khách hàng không được để trống");
+            return false;
+        }
+        if (txtTenKh.getText().trim().isEmpty()) { // Số điện thoại
+            JOptionPane.showMessageDialog(this, "Số điện thoại không được để trống");
+            return false;
+        }
+        if (!txtTenKh.getText().matches("\\d{10}")) { // Kiểm tra SĐT có đúng 10 số
+            JOptionPane.showMessageDialog(this, "Số điện thoại phải có đúng 10 chữ số");
+            return false;
+        }
+        if (txtSDT.getText().trim().isEmpty()) { // Email
+            JOptionPane.showMessageDialog(this, "Email không được để trống");
+            return false;
+        }
+        if (!txtSDT.getText().matches("^[\\w.-]+@gmail\\.com$")) { // Kiểm tra email định dạng @gmail.com
+            JOptionPane.showMessageDialog(this, "Email không hợp lệ (chỉ chấp nhận @gmail.com)");
+            return false;
+        }
+        if (jTextField4.getText().trim().isEmpty()) { // Địa chỉ
+            JOptionPane.showMessageDialog(this, "Địa chỉ không được để trống");
+            return false;
+        }
+        return true;
     }
-}
+
+    private void saveCustomerInfo() {
+        if (!validateCustomerInput()) {
+            return;
+        }
+
+        try {
+            int id = Integer.parseInt(jTextField3.getText().trim());
+            String tenKH = jTextField5.getText().trim();
+            String sdt = txtTenKh.getText().trim();
+            String email = txtSDT.getText().trim();
+            String diaChi = jTextField4.getText().trim();
+            Date ngayTao = new Date();
+
+            KhachHangDTO kh = new KhachHangDTO(id, tenKH, sdt, email, diaChi, new Date());
+
+            KhachHangBUS khBus = new KhachHangBUS();
+            boolean success = khBus.themKhachHang(kh);
+
+            if (success) {
+                JOptionPane.showMessageDialog(this, "Xác nhận khách hàng thành công!");
+                this.dispose();
+            } else {
+                JOptionPane.showMessageDialog(this, "Lỗi khi lưu thông tin khách hàng. Vui lòng thử lại!");
+            }
+        } catch (NumberFormatException e) {
+            JOptionPane.showMessageDialog(this, "ID khách hàng phải là số!");
+        }
+    }
+
     /**
      * @param args the command line arguments
      */
@@ -362,7 +368,4 @@ private void saveCustomerInfo() {
     private javax.swing.JTextField txtTenKh;
     // End of variables declaration//GEN-END:variables
 
-   
-
-   
 }

@@ -40,7 +40,7 @@ public class KhachHangBUS {
     }
 
     // ✅ Lấy danh sách tất cả khách hàng
-    public List<KhachHangDTO> getAllKhachHang() {
+    public ArrayList<KhachHangDTO> getAllKhachHang() {
         return khachHangDAO.getAllKhachHang();
     }
 
