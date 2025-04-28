@@ -821,11 +821,11 @@ public class PhieuNhapGUI extends javax.swing.JPanel {
 
     public JTable createTablePhieunhap() {
         // Tiêu đề của các cột
-        String[] columnNames = {"STT", "ID Phiếu nhập", "ID Nhân viên", "Ngày lập", "Tổng tiền"};
+        String[] columnNames = {"STT", "ID Phiếu nhập", "ID Nhân viên", "Ngày lập", "Tổng tiền", "Chi nhánh"};
         modelPhieuNhap = new DefaultTableModel() {
             @Override
             public Class<?> getColumnClass(int columnIndex) {
-                if (columnIndex == 0) { // Cột STT và Số lượng
+                if (columnIndex == 0 || columnIndex == 5) { // Cột STT và Số lượng
                     return Integer.class; // Kiểu dữ liệu Integer
 
                 } else if (columnIndex == 4) { // Cột Đơn giá
@@ -843,8 +843,8 @@ public class PhieuNhapGUI extends javax.swing.JPanel {
         columnModel.getColumn(1).setPreferredWidth(200); // Độ rộng cột 1
         columnModel.getColumn(2).setPreferredWidth(200); // Độ rộng cột 2
         columnModel.getColumn(3).setPreferredWidth(200); // Độ rộng cột 3
-        columnModel.getColumn(4).setPreferredWidth(200); // Độ rộng cột 5
-
+        columnModel.getColumn(4).setPreferredWidth(200); // Độ rộng cột 4
+        columnModel.getColumn(4).setPreferredWidth(150); // Độ rộng cột 4
         sharedFunction.EditHeaderTable(table);
         sharedFunction.EditTableContent(table);
         return table;
@@ -900,7 +900,8 @@ public class PhieuNhapGUI extends javax.swing.JPanel {
             Date ngayLap = pn.getNgayTao();
             long TongTien = pn.getTongTien();
             String TongTienText = sharedFunction.formatVND(TongTien);
-            Object[] row = {STT++, maPNtext, maNV, ngayLap, TongTienText};
+            int MaChiNhanh = pn.getMaChiNhanh();
+            Object[] row = {STT++, maPNtext, maNV, ngayLap, TongTienText, MaChiNhanh};
             modelPhieuNhap.addRow(row);
         }
     }

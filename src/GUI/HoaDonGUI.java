@@ -45,8 +45,6 @@ public final class HoaDonGUI extends javax.swing.JPanel {
         return modelHoaDon;
     }
 
-
-    
     public HoaDonGUI() {
 
         initComponents();
@@ -83,7 +81,8 @@ public final class HoaDonGUI extends javax.swing.JPanel {
             Date ngayLap = hd.getNgayTao();
             Double TongTien = hd.getTongTien();
             String TongTienText = sharedFunction.formatVND(TongTien);
-            Object[] row = {STT++, maHDtext, maNV, ngayLap, TongTienText};
+            int MaChiNhanh = hd.getMaChiNhanh();
+            Object[] row = {STT++, maHDtext, maNV, ngayLap, TongTienText, MaChiNhanh};
             modelHoaDon.addRow(row);
         }
     }
@@ -114,10 +113,10 @@ public final class HoaDonGUI extends javax.swing.JPanel {
                 Object[] row = {STT++, tenSP, sl, donGiaText};
                 modelChiTietHoaDon.addRow(row);
             }
-        
+
             String IdNhanVien = (String) tableHoaDon.getValueAt(selectRow, 2);
             Date NgayLap = (Date) tableHoaDon.getValueAt(selectRow, 3);
-                
+
             String TongTien = (String) tableHoaDon.getValueAt(selectRow, 4);
             tfIDHoadon.setText(maHDText);
             tfIDNhanvien.setText(IdNhanVien);
@@ -507,16 +506,16 @@ public final class HoaDonGUI extends javax.swing.JPanel {
 
     private void btnInHoaDonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnInHoaDonActionPerformed
         // TODO add your handling code here:
-     String MaHD = tfIDHoadon.getText();
-     String ngayTao = tfNgaytao.getText();
-     String thuNgan = "Nguyễn Minh Thuận";
-     String tongTien = tfTongtien.getText();
+        String MaHD = tfIDHoadon.getText();
+        String ngayTao = tfNgaytao.getText();
+        String thuNgan = "Nguyễn Minh Thuận";
+        String tongTien = tfTongtien.getText();
 
-      String filePath = sharedFunction.chooseFilePath("pdf");
+        String filePath = sharedFunction.chooseFilePath("pdf");
         if (filePath != null) {
-          PdfExporter.exportToPdfHoaDon(MaHD, ngayTao, thuNgan, tableChiTietHoaDon, tongTien, null, null, filePath);
-        } 
-                           
+            PdfExporter.exportToPdfHoaDon(MaHD, ngayTao, thuNgan, tableChiTietHoaDon, tongTien, null, null, filePath);
+        }
+
     }//GEN-LAST:event_btnInHoaDonActionPerformed
 
     private void tfTimkiemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_tfTimkiemActionPerformed
@@ -588,16 +587,16 @@ public final class HoaDonGUI extends javax.swing.JPanel {
     private void btnTimkiemKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_btnTimkiemKeyPressed
         // TODO add your handling code here:
         // Kiểm tra xem phím bấm có phải là Enter không
-    if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
-        // Lấy dữ liệu tìm kiếm và xử lý nếu là Enter
-        String searchKeyword = tfTimkiem.getText().trim();
-        if (searchKeyword.isEmpty()) {
-            sharedFunction.addPlaceholder(tfTimkiem, "Tìm kiếm theo mã hóa đơn");
-        } else {
-            findHoaDonByMaHD(searchKeyword, modelHoaDon);
+        if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
+            // Lấy dữ liệu tìm kiếm và xử lý nếu là Enter
+            String searchKeyword = tfTimkiem.getText().trim();
+            if (searchKeyword.isEmpty()) {
+                sharedFunction.addPlaceholder(tfTimkiem, "Tìm kiếm theo mã hóa đơn");
+            } else {
+                findHoaDonByMaHD(searchKeyword, modelHoaDon);
+            }
         }
-    }
-           
+
     }//GEN-LAST:event_btnTimkiemKeyPressed
 
     public JTable createTableChiTietHoaDon() {
@@ -633,7 +632,7 @@ public final class HoaDonGUI extends javax.swing.JPanel {
 
     public JTable createTableHoaDon() {
         // Tiêu đề của các cột
-        String[] columnNames = {"STT", "ID Hóa đơn", "ID Nhân viên", "Ngày lập", "Tổng tiền"};
+        String[] columnNames = {"STT", "ID Hóa đơn", "ID Nhân viên", "Ngày lập", "Tổng tiền", "Chi nhánh"};
         modelHoaDon = new DefaultTableModel() {
             @Override
             public Class<?> getColumnClass(int columnIndex) {
@@ -655,7 +654,8 @@ public final class HoaDonGUI extends javax.swing.JPanel {
         columnModel.getColumn(1).setPreferredWidth(200); // Độ rộng cột 1
         columnModel.getColumn(2).setPreferredWidth(200); // Độ rộng cột 2
         columnModel.getColumn(3).setPreferredWidth(200); // Độ rộng cột 3
-        columnModel.getColumn(4).setPreferredWidth(200); // Độ rộng cột 6
+        columnModel.getColumn(4).setPreferredWidth(200); // Độ rộng cột 4
+        columnModel.getColumn(4).setPreferredWidth(150); // Độ rộng cột 5
 
         sharedFunction.EditHeaderTable(table);
         sharedFunction.EditTableContent(table);
@@ -666,44 +666,44 @@ public final class HoaDonGUI extends javax.swing.JPanel {
         textFiled.setForeground(Color.black);
     }
 
-   public void findHoaDonByMaHD(String maHD, DefaultTableModel model) {
-    ArrayList<HoaDonDTO> dshd = hoaDonBUS.getAll();
+    public void findHoaDonByMaHD(String maHD, DefaultTableModel model) {
+        ArrayList<HoaDonDTO> dshd = hoaDonBUS.getAll();
 
-    if (maHD.isEmpty() || maHD.trim().equals("Tìm kiếm theo mã hóa đơn")) {
-        loadDataTableHoaDon(dshd, modelHoaDon);
-    } else {
-        if (maHD.toUpperCase().startsWith("HD")) {
-            // Nếu chuỗi bắt đầu bằng "HD", tìm kiếm trong danh sách mã hóa đơn
-            String maHDDisplay = maHD.toUpperCase();
-            ArrayList<HoaDonDTO> filteredList = new ArrayList<>();
-
-            for (HoaDonDTO hoaDon : dshd) {
-                  String maHDtext = sharedFunction.FormatID("HD", hoaDon.getMaHD());
-                if (maHDtext.equals(maHDDisplay)) {
-                    filteredList.add(hoaDon);
-                }
-            }
-
-            if (!filteredList.isEmpty()) {
-                loadDataTableHoaDon(filteredList, model);
-            } else {
-                JOptionPane.showMessageDialog(this, "Không tìm thấy kết quả.", "Thông báo", JOptionPane.INFORMATION_MESSAGE);
-            }
+        if (maHD.isEmpty() || maHD.trim().equals("Tìm kiếm theo mã hóa đơn")) {
+            loadDataTableHoaDon(dshd, modelHoaDon);
         } else {
-            int maHDnumber = sharedFunction.convertToInteger(maHD);
-            if (maHDnumber == -1) {
-                JOptionPane.showMessageDialog(this, "Không tìm thấy kết quả.", "Thông báo", JOptionPane.INFORMATION_MESSAGE);
-            } else {
-                ArrayList<HoaDonDTO> listHoaDon = hoaDonBUS.findHoaDonByMaHD(maHDnumber);
-                if (!listHoaDon.isEmpty()) {
-                    loadDataTableHoaDon(listHoaDon, model);
+            if (maHD.toUpperCase().startsWith("HD")) {
+                // Nếu chuỗi bắt đầu bằng "HD", tìm kiếm trong danh sách mã hóa đơn
+                String maHDDisplay = maHD.toUpperCase();
+                ArrayList<HoaDonDTO> filteredList = new ArrayList<>();
+
+                for (HoaDonDTO hoaDon : dshd) {
+                    String maHDtext = sharedFunction.FormatID("HD", hoaDon.getMaHD());
+                    if (maHDtext.equals(maHDDisplay)) {
+                        filteredList.add(hoaDon);
+                    }
+                }
+
+                if (!filteredList.isEmpty()) {
+                    loadDataTableHoaDon(filteredList, model);
                 } else {
                     JOptionPane.showMessageDialog(this, "Không tìm thấy kết quả.", "Thông báo", JOptionPane.INFORMATION_MESSAGE);
+                }
+            } else {
+                int maHDnumber = sharedFunction.convertToInteger(maHD);
+                if (maHDnumber == -1) {
+                    JOptionPane.showMessageDialog(this, "Không tìm thấy kết quả.", "Thông báo", JOptionPane.INFORMATION_MESSAGE);
+                } else {
+                    ArrayList<HoaDonDTO> listHoaDon = hoaDonBUS.findHoaDonByMaHD(maHDnumber);
+                    if (!listHoaDon.isEmpty()) {
+                        loadDataTableHoaDon(listHoaDon, model);
+                    } else {
+                        JOptionPane.showMessageDialog(this, "Không tìm thấy kết quả.", "Thông báo", JOptionPane.INFORMATION_MESSAGE);
+                    }
                 }
             }
         }
     }
-}
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JPanel PanelTable1;

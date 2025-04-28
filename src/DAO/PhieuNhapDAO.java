@@ -12,6 +12,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -93,7 +94,8 @@ public class PhieuNhapDAO {
                 String TenNCC = rs.getString("TenNCC");
                 String SDT = rs.getString("SDT");
                 String DiaChi = rs.getString("DiaChi");
-                CongTyDTO cty = new CongTyDTO(MaNCC, TenNCC, SDT, DiaChi, true);
+                int MaChiNhanh = rs.getInt("MaChiNhanh");
+                CongTyDTO cty = new CongTyDTO(MaNCC, TenNCC, SDT, DiaChi, true, MaChiNhanh);
                 ketQua.add(cty);
             }
             ConnectDB.closeConnection(c);
@@ -254,12 +256,11 @@ public class PhieuNhapDAO {
         return price;
     }
 
-    public boolean Them(PhieuNhapDTO pn) {
-        int ketQua = 0;
+    public int Them(PhieuNhapDTO pn) {
         try {
             Connection conn = ConnectDB.getConnection();
-            String sql = "INSERT INTO PhieuNhap(MaNCC, TenTK, NgayTao, TongTien, TinhTrang) VALUES ( ?, ?, ?, ?, ?)";
-            PreparedStatement pst = conn.prepareStatement(sql);
+            String sql = "INSERT INTO PhieuNhap(MaNCC, TenTK, NgayTao, TongTien, TinhTrang, MaChiNhanh) VALUES ( ?, ?, ?, ?, ?, ?)";
+            PreparedStatement pst = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
 
             java.util.Date utilDate = pn.getNgayTao();
             java.sql.Date sqlDate = new java.sql.Date(utilDate.getTime());
@@ -269,17 +270,20 @@ public class PhieuNhapDAO {
             pst.setDate(3, sqlDate);
             pst.setDouble(4, pn.getTongTien());
             pst.setBoolean(5, true);
-
-            ketQua = pst.executeUpdate();
-            ConnectDB.closeConnection(conn);
-            if (ketQua == 1) {
-                return true;
+            pst.setInt(6, pn.getMaChiNhanh());
+            if (pst.executeUpdate() > 0) {
+                ResultSet generatedKeys = pst.getGeneratedKeys();
+                if (generatedKeys.next()) {
+                    int mapn = generatedKeys.getInt(1); // Cột 1 là MaHD
+                    ConnectDB.closeConnection(conn);
+                    return mapn;
+                }
             }
-
+            ConnectDB.closeConnection(conn);
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        return false;
+        return -1;
     }
 
     public String getNameSPByID(int id) {

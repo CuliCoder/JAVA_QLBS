@@ -9,19 +9,30 @@ package DTO;
  * @author NGOC THUC
  */
 public class CongTyDTO {
+
     int MaNCC;
     private String TenNCC, SDT, DiaChi;
     Boolean TinhTrang;
+    private int MaChiNhanh;
 
     public CongTyDTO() {
     }
 
-    public CongTyDTO(int MaNCC, String TenNCC, String SDT, String DiaChi, Boolean TinhTrang) {
+    public CongTyDTO(int MaNCC, String TenNCC, String SDT, String DiaChi, Boolean TinhTrang, int MaChiNhanh) {
         this.MaNCC = MaNCC;
         this.TenNCC = TenNCC;
         this.SDT = SDT;
         this.DiaChi = DiaChi;
         this.TinhTrang = TinhTrang;
+        this.MaChiNhanh = MaChiNhanh;
+    }
+
+    public int getMaChiNhanh() {
+        return MaChiNhanh;
+    }
+
+    public void setMaChiNhanh(int MaChiNhanh) {
+        this.MaChiNhanh = MaChiNhanh;
     }
 
     public int getMaNCC() {
@@ -68,6 +79,5 @@ public class CongTyDTO {
     public String toString() {
         return "CongTyDTO{" + "MaNCC=" + MaNCC + ", TenNCC=" + TenNCC + ", SDT=" + SDT + ", DiaChi=" + DiaChi + ", TinhTrang=" + TinhTrang + '}';
     }
-    
-    
+
 }

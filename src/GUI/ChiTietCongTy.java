@@ -48,6 +48,8 @@ public class ChiTietCongTy extends javax.swing.JFrame {
         btnLuu = new Components.ButtonRadius();
         jScrollPane1 = new javax.swing.JScrollPane();
         txtDiaChi = new javax.swing.JTextPane();
+        lblID3 = new javax.swing.JLabel();
+        cmbChiNhanh = new javax.swing.JComboBox<>();
 
         txtID5.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(190, 210, 235), 2));
         txtID5.addActionListener(new java.awt.event.ActionListener() {
@@ -131,6 +133,12 @@ public class ChiTietCongTy extends javax.swing.JFrame {
         txtDiaChi.setFont(new java.awt.Font("Josefin Sans SemiBold", 0, 14)); // NOI18N
         jScrollPane1.setViewportView(txtDiaChi);
 
+        lblID3.setFont(new java.awt.Font("Segoe UI", 1, 16)); // NOI18N
+        lblID3.setForeground(new java.awt.Color(148, 181, 222));
+        lblID3.setText("Chi nhánh");
+
+        cmbChiNhanh.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Chọn chi nhánh", "1", "2", "3" }));
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
@@ -141,18 +149,20 @@ public class ChiTietCongTy extends javax.swing.JFrame {
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jScrollPane1)
                     .addComponent(txtID)
-                    .addComponent(txtName, javax.swing.GroupLayout.Alignment.TRAILING)
                     .addComponent(txtSDT, javax.swing.GroupLayout.Alignment.TRAILING)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
                         .addComponent(btnLuu, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(buttonRadius1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(txtName)
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(lblID3, javax.swing.GroupLayout.PREFERRED_SIZE, 220, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(lblID1, javax.swing.GroupLayout.PREFERRED_SIZE, 220, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(lblID2, javax.swing.GroupLayout.PREFERRED_SIZE, 220, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(lblID5, javax.swing.GroupLayout.PREFERRED_SIZE, 220, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(lblID6, javax.swing.GroupLayout.PREFERRED_SIZE, 220, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(lblID6, javax.swing.GroupLayout.PREFERRED_SIZE, 220, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(cmbChiNhanh, javax.swing.GroupLayout.PREFERRED_SIZE, 125, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addGap(0, 186, Short.MAX_VALUE)))
                 .addContainerGap())
         );
@@ -166,12 +176,16 @@ public class ChiTietCongTy extends javax.swing.JFrame {
                 .addComponent(txtID, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(lblID2, javax.swing.GroupLayout.PREFERRED_SIZE, 26, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(txtName, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(lblID3, javax.swing.GroupLayout.PREFERRED_SIZE, 26, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(cmbChiNhanh, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(lblID5, javax.swing.GroupLayout.PREFERRED_SIZE, 26, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(txtSDT, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(txtSDT, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(lblID6, javax.swing.GroupLayout.PREFERRED_SIZE, 26, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -194,7 +208,7 @@ public class ChiTietCongTy extends javax.swing.JFrame {
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, 496, Short.MAX_VALUE)
+                .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, 562, Short.MAX_VALUE)
                 .addContainerGap())
         );
 
@@ -239,7 +253,7 @@ public class ChiTietCongTy extends javax.swing.JFrame {
                     cty.setSDT(sdt);
                     cty.setDiaChi(diaChi);
                     cty.setTinhTrang(true);
-
+                    cty.setMaChiNhanh(Integer.parseInt(cmbChiNhanh.getSelectedItem().toString()));
                     if (ctyBus.insertCongTy(cty)) {
                         CongTyGUI.update();
                         setVisible(false);
@@ -258,7 +272,7 @@ public class ChiTietCongTy extends javax.swing.JFrame {
                     cty.setSDT(sdt);
                     cty.setDiaChi(diaChi);
                     cty.setTinhTrang(true);
-
+                    cty.setMaChiNhanh(Integer.parseInt(cmbChiNhanh.getSelectedItem().toString()));
                     if (ctyBus.updateCongTy(cty)) {
                         CongTyGUI.update();
                         setVisible(false);
@@ -325,6 +339,8 @@ public class ChiTietCongTy extends javax.swing.JFrame {
         txtName.setText(ctyDto.getTenNCC());
         txtSDT.setText(ctyDto.getSDT());
         txtDiaChi.setText(ctyDto.getDiaChi());
+        cmbChiNhanh.setSelectedItem("" + ctyDto.getMaChiNhanh());
+        cmbChiNhanh.setEnabled(false);
     }
 
     public void setId(int id) {
@@ -370,11 +386,13 @@ public class ChiTietCongTy extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private Components.ButtonRadius btnLuu;
     private Components.ButtonRadius buttonRadius1;
+    private javax.swing.JComboBox<String> cmbChiNhanh;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JLabel lblID;
     private javax.swing.JLabel lblID1;
     private javax.swing.JLabel lblID2;
+    private javax.swing.JLabel lblID3;
     private javax.swing.JLabel lblID5;
     private javax.swing.JLabel lblID6;
     private javax.swing.JLabel lblThongTinChiTiet;

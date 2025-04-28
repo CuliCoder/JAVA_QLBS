@@ -70,6 +70,7 @@ public class PhieuNhapBUS {
         String nameNCC = cartImport.getCbCongTy().getSelectedItem().toString();
         int IDNCC = pnDAO.queryByNameSupplier(nameNCC);
         String TenTK = tkBUS.getCurrentAcc().getTenTK();
+        int MaChiNhanh = tkBUS.getCurrentAcc().getMaChiNhanh();
         String NgayTao = cartImport.getTfNgaytao().getText();
         DateFormat df = new SimpleDateFormat("dd/MM/yyyy");
         Date startDate = new java.util.Date();
@@ -81,12 +82,12 @@ public class PhieuNhapBUS {
         Date ngayLap = new Date(startDate.getTime());
         String total = cartImport.getTfTongtien().getText();
         long TongTien = (long) sharedFunction.parseMoneyString(total);
-        PhieuNhapDTO pn = new PhieuNhapDTO(1, IDNCC + "", TenTK, TongTien, ngayLap, "1",1);
-        boolean res = pnDAO.Them(pn);
+        PhieuNhapDTO pn = new PhieuNhapDTO(1, IDNCC + "", TenTK, TongTien, ngayLap, "1", MaChiNhanh);
+        int res = pnDAO.Them(pn);
 
-        if (res) {
+        if (res != -1) {
             // lấy chi tiết phiếu nhập
-            ArrayList<CTPhieuNhapDTO> listSPNhap = getListCTPN(cartImport);
+            ArrayList<CTPhieuNhapDTO> listSPNhap = getListCTPN(cartImport, res);
             boolean resCT = false, resSP = false;
             boolean success = false;
             int i = 0;
@@ -119,16 +120,16 @@ public class PhieuNhapBUS {
         }
     }
 
-    public ArrayList<CTPhieuNhapDTO> getListCTPN(NhapHangGUI cartImport) {
+    public ArrayList<CTPhieuNhapDTO> getListCTPN(NhapHangGUI cartImport, int idPN) {
         ArrayList<CTPhieuNhapDTO> listID = new ArrayList<>();
-        int IDPN = Integer.parseInt(cartImport.getTfIDHoadon().getText().substring(2));
+//        int IDPN = Integer.parseInt(cartImport.getTfIDHoadon().getText().substring(2));
         int rows = cartImport.getTableChitiet().getModel().getRowCount();
         for (int i = 0; i < rows; i++) {
             int ID = Integer.parseInt(cartImport.getTableChitiet().getModel().getValueAt(i, 0).toString().substring(2));
             int quantity = Integer.parseInt(cartImport.getTableChitiet().getModel().getValueAt(i, 1).toString());
             double ThanhTien = Double.parseDouble(cartImport.getTableChitiet().getModel().getValueAt(i, 2).toString());
             double DonGiaNhap = (double) ThanhTien / quantity;
-            CTPhieuNhapDTO ctpn = new CTPhieuNhapDTO(IDPN, ID, DonGiaNhap, quantity);
+            CTPhieuNhapDTO ctpn = new CTPhieuNhapDTO(idPN, ID, DonGiaNhap, quantity);
             listID.add(ctpn);
         }
         return listID;
@@ -155,7 +156,9 @@ public class PhieuNhapBUS {
         String formattedDate = currentDate.format(formatter);
 
         cartImport.getTfIDHoadon().setText(IDPN);
-        if(tkBUS.getCurrentAcc() == null) return;
+        if (tkBUS.getCurrentAcc() == null) {
+            return;
+        }
         String nameNV = tkBUS.selectNameStaff(tkBUS.getCurrentAcc().getTenTK());
 
         cartImport.getTfIDNhanvien().setText(nameNV); // sửa sau

@@ -97,7 +97,6 @@ public class ChiTietPhieuNhap extends javax.swing.JFrame {
         lblTenTheLoai1.setForeground(new java.awt.Color(148, 181, 222));
         lblTenTheLoai1.setText("ID Sản Phẩm");
 
-        txtIDPhieuNhap.setBackground(new java.awt.Color(255, 255, 255));
         txtIDPhieuNhap.setFont(new java.awt.Font("Segoe UI", 1, 16)); // NOI18N
         txtIDPhieuNhap.setHorizontalAlignment(javax.swing.JTextField.LEFT);
         txtIDPhieuNhap.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(190, 210, 235), 2));
@@ -110,7 +109,6 @@ public class ChiTietPhieuNhap extends javax.swing.JFrame {
             }
         });
 
-        txtSoLuong.setBackground(new java.awt.Color(255, 255, 255));
         txtSoLuong.setFont(new java.awt.Font("Segoe UI", 1, 16)); // NOI18N
         txtSoLuong.setHorizontalAlignment(javax.swing.JTextField.LEFT);
         txtSoLuong.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(190, 210, 235), 2));
@@ -164,7 +162,6 @@ public class ChiTietPhieuNhap extends javax.swing.JFrame {
             }
         });
 
-        txtIDSanPham.setBackground(new java.awt.Color(255, 255, 255));
         txtIDSanPham.setFont(new java.awt.Font("Segoe UI", 1, 16)); // NOI18N
         txtIDSanPham.setHorizontalAlignment(javax.swing.JTextField.LEFT);
         txtIDSanPham.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(190, 210, 235), 2));
@@ -184,7 +181,6 @@ public class ChiTietPhieuNhap extends javax.swing.JFrame {
         lblID3.setForeground(new java.awt.Color(148, 181, 222));
         lblID3.setText("Đơn Giá Nhập");
 
-        txtDonGia.setBackground(new java.awt.Color(255, 255, 255));
         txtDonGia.setFont(new java.awt.Font("Segoe UI", 1, 16)); // NOI18N
         txtDonGia.setHorizontalAlignment(javax.swing.JTextField.LEFT);
         txtDonGia.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(190, 210, 235), 2));
