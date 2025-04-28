@@ -93,7 +93,7 @@ public class TaiKhoanBUS {
         tenTK = acc.getTxtUsername().getText();
         matKhau = acc.getTxtPassword().getText();
 
-        currentAcc = tkDAO.selectByUsernameALL(tenTK);
+        currentAcc = tkDAO.selectByUsername(tenTK);
         if (currentAcc == null) {
             JOptionPane.showMessageDialog(null, "Sai tên đăng nhập");
             return;
@@ -157,12 +157,16 @@ public class TaiKhoanBUS {
     }
 
     public boolean XoaTaiKhoan(int ID) {
-        return tkDAO.Xoa(ID) != 0;
+        if (tkDAO.Xoa(ID) == 0) {
+            return false;
+        }
+        return tkDAO.XoaMainServer(ID) != 0;
     }
 
     public boolean insertTaiKhoan(TaiKhoanDTO tk) {
         int check = tkDAO.Them(tk);
         if (check > 0) {
+            tkDAO.ThemMainServer(tk);
             JOptionPane.showMessageDialog(null, "Thêm tài khoản thành công");
             return true;
         } else {
@@ -174,6 +178,7 @@ public class TaiKhoanBUS {
     public boolean updateTaiKhoan(TaiKhoanDTO tk) {
         int check = tkDAO.Sua(tk);
         if (check > 0) {
+            tkDAO.SuaMainServer(tk);
             JOptionPane.showMessageDialog(null, "Sửa tài khoản thành công");
             return true;
         } else {

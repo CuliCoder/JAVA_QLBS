@@ -81,7 +81,7 @@ public class PhieuNhapBUS {
         Date ngayLap = new Date(startDate.getTime());
         String total = cartImport.getTfTongtien().getText();
         long TongTien = (long) sharedFunction.parseMoneyString(total);
-        PhieuNhapDTO pn = new PhieuNhapDTO(1, IDNCC + "", TenTK, TongTien, ngayLap, "1");
+        PhieuNhapDTO pn = new PhieuNhapDTO(1, IDNCC + "", TenTK, TongTien, ngayLap, "1",1);
         boolean res = pnDAO.Them(pn);
 
         if (res) {

@@ -71,6 +71,7 @@ public class ChiTietTaiKhoan extends javax.swing.JFrame {
         txtId.setText("TK" + tk.getMaTK());
         cboName.addItem(tk.getTenTK());
         cboName.setSelectedItem(tk.getTenTK());
+        cboName.setEnabled(false);
         txtMatKhau.setText(tk.getMatKhau());
         date.setText(String.valueOf(tk.getNgayTao()));
         cboQuyen.setSelectedItem(tkdao.selectRoleByID(tk.getMaQuyen()));
@@ -105,7 +106,6 @@ public class ChiTietTaiKhoan extends javax.swing.JFrame {
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setLocation(new java.awt.Point(600, 200));
         setUndecorated(true);
-        setPreferredSize(new java.awt.Dimension(400, 450));
 
         jPanel1.setBackground(new java.awt.Color(255, 255, 255));
         jPanel1.setMaximumSize(new java.awt.Dimension(400, 500));
@@ -191,6 +191,11 @@ public class ChiTietTaiKhoan extends javax.swing.JFrame {
 
         cboName.setFont(new java.awt.Font("Josefin Sans SemiBold", 0, 14)); // NOI18N
         cboName.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        cboName.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cboNameActionPerformed(evt);
+            }
+        });
 
         date.setFont(new java.awt.Font("Josefin Sans SemiBold", 0, 14)); // NOI18N
         date.setBorder(javax.swing.BorderFactory.createTitledBorder(new javax.swing.border.LineBorder(new java.awt.Color(135, 172, 217), 2, true), "Ngày lập", javax.swing.border.TitledBorder.LEFT, javax.swing.border.TitledBorder.ABOVE_TOP, new java.awt.Font("Josefin Sans SemiBold", 0, 16), new java.awt.Color(135, 172, 217))); // NOI18N
@@ -317,6 +322,10 @@ public class ChiTietTaiKhoan extends javax.swing.JFrame {
         }
     }
     }//GEN-LAST:event_btnTimkiemActionPerformed
+
+    private void cboNameActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cboNameActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_cboNameActionPerformed
 
     public boolean checkExistName(String name) {
         ArrayList<TaiKhoanDTO> listtk = tkbus.selectAll();

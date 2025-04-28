@@ -118,8 +118,8 @@ public class PhieuNhapDAO {
                 Date NgayTao = rs.getDate("NgayTao");
                 long TongTien = rs.getLong("TongTien");
                 String TinhTrang = rs.getString("TinhTrang");
-
-                PhieuNhapDTO pn = new PhieuNhapDTO(MaPN, MaNCC, TenTK, TongTien, NgayTao, TinhTrang);
+                int MaChiNhanh = rs.getInt("MaChiNhanh");
+                PhieuNhapDTO pn = new PhieuNhapDTO(MaPN, MaNCC, TenTK, TongTien, NgayTao, TinhTrang, MaChiNhanh);
                 ketQua.add(pn);
             }
             ConnectDB.closeConnection(c);
@@ -165,8 +165,8 @@ public class PhieuNhapDAO {
                 Date NgayTao = rs.getDate("NgayTao");
                 long TongTien = rs.getLong("TongTien");
                 String TinhTrang = rs.getString("TinhTrang");
-
-                PhieuNhapDTO pn = new PhieuNhapDTO(MaPN, MaNCC, TenTK, TongTien, NgayTao, TinhTrang);
+                int MaChiNhanh = rs.getInt("MaChiNhanh");
+                PhieuNhapDTO pn = new PhieuNhapDTO(MaPN, MaNCC, TenTK, TongTien, NgayTao, TinhTrang, MaChiNhanh);
                 return pn;
             }
             ConnectDB.closeConnection(c);
@@ -192,7 +192,8 @@ public class PhieuNhapDAO {
                 Date NgayTao = rs.getDate("NgayTao");
                 long TongTien = rs.getLong("TongTien");
                 String TinhTrang = rs.getString("TinhTrang");
-                PhieuNhapDTO pn = new PhieuNhapDTO(MaPN, MaNCC, TenTK, TongTien, NgayTao, TinhTrang);
+                int MaChiNhanh = rs.getInt("MaChiNhanh");
+                PhieuNhapDTO pn = new PhieuNhapDTO(MaPN, MaNCC, TenTK, TongTien, NgayTao, TinhTrang, MaChiNhanh);
                 ketQua.add(pn);
             }
             ConnectDB.closeConnection(c);
@@ -321,6 +322,7 @@ public class PhieuNhapDAO {
         }
         return false;
     }
+
     public boolean ChangePriceProductById(int MaPn, double thanhTien) {
         boolean rowUpdate = false;
         try {
@@ -331,7 +333,7 @@ public class PhieuNhapDAO {
             pst.setInt(2, MaPn);
             rowUpdate = pst.executeUpdate() > 0;
             ConnectDB.closeConnection(c);
-        } catch (SQLException e){
+        } catch (SQLException e) {
             e.printStackTrace();
         }
         return rowUpdate;

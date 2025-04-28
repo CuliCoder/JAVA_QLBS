@@ -26,7 +26,15 @@ public class NhanVienDAO {
         try {
             Connection conn = ConnectDB.getConnection();
             Statement st = conn.createStatement();
-            String sql = "SELECT * FROM NhanVien where TinhTrang=N'Đang làm việc'";
+            ArrayList<String> listLinkServer
+                    = PortServer.getListLinkServer(ConnectDB.currentPortServer);
+            String sql = "Select * from ("
+                    + "select * from NhanVien where TinhTrang=N'Đang làm việc'"
+                    + " union all "
+                    + "select * from " + listLinkServer.get(0) + ".QLBS.DBO.NhanVien where TinhTrang=N'Đang làm việc'"
+                    + " union all "
+                    + "select * from " + listLinkServer.get(1) + ".QLBS.DBO.NhanVien where TinhTrang=N'Đang làm việc'"
+                    + ") as combined_results";
             ResultSet rs = st.executeQuery(sql);
 
             while (rs.next()) {
@@ -53,9 +61,18 @@ public class NhanVienDAO {
         ArrayList<NhanVienDTO> ketQua = new ArrayList<>();
         try {
             Connection conn = ConnectDB.getConnection();
-            Statement st = conn.createStatement();
-            String sql = "SELECT * FROM NhanVien where MaNV NOT IN ( SELECT TenTK from TaiKhoan)";
-            ResultSet rs = st.executeQuery(sql);
+            ArrayList<String> listLinkServer = PortServer.getListLinkServer(ConnectDB.currentPortServer);
+
+            String sql = "SELECT * FROM ("
+                    + "SELECT * FROM NhanVien WHERE MaNV NOT IN (SELECT TenTK FROM TaiKhoan) "
+                    + "UNION ALL "
+                    + "SELECT * FROM " + listLinkServer.get(0) + ".QLBS.DBO.NhanVien WHERE MaNV NOT IN (SELECT TenTK FROM " + listLinkServer.get(0) + ".QLBS.DBO.TaiKhoan) "
+                    + "UNION ALL "
+                    + "SELECT * FROM " + listLinkServer.get(1) + ".QLBS.DBO.NhanVien WHERE MaNV NOT IN (SELECT TenTK FROM " + listLinkServer.get(1) + ".QLBS.DBO.TaiKhoan) "
+                    + ") AS combined_results";
+
+            PreparedStatement pst = conn.prepareStatement(sql);
+            ResultSet rs = pst.executeQuery();
 
             while (rs.next()) {
                 String MaNV = rs.getNString("MaNV");
@@ -66,8 +83,7 @@ public class NhanVienDAO {
                 String Email = rs.getNString("Email");
                 String TinhTrang = rs.getNString("TinhTrang");
                 int MaChiNhanh = rs.getInt("MaChiNhanh");
-                NhanVienDTO nv = new NhanVienDTO(MaNV, TenNV, SDT, GioiTinh, DiaChi, Email, TinhTrang, MaChiNhanh);
-                ketQua.add(nv);
+                ketQua.add(new NhanVienDTO(MaNV, TenNV, SDT, GioiTinh, DiaChi, Email, TinhTrang, MaChiNhanh));
             }
 
             ConnectDB.closeConnection(conn);
@@ -81,10 +97,22 @@ public class NhanVienDAO {
         NhanVienDTO ketqua = new NhanVienDTO();
         try {
             Connection conn = ConnectDB.getConnection();
-            Statement st = conn.createStatement();
-            String sql = "SELECT * FROM NhanVien where MaNV='" + tukhoa + "'";
-            ResultSet rs = st.executeQuery(sql);
+            ArrayList<String> listLinkServer = PortServer.getListLinkServer(ConnectDB.currentPortServer);
 
+            String sql = "SELECT * FROM ("
+                    + "SELECT * FROM NhanVien WHERE MaNV=? "
+                    + "UNION ALL "
+                    + "SELECT * FROM " + listLinkServer.get(0) + ".QLBS.DBO.NhanVien WHERE MaNV=? "
+                    + "UNION ALL "
+                    + "SELECT * FROM " + listLinkServer.get(1) + ".QLBS.DBO.NhanVien WHERE MaNV=? "
+                    + ") AS combined_results";
+
+            PreparedStatement pst = conn.prepareStatement(sql);
+            pst.setString(1, tukhoa);
+            pst.setString(2, tukhoa);
+            pst.setString(3, tukhoa);
+
+            ResultSet rs = pst.executeQuery();
             while (rs.next()) {
                 String MaNV = rs.getNString("MaNV");
                 String TenNV = rs.getNString("TenNV");
@@ -129,13 +157,12 @@ public class NhanVienDAO {
 //        }
 //        return ketqua;
 //    }
-
     public int deleteNhanVien(String idnv) {
         int ketqua = -1;
         Connection conn = null;
         try {
             conn = ConnectDB.getConnection();
-            String sql = "update NhanVien set TinhTrang=N'Không làm việc' where MaNV=?";
+            String sql = "update " + getLinkServer(selectNhanVienById(idnv)) + "NhanVien set TinhTrang=N'Không làm việc' where MaNV=?";
             PreparedStatement st = conn.prepareStatement(sql);
             st.setNString(1, idnv);
             ketqua = st.executeUpdate();
@@ -147,16 +174,56 @@ public class NhanVienDAO {
         return ketqua;
     }
 
+//    public ArrayList<NhanVienDTO> searchNhanVien(String tukhoa) {
+//        ArrayList<NhanVienDTO> ketQua = new ArrayList<>();
+//        try {
+//            Connection conn = ConnectDB.getConnection();
+//            Statement st = conn.createStatement();
+//            String sql = "SELECT * FROM NhanVien "
+//                    + "where TenNV like N'%" + tukhoa + "%'"
+//                    + "And TinhTrang=N'Đang làm việc'";
+//            ResultSet rs = st.executeQuery(sql);
+//
+//            while (rs.next()) {
+//                String MaNV = rs.getNString("MaNV");
+//                String TenNV = rs.getNString("TenNV");
+//                String SDT = rs.getNString("SDT");
+//                String GioiTinh = rs.getNString("GioiTinh");
+//                String DiaChi = rs.getNString("DiaChi");
+//                String Email = rs.getNString("Email");
+//                String TinhTrang = rs.getNString("TinhTrang");
+//                int MaChiNhanh = rs.getInt("MaChiNhanh");
+//                NhanVienDTO nv = new NhanVienDTO(MaNV, TenNV, SDT, GioiTinh, DiaChi, Email, TinhTrang, MaChiNhanh);
+//                ketQua.add(nv);
+//            }
+//
+//            ConnectDB.closeConnection(conn);
+//        } catch (SQLException e) {
+//            e.printStackTrace();
+//        }
+//        return ketQua;
+//    }
     public ArrayList<NhanVienDTO> searchNhanVien(String tukhoa) {
         ArrayList<NhanVienDTO> ketQua = new ArrayList<>();
         try {
             Connection conn = ConnectDB.getConnection();
-            Statement st = conn.createStatement();
-            String sql = "SELECT * FROM NhanVien "
-                    + "where TenNV like N'%" + tukhoa + "%'"
-                    + "And TinhTrang=N'Đang làm việc'";
-            ResultSet rs = st.executeQuery(sql);
+            ArrayList<String> listLinkServer = PortServer.getListLinkServer(ConnectDB.currentPortServer);
 
+            String sql = "SELECT * FROM ("
+                    + "SELECT * FROM NhanVien WHERE TenNV LIKE N? AND TinhTrang=N'Đang làm việc' "
+                    + "UNION ALL "
+                    + "SELECT * FROM " + listLinkServer.get(0) + ".QLBS.DBO.NhanVien WHERE TenNV LIKE N? AND TinhTrang=N'Đang làm việc' "
+                    + "UNION ALL "
+                    + "SELECT * FROM " + listLinkServer.get(1) + ".QLBS.DBO.NhanVien WHERE TenNV LIKE N? AND TinhTrang=N'Đang làm việc' "
+                    + ") AS combined_results";
+
+            PreparedStatement pst = conn.prepareStatement(sql);
+            String keyword = "%" + tukhoa + "%";
+            pst.setString(1, keyword);
+            pst.setString(2, keyword);
+            pst.setString(3, keyword);
+
+            ResultSet rs = pst.executeQuery();
             while (rs.next()) {
                 String MaNV = rs.getNString("MaNV");
                 String TenNV = rs.getNString("TenNV");
@@ -196,19 +263,58 @@ public class NhanVienDAO {
         return ketQua;
     }
 
+//    public String getChucVu(String id) {
+//        String ketQua = null;
+//        try {
+//            Connection conn = ConnectDB.getConnection();
+//            Statement st = conn.createStatement();
+//            String sql = "SELECT TenNQ "
+//                    + "FROM NhanVien,TaiKhoan,NhomQuyen "
+//                    + "where MaNV=TenTK and MaQuyen=MaNQ and MaNV='" + id + "'";
+//            ResultSet rs = st.executeQuery(sql);
+//
+//            if (rs.next()) {
+//                ketQua = rs.getNString("TenNQ");
+//            }
+//            ConnectDB.closeConnection(conn);
+//        } catch (SQLException e) {
+//            e.printStackTrace();
+//        }
+//        return ketQua;
+//    }
     public String getChucVu(String id) {
         String ketQua = null;
         try {
             Connection conn = ConnectDB.getConnection();
-            Statement st = conn.createStatement();
-            String sql = "SELECT TenNQ "
-                    + "FROM NhanVien,TaiKhoan,NhomQuyen "
-                    + "where MaNV=TenTK and MaQuyen=MaNQ and MaNV='" + id + "'";
-            ResultSet rs = st.executeQuery(sql);
+            ArrayList<String> listLinkServer = PortServer.getListLinkServer(ConnectDB.currentPortServer);
 
+            String sql = "SELECT TenNQ FROM ("
+                    + "SELECT nq.TenNQ FROM NhanVien nv "
+                    + "JOIN TaiKhoan tk ON nv.MaNV = tk.TenTK "
+                    + "JOIN NhomQuyen nq ON tk.MaQuyen = nq.MaNQ "
+                    + "WHERE nv.MaNV = ? "
+                    + "UNION ALL "
+                    + "SELECT nq.TenNQ FROM " + listLinkServer.get(0) + ".QLBS.DBO.NhanVien nv "
+                    + "JOIN " + listLinkServer.get(0) + ".QLBS.DBO.TaiKhoan tk ON nv.MaNV = tk.TenTK "
+                    + "JOIN " + listLinkServer.get(0) + ".QLBS.DBO.NhomQuyen nq ON tk.MaQuyen = nq.MaNQ "
+                    + "WHERE nv.MaNV = ? "
+                    + "UNION ALL "
+                    + "SELECT nq.TenNQ FROM " + listLinkServer.get(1) + ".QLBS.DBO.NhanVien nv "
+                    + "JOIN " + listLinkServer.get(1) + ".QLBS.DBO.TaiKhoan tk ON nv.MaNV = tk.TenTK "
+                    + "JOIN " + listLinkServer.get(1) + ".QLBS.DBO.NhomQuyen nq ON tk.MaQuyen = nq.MaNQ "
+                    + "WHERE nv.MaNV = ? "
+                    + ") AS combined_results";
+
+            PreparedStatement pst = conn.prepareStatement(sql);
+            pst.setString(1, id);
+            pst.setString(2, id);
+            pst.setString(3, id);
+
+            ResultSet rs = pst.executeQuery();
             if (rs.next()) {
                 ketQua = rs.getNString("TenNQ");
             }
+
             ConnectDB.closeConnection(conn);
         } catch (SQLException e) {
             e.printStackTrace();
@@ -247,7 +353,7 @@ public class NhanVienDAO {
         try {
             String linkServer = getLinkServer(nv);
             conn = ConnectDB.getConnection();
-            String sql = "update NhanVien set TenNV=?,SDT=?,GioiTinh=?,DiaChi=?,Email=?,TinhTrang=? where MaNV=?";
+            String sql = "update " + linkServer + "NhanVien set TenNV=?,SDT=?,GioiTinh=?,DiaChi=?,Email=?,TinhTrang=? where MaNV=?";
             PreparedStatement st = conn.prepareStatement(sql);
             st.setNString(1, nv.getTenNV());
             st.setNString(2, nv.getSDT());
@@ -300,13 +406,12 @@ public class NhanVienDAO {
                 : "LINK" + nv.getMaChiNhanh() + ".QLBS.DBO.";
         return linkServer;
     }
-    
+
     public int addNhanVienMainServer(NhanVienDTO nv) {
         int ketqua = -1;
         Connection conn = null;
         try {
             conn = ConnectDB.getConnection();
-            String linkserver = getLinkServer(nv);
             String sql = "Insert into LINK0.QLBS.DBO.NhanVien(MaNV,TenNV,SDT,GioiTinh,DiaChi,Email,TinhTrang,MaChiNhanh) values(?,?,?,?,?,?,?,?)";
             PreparedStatement st = conn.prepareStatement(sql);
             st.setNString(1, nv.getMaNV());
@@ -325,11 +430,11 @@ public class NhanVienDAO {
         }
         return ketqua;
     }
+
     public int updateNhanVienMainServer(NhanVienDTO nv) {
         int ketqua = -1;
         Connection conn = null;
         try {
-            String linkServer = getLinkServer(nv);
             conn = ConnectDB.getConnection();
             String sql = "update LINK0.QLBS.DBO.NhanVien set TenNV=?,SDT=?,GioiTinh=?,DiaChi=?,Email=?,TinhTrang=? where MaNV=?";
             PreparedStatement st = conn.prepareStatement(sql);
@@ -348,6 +453,7 @@ public class NhanVienDAO {
         }
         return ketqua;
     }
+
     public int deleteNhanVienMainServer(String idnv) {
         int ketqua = -1;
         Connection conn = null;
