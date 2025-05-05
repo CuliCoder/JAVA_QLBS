@@ -328,7 +328,8 @@ public class NhanVienDAO {
         try {
             conn = ConnectDB.getConnection();
             String linkserver = getLinkServer(nv);
-            String sql = "Insert into " + linkserver + "NhanVien(MaNV,TenNV,SDT,GioiTinh,DiaChi,Email,TinhTrang,MaChiNhanh) values(?,?,?,?,?,?,?,?)";
+            String sql = "Insert into " + linkserver + "NhanVien(MaNV,TenNV,SDT,GioiTinh,DiaChi,Email,TinhTrang,MaChiNhanh) "
+                    + "values(?,?,?,?,?,?,?,?)";
             PreparedStatement st = conn.prepareStatement(sql);
             st.setNString(1, nv.getMaNV());
             st.setNString(2, nv.getTenNV());

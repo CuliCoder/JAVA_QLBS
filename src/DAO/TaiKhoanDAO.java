@@ -377,7 +377,8 @@ public class TaiKhoanDAO {
         try {
             Connection conn = ConnectDB.getConnection();
             NhanVienDTO nhanVienDTO = new NhanVienDAO().selectNhanVienById(taiKhoan.getTenTK());
-            String sql = "INSERT INTO " + getLinkServer(nhanVienDTO) + "TaiKhoan(TenTK, MatKhau, MaQuyen, NgayTao, TinhTrang, MaChiNhanh) VALUES ( ?, ?, ?, ?, ?, ?)";
+            String sql = "INSERT INTO " + getLinkServer(nhanVienDTO) + "TaiKhoan(TenTK, MatKhau, MaQuyen, NgayTao, TinhTrang, MaChiNhanh) "
+                    + "VALUES ( ?, ?, ?, ?, ?, ?)";
             PreparedStatement pst = conn.prepareStatement(sql);
             pst.setString(1, taiKhoan.getTenTK());
             pst.setString(2, taiKhoan.getMatKhau());
@@ -401,7 +402,8 @@ public class TaiKhoanDAO {
             Connection conn = ConnectDB.getConnection();
             int id = Integer.parseInt(taiKhoan.getMaTK().substring(2));
             TaiKhoanDTO taiKhoanDTO = selectById(id);
-            String sql = "UPDATE " + getLinkServer(taiKhoanDTO) + "TaiKhoan SET TenTK=?, MatKhau=?, MaQuyen=?, NgayTao=?, TinhTrang=? WHERE MaTK=?";
+            String sql = "UPDATE " + getLinkServer(taiKhoanDTO) + "TaiKhoan SET TenTK=?, MatKhau=?, MaQuyen=?, NgayTao=?, TinhTrang=? "
+                    + "WHERE MaTK=?";
             PreparedStatement pst = conn.prepareStatement(sql);
             pst.setString(1, taiKhoan.getTenTK());
             pst.setString(2, taiKhoan.getMatKhau());

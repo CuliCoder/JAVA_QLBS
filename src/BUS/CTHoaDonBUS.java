@@ -25,9 +25,10 @@ public class CTHoaDonBUS {
     }
 
     public boolean luuChiTietHoaDon(CTHoaDonDTO chiTietHoaDon) {
-        if (!cthd.luuChiTietHoaDon(chiTietHoaDon)) {
-            return false;
-        }
-        return cthd.luuChiTietHoaDonMainServer(chiTietHoaDon);
+//        if (!cthd.luuChiTietHoaDon(chiTietHoaDon)) {
+//            return false;
+//        }
+//        return cthd.luuChiTietHoaDonMainServer(chiTietHoaDon);
+        return cthd.luuChiTietHoaDon(chiTietHoaDon);
     }
 }
